@@ -1,6 +1,6 @@
 use gloo_net::http::Request;
-use wasm_bindgen_futures::spawn_local;
-use yew::prelude::*;
+use web_sys::console;
+use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 // Create yew router
@@ -8,7 +8,7 @@ use yew_router::prelude::*;
 enum Route {
     #[at("/")]
     Home,
-    #[at("/hello-server")]
+    #[at("/hello")]
     HelloServer,
 }
 
@@ -31,28 +31,43 @@ fn app() -> Html {
 
 #[function_component(HelloServer)]
 fn hello_server() -> Html {
+    // Create state
     let data = use_state(|| None);
-
     {
         let data = data.clone();
+
+        // Perform side effect after render cycle
         use_effect(move || {
             if data.is_none() {
                 spawn_local(async move {
-                    let resp = Request::get("/api/hello").send().await.unwrap();
-                    let result = {
-                        if !resp.ok() {
-                            Err(format!(
-                                "Error fetching data {} ({})",
-                                resp.status(),
-                                resp.status_text()
-                            ))
-                        } else {
-                            resp.text().await.map_err(|err| err.to_string())
+                    // Make a request to the api
+                    let resp = Request::get("/api/hello-server").send().await;
+                    let result = match resp {
+                        Ok(resp) => {
+                            if resp.ok() {
+                                resp.text().await.map_err(|err| err.to_string())
+                            } else {
+                                Err(format!(
+                                    "Error fetching data {} ({})",
+                                    resp.status(),
+                                    resp.status_text()
+                                ))
+                            }
                         }
+                        Err(err) => Err(err.to_string()),
                     };
+                    match &result {
+                        Ok(data) => {
+                            console::log_1(&data.into());
+                        }
+                        Err(err) => {
+                            console::log_1(&err.into());
+                        }
+                    }
                     data.set(Some(result));
                 });
             }
+
             || {}
         });
     }
@@ -66,6 +81,7 @@ fn hello_server() -> Html {
         Some(Ok(data)) => {
             html! {
                 <div>{"Got server response: "}{data}</div>
+
             }
         }
         Some(Err(err)) => {

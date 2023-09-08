@@ -1,6 +1,7 @@
-# [[proxy]]
-# backend = "http://localhost:80/api"
+[proxy]
+backend = "http://localhost:3000" # The URL where the Axum server is running
+rewrite = [ { path = "/api", to = "/" } ]
 
-[build]
-target = "index.html"
-dist = "../dist"
+# [build]
+# target = "index.html"
+# dist = "../dist"
