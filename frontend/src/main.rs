@@ -3,19 +3,19 @@ use web_sys::console;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
-// Create yew router
+// Create yew routes that will be requested by the browser
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
     #[at("/")]
     Home,
-    #[at("/hello")]
+    #[at("/hello-server")]
     HelloServer,
 }
 
-// Dispatch routes
+// Dispatch routes and render functional components
 fn switch(routes: Route) -> Html {
     match routes {
-        Route::Home => html! { <h1>{ "Hello Frontend!!!" }</h1> },
+        Route::Home => html! { <Home /> },
         Route::HelloServer => html! { <HelloServer /> },
     }
 }
@@ -29,33 +29,48 @@ fn app() -> Html {
     }
 }
 
+// Displays the website homepage
+#[function_component(Home)]
+fn home_page() -> Html {
+    html!(
+        <>
+            <h1>{"This is the Homepage!"}</h1>
+        </>
+    )
+}
+
+// Sends a request to the server and displays the response
 #[function_component(HelloServer)]
 fn hello_server() -> Html {
     // Create state
     let data = use_state(|| None);
+
     {
         let data = data.clone();
 
-        // Perform side effect after render cycle
+        // Perform side effect after render
         use_effect(move || {
             if data.is_none() {
                 spawn_local(async move {
-                    // Make a request to the api
-                    let resp = Request::get("/api/hello-server").send().await;
-                    let result = match resp {
-                        Ok(resp) => {
-                            if resp.ok() {
-                                resp.text().await.map_err(|err| err.to_string())
+                    // Make a request to the Axum api using proxy
+                    let response = Request::get("/api/hello-server").send().await;
+
+                    let result = match response {
+                        Ok(response) => {
+                            if response.ok() {
+                                response.text().await.map_err(|err| err.to_string())
                             } else {
                                 Err(format!(
                                     "Error fetching data {} ({})",
-                                    resp.status(),
-                                    resp.status_text()
+                                    response.status(),
+                                    response.status_text()
                                 ))
                             }
                         }
                         Err(err) => Err(err.to_string()),
                     };
+
+                    // Log the api response to the console
                     match &result {
                         Ok(data) => {
                             console::log_1(&data.into());
@@ -64,10 +79,10 @@ fn hello_server() -> Html {
                             console::log_1(&err.into());
                         }
                     }
+
                     data.set(Some(result));
                 });
             }
-
             || {}
         });
     }

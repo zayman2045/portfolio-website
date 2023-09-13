@@ -1,4 +1,4 @@
-[[proxy]]
+[[proxy]] 
 backend = "http://localhost:3000" # The URL where the Axum server is running
 rewrite = "/api/"
 
