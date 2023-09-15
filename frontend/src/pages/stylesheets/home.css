@@ -31,11 +31,17 @@ section p {
 
 .projects ul {
   list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
 }
 
 .projects ul li {
   font-size: 3em;
-  margin: 10px 0;
+  flex: 1;
+  text-align: center;
+  margin: 0 10px; 
 }
 
 .projects ul li a {
