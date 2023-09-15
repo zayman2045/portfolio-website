@@ -1,11 +1,20 @@
 use yew::prelude::*;
+use stylist::{style, yew::styled_component};
 
 // Displays the website homepage
-#[function_component(Home)]
+#[styled_component(Home)]
 pub fn home() -> Html {
+    let stylesheet = style!(
+        r#"
+          h1 {
+            color: pink;
+          }  
+        "#
+    ).unwrap();
+
     html!(
-        <>
-            <h1>{"This is the Homepage!"}</h1>
-        </>
+        <div class={stylesheet}>
+            <h1>{"Homepage!"}</h1>
+        </div>
     )
 }
