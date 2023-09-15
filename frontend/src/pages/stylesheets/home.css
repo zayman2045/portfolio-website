@@ -29,21 +29,21 @@ section p {
   font-size: 1.25em;
 }
 
-section ul {
+.projects ul {
   list-style-type: none;
 }
 
-section ul li {
-  font-size: 1.25em;
+.projects ul li {
+  font-size: 3em;
   margin: 10px 0;
 }
 
-section ul li a {
+.projects ul li a {
   color: #a056f3;
   text-decoration: none;
 }
 
-section ul li a:hover {
+.projects ul li a:hover {
   text-decoration: underline;
 }
 
