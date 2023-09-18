@@ -1,4 +1,4 @@
-mod pages;
+mod components;
 mod router;
 
 use router::{switch, Route};

@@ -1,4 +1,4 @@
-use crate::pages::{hello_server::HelloServer, home::Home, stargaze::Stargaze, funder::Funder, ello::Ello};
+use crate::components::organisms::{hello_server::HelloServer, home::Home, stargaze::Stargaze, funder::Funder, ello::Ello};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
