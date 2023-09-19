@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
-#[function_component(LoginForm)]
-pub fn login_form() -> Html {
+#[function_component(Login)]
+pub fn login() -> Html {
     html!(
         <form>
             <label for="username">{"Username:"}</label>
