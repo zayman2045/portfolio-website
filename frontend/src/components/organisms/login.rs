@@ -11,7 +11,7 @@ pub fn login() -> Html {
     html!(
         <div>
             <Link<Route> to={Route::Home}>
-                <CustomButton content={"Home".to_string()} kind={"button".to_string()}/>
+                <CustomButton label={"Home".to_string()} kind={"button".to_string()}/>
             </Link<Route>>
 
             <h1>{"Log In"}</h1>

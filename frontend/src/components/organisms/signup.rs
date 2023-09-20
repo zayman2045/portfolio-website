@@ -8,7 +8,7 @@ pub fn signup() -> Html {
     html!(
         <div>
             <Link<Route> to={Route::Home}>
-                <CustomButton content={"Home".to_string()} kind={"button".to_string()}/>
+                <CustomButton label={"Home".to_string()} kind={"button".to_string()}/>
             </Link<Route>>
 
             <h1>{"Sign Up"}</h1>
