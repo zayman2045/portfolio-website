@@ -8,10 +8,11 @@ use crate::router::Route;
 pub struct Props {
     pub route: Route,
     pub label: String,
-    pub kind: String
+    pub kind: String,
 }
 
 // Link that wraps a button
+// Takes a route, a label and a button type as properties from it's parent component
 #[function_component(LinkButton)]
 pub fn link_button(props: &Props) -> Html {
     html!(

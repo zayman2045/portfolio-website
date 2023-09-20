@@ -1,15 +1,15 @@
 use yew::prelude::*;
-use yew_router::prelude::*;
 
-use crate::{components::atoms::{custom_button::CustomButton, text_input::TextInput}, router::Route};
+use crate::{
+    components::{atoms::text_input::TextInput, molecules::link_button::LinkButton},
+    router::Route,
+};
 
 #[function_component(Signup)]
 pub fn signup() -> Html {
     html!(
         <div>
-            <Link<Route> to={Route::Home}>
-                <CustomButton label={"Home".to_string()} kind={"button".to_string()}/>
-            </Link<Route>>
+            <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Sign Up"}</h1>
             <form>

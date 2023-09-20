@@ -1,8 +1,7 @@
 use yew::prelude::*;
-use yew_router::prelude::*;
 
 use crate::{
-    components::atoms::{custom_button::CustomButton, text_input::TextInput},
+    components::{atoms::text_input::TextInput, molecules::link_button::LinkButton},
     router::Route,
 };
 
@@ -10,9 +9,7 @@ use crate::{
 pub fn login() -> Html {
     html!(
         <div>
-            <Link<Route> to={Route::Home}>
-                <CustomButton label={"Home".to_string()} kind={"button".to_string()}/>
-            </Link<Route>>
+            <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Log In"}</h1>
             <form>
