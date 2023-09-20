@@ -1,16 +1,29 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
+
+use crate::{
+    components::atoms::{custom_button::CustomButton, text_input::TextInput},
+    router::Route,
+};
 
 #[function_component(Login)]
 pub fn login() -> Html {
     html!(
-        <form>
-            <label for="username">{"Username:"}</label>
-            //<input type="text" id="username" name="username" required>
+        <div>
+            <Link<Route> to={Route::Home}>
+                <CustomButton content={"Home".to_string()} kind={"button".to_string()}/>
+            </Link<Route>>
 
-            <label for="password">{"Password:"}</label>
-            //<input type="password" id="password" name="password" required>
+            <h1>{"Log In"}</h1>
+            <form>
+                <label for="username">{"Username:"}</label>
+                <TextInput name={"username".to_string()} />
 
-            <button type="submit">{"Submit"}</button>
-    </form>
+                <label for="password">{"Password:"}</label>
+                <TextInput name={"password".to_string()} />
+
+                <button type="submit">{"Submit"}</button>
+            </form>
+        </div>
     )
 }

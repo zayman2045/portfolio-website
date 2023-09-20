@@ -1,4 +1,8 @@
-use crate::components::organisms::{hello_server::HelloServer, home::Home, stargaze::Stargaze, funder::Funder, ello::Ello};
+use crate::components::organisms::{
+    ello::Ello, funder::Funder, hello_server::HelloServer, home::Home, login::Login,
+    signup::Signup, stargaze::Stargaze,
+};
+
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -14,7 +18,11 @@ pub enum Route {
     #[at("/funder")]
     Funder,
     #[at("/ello")]
-    Ello
+    Ello,
+    #[at("/login")]
+    Login,
+    #[at("/signup")]
+    Signup,
 }
 
 // Dispatch routes and render functional components
@@ -25,5 +33,7 @@ pub fn switch(routes: Route) -> Html {
         Route::Stargaze => html! { <Stargaze /> },
         Route::Funder => html! { <Funder /> },
         Route::Ello => html! { <Ello /> },
+        Route::Login => html! {<Login />},
+        Route::Signup => html! {<Signup />},
     }
 }

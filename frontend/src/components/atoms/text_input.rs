@@ -9,9 +9,9 @@ pub struct Props {
 pub fn text_input(props: &Props) -> Html {
     html!(
         if props.name == "password" {
-            <input type={props.name.clone()} id={props.name.clone()} name={props.name.clone()} required=true />
+            <input type={props.name.clone()} name={props.name.clone()} required=true />
         } else {
-            <input type="text" id={props.name.clone()} name={props.name.clone()} required=true />
+            <input type="text" name={props.name.clone()} required=true />
         }
     )
 }

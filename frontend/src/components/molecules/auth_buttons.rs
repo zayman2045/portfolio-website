@@ -9,14 +9,15 @@ pub struct Props {
     name: String,
 }
 
+// Links to login and signup pages
 #[function_component(AuthButtons)]
 pub fn auth_buttons() -> Html {
     html!(
         <div>
-            <Link<Route> to={Route::Home}> // This link will take us to the login page
+            <Link<Route> to={Route::Login}>
                 <CustomButton content={"Log In".to_string()} kind={"button".to_string()}/>
             </Link<Route>>
-            <Link<Route> to={Route::Home}>// This link will take us to the signup page
+            <Link<Route> to={Route::Signup}>
                 <CustomButton content={"Sign Up".to_string()} kind={"button".to_string()}/>
             </Link<Route>>
         </div>

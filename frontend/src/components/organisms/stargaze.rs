@@ -10,6 +10,8 @@ pub fn stargaze() -> Html {
         <div>
             <Link<Route> to={Route::Home}>{ "Home" }</Link<Route>>
             <h1> {"Welcome to Stargaze"} </h1>
+
+            // Should only render if the user is not logged in
             <AuthButtons />
         </div>
     )
