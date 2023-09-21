@@ -1,0 +1,49 @@
+:root {
+    background-color: #161925;  /* Deep Night Sky */
+    color: #F1D302;  /* Bright Yellow */
+    font-family: "Arial, sans-serif";
+    min-height: 100vh;
+  }
+  
+  h1, h2 {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  h1 {
+    color: #F1D302;  /* Bright Yellow */
+    font-size: 36px;
+  }
+  
+  h2 {
+    color: #ffffff;  /* White */
+    font-size: 28px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #161925;  /* Deep Night Sky */
+    background-color: #F1D302;  /* Bright Yellow */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #ffffff;  /* White for hover */
+  }
+  
+  

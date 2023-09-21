@@ -46,11 +46,11 @@ section p {
 }
 
 .projects ul li {
-  font-size: 1.5em; /* Adjusted the font size for a more balanced look */
-  flex: 1 1 30%; /* Allows for some flexibility in the size and ensures a minimum width */
+  font-size: 1.5em;
+  flex: 1 1 30%;
   text-align: center;
-  margin: 10px; /* Adjusted margin to ensure some space between wrapped items */
-  box-sizing: border-box; /* Ensures padding and border are included in the element's width and height */
+  margin: 10px;
+  box-sizing: border-box;
 }
 
 .projects ul li a {
@@ -59,7 +59,7 @@ section p {
 }
 
 .projects ul li a button {
-  padding: 20px 20px; /* Increased vertical padding to give more height */
+  padding: 20px 20px;
   font-size: 1em;
   color: #08f7be;
   background-color: #2e2e2e;
@@ -100,6 +100,6 @@ footer p a:hover {
 
 @media only screen and (max-width: 600px) {
   .projects ul li {
-    flex: 1 1 100%; /* Allows the items to take the full width at small screen sizes */
+    flex: 1 1 100%;
   }
 }
