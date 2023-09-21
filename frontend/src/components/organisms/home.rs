@@ -1,7 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
-use yew_router::prelude::*;
 
+use crate::components::molecules::link_button::LinkButton;
 use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/home.css");
@@ -13,7 +13,7 @@ pub fn home() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <header>
+            <header >
                 <h1>{"Xavier Griffith"}</h1>
                 <p>{"Specializing in Rust Development"}</p>
             </header>
@@ -32,9 +32,9 @@ pub fn home() -> Html {
             <section class="projects">
                 <h2>{"Explore My Projects"}</h2>
                 <ul>
-                    <li><Link<Route> to={Route::Stargaze}>{ "Stargaze" }</Link<Route>></li>
-                    <li><Link<Route> to={Route::Funder}>{ "Funder" }</Link<Route>></li>
-                    <li><Link<Route> to={Route::Ello}>{ "Ello" }</Link<Route>></li>
+                    <li><LinkButton route={Route::Stargaze} label={"Stargaze".to_string()} kind={"button".to_string()} /></li>
+                    <li><LinkButton route={Route::Funder} label={"Funder".to_string()} kind={"button".to_string()} /></li>
+                    <li><LinkButton route={Route::Ello} label={"Ello".to_string()} kind={"button".to_string()} /></li>
                 </ul>
             </section>
 

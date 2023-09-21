@@ -1,3 +1,10 @@
+:root {
+  background-color: #0e0e2a; 
+  color: #e0e0e0; 
+  font-family: 'Arial, sans-serif';
+  min-height: 100vh;
+}
+
 header {
   text-align: center;
   padding: 50px;
@@ -33,15 +40,17 @@ section p {
   list-style-type: none;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 0;
   margin: 0;
 }
 
 .projects ul li {
-  font-size: 3em;
-  flex: 1;
+  font-size: 1.5em; /* Adjusted the font size for a more balanced look */
+  flex: 1 1 30%; /* Allows for some flexibility in the size and ensures a minimum width */
   text-align: center;
-  margin: 0 10px; 
+  margin: 10px; /* Adjusted margin to ensure some space between wrapped items */
+  box-sizing: border-box; /* Ensures padding and border are included in the element's width and height */
 }
 
 .projects ul li a {
@@ -49,8 +58,26 @@ section p {
   text-decoration: none;
 }
 
+.projects ul li a button {
+  padding: 20px 20px; /* Increased vertical padding to give more height */
+  font-size: 1em;
+  color: #08f7be;
+  background-color: #2e2e2e;
+  border: 2px solid #a056f3;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .projects ul li a:hover {
   text-decoration: underline;
+}
+
+.projects ul li a button:hover {
+  background-color: #3c3c3c;
+  border-color: #08f7be;
 }
 
 footer {
@@ -69,4 +96,10 @@ footer p a {
 
 footer p a:hover {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 600px) {
+  .projects ul li {
+    flex: 1 1 100%; /* Allows the items to take the full width at small screen sizes */
+  }
 }
