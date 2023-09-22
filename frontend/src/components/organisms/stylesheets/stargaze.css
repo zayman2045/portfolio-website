@@ -1,7 +1,7 @@
 :root {
-  background-color: #1c1c1c;
-  color: #d9d9d9;
-  font-family: "Arial, sans-serif";
+  background-color: #0e0e2a;
+  color: #e0e0e0;
+  font-family: 'Arial, sans-serif';
   min-height: 100vh;
 }
 
@@ -12,12 +12,12 @@ h2 {
 }
 
 h1 {
-  color: #8fa1ff;
+  color: #a056f3;
   font-size: 36px;
 }
 
 h2 {
-  color: #f8b400;
+  color: #08f7be;
   font-size: 28px;
 }
 
@@ -35,14 +35,15 @@ button {
   margin: 10px;
   padding: 10px 20px;
   font-size: 16px;
-  color: #fff;
-  background-color: #606c88;
-  border: none;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  border: 1px solid #a056f3;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 button:hover {
-  background-color: #f8b400;
+  background-color: #3c3c3c;
+  border-color: #08f7be;
 }

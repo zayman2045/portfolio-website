@@ -1,3 +1,4 @@
+use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
 use crate::{
@@ -5,10 +6,15 @@ use crate::{
     router::Route,
 };
 
-#[function_component(Login)]
+const STYLE_FILE: &str = include_str!("stylesheets/login.css");
+
+// Will make API requests to get user data
+#[styled_component(Login)]
 pub fn login() -> Html {
+    let stylesheet = Style::new(STYLE_FILE).unwrap();
+
     html!(
-        <div>
+        <div class={stylesheet}>
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Log In"}</h1>

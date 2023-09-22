@@ -1,0 +1,77 @@
+:root {
+    background-color: #0e0e2a;
+    color: #e0e0e0;
+    font-family: 'Arial, sans-serif';
+    min-height: 100vh;
+  }
+  
+  /* Heading */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #a056f3;
+  }
+  
+  /* Form styling */
+  form {
+    width: 300px;
+    margin: auto;
+  }
+  
+  label {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  /* TextInput styling */
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px;
+    border: 1px solid #a056f3;
+    border-radius: 5px;
+  }
+  
+  /* Button styling */
+  button[type="submit"] {
+    width: 60%;  /* Reduced width */
+    margin: 0 auto;  /* Centered */
+    display: block;
+    background-color: #08f7be;
+    color: #0e0e2a;
+    padding: 14px 20px;
+    border: 1px solid #a056f3;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0e0e2a;
+    color: #08f7be;
+    border-color: #08f7be;
+  }
+  
+  /* LinkButton styling */
+  a {
+    text-decoration: none;
+  }
+  
+  button[type="button"] {
+    background-color: #a056f3;
+    color: #0e0e2a;
+    padding: 10px 20px;
+    border: 1px solid #08f7be;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 10px;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #08f7be;
+    color: #0e0e2a;
+  }
+  
