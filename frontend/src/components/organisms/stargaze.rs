@@ -13,7 +13,7 @@ pub fn stargaze() -> Html {
     html!(
         <div class={stylesheet}>
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
-            <h1> {"Welcome to Stargaze"} </h1>
+            <h1> {"Stargaze"} </h1>
 
             // Should only render buttons if the user is not logged in
             <h2>{"Begin Your Journey"}</h2>

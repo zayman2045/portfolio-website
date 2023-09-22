@@ -13,7 +13,7 @@ pub fn ello() -> Html {
     html!(
         <div class={stylesheet}>
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
-            <h1> {"Say Hello to Ello"} </h1>
+            <h1> {"Ello"} </h1>
 
             // Should only render if the user is not logged in
             <h2>{"Begin Your Journey"}</h2>

@@ -1,17 +1,43 @@
-use yew::prelude::*;
 use stylist::{yew::styled_component, Style};
+use web_sys::HtmlInputElement;
+use yew::prelude::*;
+use yewdux::prelude::*;
 
 use crate::{
-    components::{atoms::text_input::TextInput, molecules::link_button::LinkButton},
+    components::molecules::link_button::LinkButton,
     router::Route,
+    stores::auth_store::AuthStore,
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 
-// Will make API requests post request if the username is not already taken
 #[styled_component(Signup)]
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
+
+    // Create shared state to hold authentication information from text inputs
+    let (auth_store, auth_dispatch) = use_store::<AuthStore>();
+    
+    // Onchange of text inputs, store the text in state
+    let onchange_username = {
+        let dispatch = auth_dispatch.clone();
+
+        Callback::from(move |event: Event| {
+            let username = event.target_unchecked_into::<HtmlInputElement>().value();
+
+            let username = if username.is_empty() {
+                None
+            } else {
+                Some(username)
+            };
+
+            dispatch.reduce_mut(|store| store.username = username);
+        })
+    };
+
+
+    // On form submission send a request to the API verifying the username does not exist and then creating the user
+    //let on_submit =
 
     html!(
         <div class={stylesheet}>
@@ -20,16 +46,18 @@ pub fn signup() -> Html {
             <h1>{"Sign Up"}</h1>
             <form>
                 <label for="username">{"Username:"}</label>
-                <TextInput name={"username".to_string()} />
+                <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
 
                 <label for="password">{"Password:"}</label>
-                <TextInput name={"password".to_string()} />
+                <input type="text" id="password" placeholder="Password" required=true/>
 
-                <label for="password">{"Re-enter Password:"}</label>
-                <TextInput name={"password".to_string()} />
+                <label for="password">{"Confirm Password:"}</label>
+                <input type="text" id="confirm_password" placeholder="Password" required=true/>
 
                 <button type="submit">{"Submit"}</button>
             </form>
+
+            <p>{"Username: "}{auth_store.username.clone()}</p>
         </div>
     )
 }
