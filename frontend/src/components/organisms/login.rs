@@ -20,10 +20,10 @@ pub fn login() -> Html {
             <h1>{"Log In"}</h1>
             <form>
                 <label for="username">{"Username:"}</label>
-                <TextInput name={"username".to_string()} />
+                <input type="text" id="username" placeholder="Username" required=true/>
 
                 <label for="password">{"Password:"}</label>
-                <TextInput name={"password".to_string()} />
+                <input type="password" id="password" placeholder="Password" required=true/>
 
                 <button type="submit">{"Submit"}</button>
             </form>

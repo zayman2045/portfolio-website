@@ -79,10 +79,10 @@ pub fn signup() -> Html {
                 <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
 
                 <label for="password">{"Password:"}</label>
-                <input type="text" id="password" placeholder="Password" required=true onchange={onchange_password}/>
+                <input type="password" id="password" placeholder="Password" required=true onchange={onchange_password}/>
 
                 <label for="password">{"Confirm Password:"}</label>
-                <input type="text" id="confirm_password" placeholder="Password" required=true onchange={onchange_confirm_password}/>
+                <input type="password" id="confirm_password" placeholder="Password" required=true onchange={onchange_confirm_password}/>
 
                 <button type="submit">{"Submit"}</button>
             </form>
