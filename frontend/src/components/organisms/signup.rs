@@ -4,9 +4,7 @@ use yew::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::molecules::link_button::LinkButton,
-    router::Route,
-    stores::auth_store::AuthStore,
+    components::molecules::link_button::LinkButton, router::Route, stores::auth_store::AuthStore,
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
@@ -15,10 +13,10 @@ const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
-    // Create shared state to hold authentication information from text inputs
+    // Create shared state (store) to hold authentication information from text inputs
     let (auth_store, auth_dispatch) = use_store::<AuthStore>();
-    
-    // Onchange of text inputs, store the text in state
+
+    // Store username when <input/> onchange event occurs
     let onchange_username = {
         let dispatch = auth_dispatch.clone();
 
@@ -35,6 +33,38 @@ pub fn signup() -> Html {
         })
     };
 
+    // Store password when <input/> onchange event occurs
+    let onchange_password = {
+        let dispatch = auth_dispatch.clone();
+
+        Callback::from(move |event: Event| {
+            let password = event.target_unchecked_into::<HtmlInputElement>().value();
+
+            let password = if password.is_empty() {
+                None
+            } else {
+                Some(password)
+            };
+
+            dispatch.reduce_mut(|store| store.password = password);
+        })
+    };
+
+    let onchange_confirm_password = {
+        let dispatch = auth_dispatch.clone();
+
+        Callback::from(move |event: Event| {
+            let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+
+            let confirm_password = if confirm_password.is_empty() {
+                None
+            } else {
+                Some(confirm_password)
+            };
+
+            dispatch.reduce_mut(|store| store.confirm_password = confirm_password);
+        })
+    };
 
     // On form submission send a request to the API verifying the username does not exist and then creating the user
     //let on_submit =
@@ -49,15 +79,17 @@ pub fn signup() -> Html {
                 <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
 
                 <label for="password">{"Password:"}</label>
-                <input type="text" id="password" placeholder="Password" required=true/>
+                <input type="text" id="password" placeholder="Password" required=true onchange={onchange_password}/>
 
                 <label for="password">{"Confirm Password:"}</label>
-                <input type="text" id="confirm_password" placeholder="Password" required=true/>
+                <input type="text" id="confirm_password" placeholder="Password" required=true onchange={onchange_confirm_password}/>
 
                 <button type="submit">{"Submit"}</button>
             </form>
 
             <p>{"Username: "}{auth_store.username.clone()}</p>
+            <p>{"Password: "}{auth_store.password.clone()}</p>
+            <p>{"Confirm Password: "}{auth_store.confirm_password.clone()}</p>
         </div>
     )
 }
