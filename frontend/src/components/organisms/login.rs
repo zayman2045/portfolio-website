@@ -2,7 +2,7 @@ use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
 use crate::{
-    components::{atoms::text_input::TextInput, molecules::link_button::LinkButton},
+    components::molecules::link_button::LinkButton,
     router::Route,
 };
 
