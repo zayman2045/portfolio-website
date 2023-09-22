@@ -17,64 +17,54 @@ pub fn signup() -> Html {
     let (auth_store, auth_dispatch) = use_store::<AuthStore>();
 
     // Store username when <input/> onchange event occurs
-    let onchange_username = {
-        let dispatch = auth_dispatch.clone();
-
-        Callback::from(move |event: Event| {
-            let username = event.target_unchecked_into::<HtmlInputElement>().value();
-
-            let username = if username.is_empty() {
-                None
-            } else {
-                Some(username)
-            };
-
-            dispatch.reduce_mut(|store| store.username = username);
-        })
-    };
+    let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+        let username = event.target_unchecked_into::<HtmlInputElement>().value();
+        store.username = if username.is_empty() {
+            None
+        } else {
+            Some(username)
+        }
+    });
 
     // Store password when <input/> onchange event occurs
-    let onchange_password = {
-        let dispatch = auth_dispatch.clone();
+    let onchange_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+        let password = event.target_unchecked_into::<HtmlInputElement>().value();
+        store.password = if password.is_empty() {
+            None
+        } else {
+            Some(password)
+        }
+    });
 
-        Callback::from(move |event: Event| {
-            let password = event.target_unchecked_into::<HtmlInputElement>().value();
+    let onchange_confirm_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+        let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+        store.confirm_password = if confirm_password.is_empty() {
+            None
+        } else {
+            Some(confirm_password)
+        }
+    });
 
-            let password = if password.is_empty() {
-                None
-            } else {
-                Some(password)
-            };
+    let onsubmit = auth_dispatch.reduce_mut_callback_with(|store, event: SubmitEvent| {
+        event.prevent_default();
 
-            dispatch.reduce_mut(|store| store.password = password);
-        })
-    };
+        // Verify the passwords match
 
-    let onchange_confirm_password = {
-        let dispatch = auth_dispatch.clone();
 
-        Callback::from(move |event: Event| {
-            let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+        // Send a request to the API to verify if the user already exists
+        // Create the user in the database
+        // Add the user to the UserStore and set is_logged_in to true 
+        // Redirect the user to the app of their choice
 
-            let confirm_password = if confirm_password.is_empty() {
-                None
-            } else {
-                Some(confirm_password)
-            };
-
-            dispatch.reduce_mut(|store| store.confirm_password = confirm_password);
-        })
-    };
-
-    // On form submission send a request to the API verifying the username does not exist and then creating the user
-    //let on_submit =
+        
+    });
 
     html!(
         <div class={stylesheet}>
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Sign Up"}</h1>
-            <form>
+            <form {onsubmit}>
                 <label for="username">{"Username:"}</label>
                 <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
 
@@ -90,6 +80,7 @@ pub fn signup() -> Html {
             <p>{"Username: "}{auth_store.username.clone()}</p>
             <p>{"Password: "}{auth_store.password.clone()}</p>
             <p>{"Confirm Password: "}{auth_store.confirm_password.clone()}</p>
+            <p>{"Passwords Match: "}{auth_store.passwords_match.clone()}</p>
         </div>
     )
 }
