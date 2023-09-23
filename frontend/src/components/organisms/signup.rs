@@ -38,18 +38,26 @@ pub fn signup() -> Html {
 
     let onchange_confirm_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
         let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+
+        // Verify the passwords match before saving to store
+
         store.confirm_password = if confirm_password.is_empty() {
             None
+        } else if store.password != Some(confirm_password.clone()) {
+            store.passwords_match = false;
+            None
         } else {
+            store.passwords_match = true;
             Some(confirm_password)
         }
     });
 
     let onsubmit = auth_dispatch.reduce_mut_callback_with(|store, event: SubmitEvent| {
         event.prevent_default();
-
-        // Verify the passwords match
-
+        
+        if !store.passwords_match {
+            // Let the user know the passwords don't match
+        }
 
         // Send a request to the API to verify if the user already exists
         // Create the user in the database
