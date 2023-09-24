@@ -1,7 +1,6 @@
 use stylist::{yew::styled_component, Style};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
-use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
@@ -56,20 +55,22 @@ pub fn signup() -> Html {
         event.prevent_default();
         store.message = None;
 
+        // Display error message to the user
         if !store.passwords_match {
             store.message = Some("Passwords do not match".to_owned());
         }
 
-        // Send a request to the API to verify if the user already exists
+        // Send a request to the API to determine if the user already exists
+        
 
-        // If the user already exists
-        //set store.message = Some(message) and reload
+        // If the user already exists, display error message to the user
+
 
         // else
         // create the user in the database
         // Add the user to the UserStore
         // set is_authenticated to true
-        // Redirect the user to the app of their choice
+        // Redirect the user to the app they came from
     });
 
     html!(
@@ -79,7 +80,7 @@ pub fn signup() -> Html {
             <h1>{"Sign Up"}</h1>
 
             if let Some(message) = &auth_store.message {
-                <h2>{message}</h2>
+                <h2 style="color: red;">{message}</h2>
             }
 
 
@@ -95,11 +96,6 @@ pub fn signup() -> Html {
 
                 <button type="submit">{"Submit"}</button>
             </form>
-
-            <p>{"Username: "}{auth_store.username.clone()}</p>
-            <p>{"Password: "}{auth_store.password.clone()}</p>
-            <p>{"Confirm Password: "}{auth_store.confirm_password.clone()}</p>
-            <p>{"Passwords Match: "}{auth_store.passwords_match.clone()}</p>
         </div>
     )
 }
