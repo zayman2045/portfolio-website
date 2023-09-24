@@ -1,6 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
@@ -36,35 +37,39 @@ pub fn signup() -> Html {
         }
     });
 
-    let onchange_confirm_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
-        let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+    let onchange_confirm_password =
+        auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+            let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
 
-        // Verify the passwords match before saving to store
+            // Verify the passwords match before saving to store
+            store.confirm_password =
+                if confirm_password.is_empty() || store.password != Some(confirm_password.clone()) {
+                    store.passwords_match = false;
+                    None
+                } else {
+                    store.passwords_match = true;
+                    Some(confirm_password)
+                }
+        });
 
-        store.confirm_password = if confirm_password.is_empty() {
-            None
-        } else if store.password != Some(confirm_password.clone()) {
-            store.passwords_match = false;
-            None
-        } else {
-            store.passwords_match = true;
-            Some(confirm_password)
-        }
-    });
-
-    let onsubmit = auth_dispatch.reduce_mut_callback_with(|store, event: SubmitEvent| {
+    let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
-        
+        store.message = None;
+
         if !store.passwords_match {
-            // Let the user know the passwords don't match
+            store.message = Some("Passwords do not match".to_owned());
         }
 
         // Send a request to the API to verify if the user already exists
-        // Create the user in the database
-        // Add the user to the UserStore and set is_logged_in to true 
-        // Redirect the user to the app of their choice
 
-        
+        // If the user already exists
+        //set store.message = Some(message) and reload
+
+        // else
+        // create the user in the database
+        // Add the user to the UserStore
+        // set is_authenticated to true
+        // Redirect the user to the app of their choice
     });
 
     html!(
@@ -72,6 +77,12 @@ pub fn signup() -> Html {
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Sign Up"}</h1>
+
+            if let Some(message) = &auth_store.message {
+                <h2>{message}</h2>
+            }
+
+
             <form {onsubmit}>
                 <label for="username">{"Username:"}</label>
                 <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>

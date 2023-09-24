@@ -10,6 +10,10 @@
     margin-bottom: 20px;
     color: #a056f3;
   }
+
+  h2 {
+    text-align: center;
+  }
   
   form {
     width: 300px;
