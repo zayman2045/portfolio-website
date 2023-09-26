@@ -6,6 +6,7 @@ use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/stargaze.css");
 
+// Render the Stargaze project homepage
 #[styled_component(Stargaze)]
 pub fn stargaze() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

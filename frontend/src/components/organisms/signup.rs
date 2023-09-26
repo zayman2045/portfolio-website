@@ -9,6 +9,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 
+// Renders the sign up page
 #[styled_component(Signup)]
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
@@ -36,21 +37,24 @@ pub fn signup() -> Html {
         }
     });
 
-    let onchange_confirm_password =
+    // Store the confirmed password when <input/> onchange event occurs
+    let onchange_confirmed_password =
         auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
-            let confirm_password = event.target_unchecked_into::<HtmlInputElement>().value();
+            let confirmed_password = event.target_unchecked_into::<HtmlInputElement>().value();
 
             // Verify the passwords match before saving to store
-            store.confirm_password =
-                if confirm_password.is_empty() || store.password != Some(confirm_password.clone()) {
-                    store.passwords_match = false;
-                    None
-                } else {
-                    store.passwords_match = true;
-                    Some(confirm_password)
-                }
+            store.confirmed_password = if confirmed_password.is_empty()
+                || store.password != Some(confirmed_password.clone())
+            {
+                store.passwords_match = false;
+                None
+            } else {
+                store.passwords_match = true;
+                Some(confirmed_password)
+            }
         });
 
+    // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
         store.message = None;
@@ -58,13 +62,12 @@ pub fn signup() -> Html {
         // Display error message to the user
         if !store.passwords_match {
             store.message = Some("Passwords do not match".to_owned());
+        } else {
+            // Send a request to the API to determine if the user already exists
+            store.message = Some("Working so far".to_owned());
         }
 
-        // Send a request to the API to determine if the user already exists
-        
-
         // If the user already exists, display error message to the user
-
 
         // else
         // create the user in the database
@@ -92,7 +95,7 @@ pub fn signup() -> Html {
                 <input type="password" id="password" placeholder="Password" required=true onchange={onchange_password}/>
 
                 <label for="password">{"Confirm Password:"}</label>
-                <input type="password" id="confirm_password" placeholder="Password" required=true onchange={onchange_confirm_password}/>
+                <input type="password" id="confirmed_password" placeholder="Password" required=true onchange={onchange_confirmed_password}/>
 
                 <button type="submit">{"Submit"}</button>
             </form>

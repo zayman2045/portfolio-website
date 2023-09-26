@@ -4,6 +4,7 @@ use yew_router::prelude::*;
 use crate::components::atoms::custom_button::CustomButton;
 use crate::router::Route;
 
+// Takes a route, a label and a button type as properties from it's parent component
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub route: Route,
@@ -12,7 +13,6 @@ pub struct Props {
 }
 
 // Link that wraps a button
-// Takes a route, a label and a button type as properties from it's parent component
 #[function_component(LinkButton)]
 pub fn link_button(props: &Props) -> Html {
     html!(

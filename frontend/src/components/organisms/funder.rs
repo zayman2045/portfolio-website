@@ -6,6 +6,7 @@ use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/funder.css");
 
+// Render the Funder project homepage
 #[styled_component(Funder)]
 pub fn funder() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

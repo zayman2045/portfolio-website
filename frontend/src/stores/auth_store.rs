@@ -5,7 +5,7 @@ use yewdux::prelude::*;
 pub struct AuthStore {
     pub username: Option<String>,
     pub password: Option<String>,
-    pub confirm_password: Option<String>,
+    pub confirmed_password: Option<String>,
     pub message: Option<String>,
     pub passwords_match: bool,
 }

@@ -8,7 +8,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/login.css");
 
-// Will make API requests to get user data
+// Renders the log in page
 #[styled_component(Login)]
 pub fn login() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
