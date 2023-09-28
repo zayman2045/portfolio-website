@@ -8,7 +8,7 @@ pub async fn run() -> Result<(), DbErr> {
     let app = routes::create_router().await;
 
     // Connect to database
-    let db = match Database::connect(DATABASE_URL).await {
+    let _db = match Database::connect(DATABASE_URL).await {
         Ok(db) => db,
         Err(error) => {
             eprintln!("Error connecting to the database: {:?}", error);
