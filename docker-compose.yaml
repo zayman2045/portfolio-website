@@ -3,6 +3,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: portfolio_db
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
