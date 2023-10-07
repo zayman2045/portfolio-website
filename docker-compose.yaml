@@ -1,9 +1,28 @@
 services:
-  db:
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/code/
+    ports:
+      - "8080:8080"
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/code/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    environment:
+      DATABASE_URL: "postgresql://postgres:mysecretpassword@database:5432/postgres"
+
+  database:
     image: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: portfolio_db
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
