@@ -5,7 +5,7 @@ use yew::{platform::spawn_local, prelude::*};
 // Sends a request to the server and displays the response
 #[function_component(HelloServer)]
 pub fn hello_server() -> Html {
-    // Create state
+    // Store the server response
     let data = use_state(|| None);
 
     {
