@@ -64,13 +64,13 @@ pub fn signup() -> Html {
             store.message = Some("Passwords do not match".to_owned());
         } else {
             // Send a request to the API to determine if the user already exists
-            store.message = Some("Working so far".to_owned());
+
+            // If the user already exists, display error message to the user
+
+            // else create the user in the database
+            
         }
 
-        // If the user already exists, display error message to the user
-
-        // else
-        // create the user in the database
         // Add the user to the UserStore
         // set is_authenticated to true
         // Redirect the user to the app they came from
