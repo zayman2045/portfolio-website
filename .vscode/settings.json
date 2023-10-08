@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "codegen",
         "Ello",
         "Funder",
         "onchange",
@@ -7,11 +8,4 @@
         "stylesheet",
         "yewdux"
     ],
-    "rust-analyzer.linkedProjects": [
-        "./backend/Cargo.toml",
-        "./backend/Cargo.toml",
-        "./backend/Cargo.toml",
-        "./backend/Cargo.toml",
-        "./backend/Cargo.toml"
-    ]
 }
