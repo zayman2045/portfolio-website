@@ -25,15 +25,16 @@ pub async fn create_user(
     Json(user): Json<RequestUser>,
 ) -> Result<Json<ResponseUser>, StatusCode> {
     let new_user = users::ActiveModel {
-        username: ActiveValue::Set(user.username),
+        username: ActiveValue::Set(user.username.clone()),
         password: ActiveValue::Set(user.password),
         ..Default::default()
     };
 
+    // Insert the new user into the database, return an error if it fails
     match Users::insert(new_user).exec(&database).await {
         Ok(_) => {
             return Ok(Json(ResponseUser {
-                username: "Working".to_string(),
+                username: user.username,
             }))
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
