@@ -1,8 +1,6 @@
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::{Extension, Json};
-use sea_orm::EntityTrait;
-use sea_orm::{ActiveValue, DatabaseConnection};
+use sea_orm::*;
 use serde::{Deserialize, Serialize};
 
 use crate::entities::prelude::*;
@@ -28,6 +26,18 @@ pub async fn create_user(
         username: ActiveValue::Set(user.username.clone()),
         password: ActiveValue::Set(user.password),
         ..Default::default()
+    };
+
+    // Check if the user already exists
+    match Users::find().filter(users::Column::Username.eq(user.username.clone())).one(&database).await {
+        Ok(user) => {
+            // If the user exists, return a conflict error
+            if user.is_some() {
+                return Err(StatusCode::CONFLICT);
+            // 
+            }
+        },
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
 
     // Insert the new user into the database, return an error if it fails
