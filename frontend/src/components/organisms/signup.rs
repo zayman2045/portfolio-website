@@ -1,5 +1,8 @@
+use std::ops::Deref;
+
+use reqwasm::http::Request;
 use stylist::{yew::styled_component, Style};
-use web_sys::HtmlInputElement;
+use web_sys::{HtmlInputElement, console::log};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -54,23 +57,26 @@ pub fn signup() -> Html {
             }
         });
 
+    // Create a state to hold the response from the backend
+    let response_state = use_state (|| Some(String::new()));
+    let response_state_clone = response_state.clone();
+
     // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
-        store.message = None;
+        response_state_clone.set(None);
 
         // Display error message to the user
         if !store.passwords_match {
-            store.message = Some("Passwords do not match".to_owned());
+            response_state_clone.set(Some("Passwords do not match".to_owned()));
         } else {
-            // Send a request to the API to determine if the user already exists
-
-            // If the user already exists, display error message to the user
-
-            // else create the user in the database
-            
+            let response_state_clone = response_state_clone.clone();
+            // Make a POST request to the backend to create a new user
+            wasm_bindgen_futures::spawn_local(async move {
+                //let response = Request::get("http://localhost:3000/users").send().await.unwrap();
+                response_state_clone.set(Some("Passwords match".to_owned()));
+            })
         }
-
         // Add the user to the UserStore
         // set is_authenticated to true
         // Redirect the user to the app they came from
@@ -82,7 +88,7 @@ pub fn signup() -> Html {
 
             <h1>{"Sign Up"}</h1>
 
-            if let Some(message) = &auth_store.message {
+            if let Some(message) = response_state.deref() {
                 <h2 style="color: red;">{message}</h2>
             }
 
