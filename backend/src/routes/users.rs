@@ -51,8 +51,7 @@ pub async fn create_user(
     };
 }
 
-// Get a user from the database
-pub async fn get_user(Extension(database): Extension<DatabaseConnection>) -> Json<ResponseUser> {
-    let _user = Users::find().one(&database).await.unwrap();
-    todo!();
+// TODO: Get a user from the database
+pub async fn get_user(Extension(_database): Extension<DatabaseConnection>) -> Json<ResponseUser> {
+    todo!("Get a user from the database");
 }

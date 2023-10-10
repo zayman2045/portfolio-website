@@ -1,5 +1,5 @@
 use crate::components::organisms::{
-    ello::Ello, funder::Funder, hello_server::HelloServer, home::Home, login::Login,
+    ello::Ello, funder::Funder, home::Home, login::Login,
     signup::Signup, stargaze::Stargaze,
 };
 
@@ -11,8 +11,6 @@ use yew_router::prelude::*;
 pub enum Route {
     #[at("/")]
     Home,
-    #[at("/hello-server")]
-    HelloServer,
     #[at("/stargaze")]
     Stargaze,
     #[at("/funder")]
@@ -29,7 +27,6 @@ pub enum Route {
 pub fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <Home /> },
-        Route::HelloServer => html! { <HelloServer /> },
         Route::Stargaze => html! { <Stargaze /> },
         Route::Funder => html! { <Funder /> },
         Route::Ello => html! { <Ello /> },
