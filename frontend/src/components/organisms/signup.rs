@@ -73,8 +73,9 @@ pub fn signup() -> Html {
             let response_state_clone = response_state_clone.clone();
             // Make a POST request to the backend to create a new user
             wasm_bindgen_futures::spawn_local(async move {
-                //let response = Request::get("http://localhost:3000/users").send().await.unwrap();
-                response_state_clone.set(Some("Passwords match".to_owned()));
+                let response = Request::get("http://localhost:3000/users").send().await.unwrap();
+                let text = response.text().await.unwrap();
+                response_state_clone.set(Some(text));
             })
         }
         // Add the user to the UserStore
