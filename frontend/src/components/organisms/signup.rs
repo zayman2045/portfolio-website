@@ -33,9 +33,12 @@ pub fn signup() -> Html {
     // Store password when <input/> onchange event occurs
     let onchange_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
         let password = event.target_unchecked_into::<HtmlInputElement>().value();
-        store.password = if password.is_empty() {
-            None
+        store.password = if password.is_empty() || 
+        (store.confirmed_password != Some(password.clone())) {
+            store.passwords_match = false;
+            Some(password)
         } else {
+            store.passwords_match = true;
             Some(password)
         }
     });
@@ -50,7 +53,7 @@ pub fn signup() -> Html {
                 || store.password != Some(confirmed_password.clone())
             {
                 store.passwords_match = false;
-                None
+                Some(confirmed_password)
             } else {
                 store.passwords_match = true;
                 Some(confirmed_password)
