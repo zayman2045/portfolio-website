@@ -73,7 +73,7 @@ pub fn signup() -> Html {
             let response_state_clone = response_state_clone.clone();
             // Make a POST request to the backend to create a new user
             wasm_bindgen_futures::spawn_local(async move {
-                let response = Request::get("http://0.0.0.0:3000/users")
+                let response = Request::get("/api/users")
                     .send()
                     .await
                     .unwrap();
