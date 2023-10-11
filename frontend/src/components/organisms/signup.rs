@@ -2,7 +2,7 @@ use std::ops::Deref;
 
 use reqwasm::http::Request;
 use stylist::{yew::styled_component, Style};
-use web_sys::{HtmlInputElement, console::log};
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -58,7 +58,7 @@ pub fn signup() -> Html {
         });
 
     // Create a state to hold the response from the backend
-    let response_state = use_state (|| Some(String::new()));
+    let response_state = use_state(|| Some(String::new()));
     let response_state_clone = response_state.clone();
 
     // Handler for sign up form submission
@@ -73,10 +73,13 @@ pub fn signup() -> Html {
             let response_state_clone = response_state_clone.clone();
             // Make a POST request to the backend to create a new user
             wasm_bindgen_futures::spawn_local(async move {
-                let response = Request::get("http://localhost:3000/users").send().await.unwrap();
+                let response = Request::get("http://0.0.0.0:3000/users")
+                    .send()
+                    .await
+                    .unwrap();
                 let text = response.text().await.unwrap();
                 response_state_clone.set(Some(text));
-            })
+            });
         }
         // Add the user to the UserStore
         // set is_authenticated to true
