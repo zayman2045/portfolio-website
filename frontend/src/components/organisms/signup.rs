@@ -1,6 +1,8 @@
 use std::ops::Deref;
 
 use reqwasm::http::Request;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 use stylist::{yew::styled_component, Style};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
@@ -12,13 +14,19 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 
+#[derive(Serialize, Deserialize)]
+struct User {
+    username: String,
+    password: String,
+}
+
 // Renders the sign up page
 #[styled_component(Signup)]
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Create shared state (store) to hold authentication information from text inputs
-    let (auth_store, auth_dispatch) = use_store::<AuthStore>();
+    let (_auth_store, auth_dispatch) = use_store::<AuthStore>();
 
     // Store username when <input/> onchange event occurs
     let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
@@ -33,14 +41,14 @@ pub fn signup() -> Html {
     // Store password when <input/> onchange event occurs
     let onchange_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
         let password = event.target_unchecked_into::<HtmlInputElement>().value();
-        store.password = if password.is_empty() || 
-        (store.confirmed_password != Some(password.clone())) {
-            store.passwords_match = false;
-            Some(password)
-        } else {
-            store.passwords_match = true;
-            Some(password)
-        }
+        store.password =
+            if password.is_empty() || (store.confirmed_password != Some(password.clone())) {
+                store.passwords_match = false;
+                Some(password)
+            } else {
+                store.passwords_match = true;
+                Some(password)
+            }
     });
 
     // Store the confirmed password when <input/> onchange event occurs
@@ -68,6 +76,7 @@ pub fn signup() -> Html {
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
         response_state_clone.set(None);
+        let store = store.clone();
 
         // Display error message to the user
         if !store.passwords_match {
@@ -76,11 +85,32 @@ pub fn signup() -> Html {
             let response_state_clone = response_state_clone.clone();
             // Make a POST request to the backend to create a new user
             wasm_bindgen_futures::spawn_local(async move {
-                let response = Request::get("/api/users")
+                let user = json!({
+                    "username": store.username,
+                    "password": store.password,
+                })
+                .to_string();
+
+                // let user = User {
+                //     username: store.username.unwrap(),
+                //     password: store.password.unwrap(),
+                // };
+                // let user = serde_wasm_bindgen::to_value(&user).unwrap();
+                // let user: String = serde_wasm_bindgen::from_value(user).unwrap();
+
+                let response = Request::post("/api/users")
+                    .body(user)
+                    //.body(user.to_string())
+                    .header("content-type", "application/json")
                     .send()
                     .await
                     .unwrap();
-                let text = response.text().await.unwrap();
+
+                let text = format!(
+                    "Response Text: {}\nStatus Code: {}",
+                    response.text().await.unwrap(),
+                    response.status()
+                );
                 response_state_clone.set(Some(text));
             });
         }
