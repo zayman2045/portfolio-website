@@ -9,15 +9,18 @@ use yew::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::molecules::link_button::LinkButton, router::Route, stores::auth_store::AuthStore,
+    components::molecules::link_button::LinkButton,
+    router::Route,
+    stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 
-#[derive(Serialize, Deserialize)]
-struct User {
-    username: String,
-    password: String,
+#[derive(Serialize, Deserialize, Default)]
+struct ResponseUser {
+    username: Option<String>,
+    token: Option<String>,
+    message: Option<String>,
 }
 
 // Renders the sign up page
@@ -27,6 +30,7 @@ pub fn signup() -> Html {
 
     // Create shared state (store) to hold authentication information from text inputs
     let (_auth_store, auth_dispatch) = use_store::<AuthStore>();
+    let (_user_store, user_dispatch) = use_store::<UserStore>();
 
     // Store username when <input/> onchange event occurs
     let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
@@ -68,19 +72,22 @@ pub fn signup() -> Html {
             }
         });
 
-    // Create a state to hold the response from the backend
-    let response_state = use_state(|| Some(String::new()));
+    // State to hold the message from the backend
+    let response_state = use_state(|| ResponseUser::default());
     let response_state_clone = response_state.clone();
 
     // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
-        response_state_clone.set(None);
+        response_state_clone.set(ResponseUser::default());
         let store = store.clone();
 
         // Display error message to the user
         if !store.passwords_match {
-            response_state_clone.set(Some("Passwords do not match".to_owned()));
+            response_state_clone.set(ResponseUser {
+                message: Some("Passwords Do Not Match".to_owned()),
+                ..Default::default()
+            });
         } else {
             let response_state_clone = response_state_clone.clone();
             // Make a POST request to the backend to create a new user
@@ -91,13 +98,6 @@ pub fn signup() -> Html {
                 })
                 .to_string();
 
-                // let user = User {
-                //     username: store.username.unwrap(),
-                //     password: store.password.unwrap(),
-                // };
-                // let user = serde_wasm_bindgen::to_value(&user).unwrap();
-                // let user: String = serde_wasm_bindgen::from_value(user).unwrap();
-
                 let response = Request::post("/api/users")
                     .body(user)
                     //.body(user.to_string())
@@ -106,16 +106,31 @@ pub fn signup() -> Html {
                     .await
                     .unwrap();
 
-                let text = format!(
-                    "Response Text: {}\nStatus Code: {}",
-                    response.text().await.unwrap(),
-                    response.status()
-                );
-                response_state_clone.set(Some(text));
+                match response.status() {
+                    200 => {
+                        // let user: User = response.json().await.unwrap();
+                        response_state_clone.set(ResponseUser {
+                            message: Some("User Created".to_owned()),
+                            ..Default::default()
+                        });
+                    }
+                    409 => {
+                        response_state_clone.set(ResponseUser {
+                            message: Some("This Username Has Already Been Taken".to_owned()),
+                            ..Default::default()
+                        });
+                    }
+                    _ => {
+                        response_state_clone.set(ResponseUser {
+                            message: Some("Error Creating User".to_owned()),
+                            ..Default::default()
+                        });
+                    }
+                }
             });
         }
-        // Add the user to the UserStore
-        // set is_authenticated to true
+        // Add the username and token to the UserStore
+
         // Redirect the user to the app they came from
     });
 
@@ -125,8 +140,8 @@ pub fn signup() -> Html {
 
             <h1>{"Sign Up"}</h1>
 
-            if let Some(message) = response_state.deref() {
-                <h2 style="color: red;">{message}</h2>
+            if let Some(message) = &response_state.message {
+                <h2 style="color: #08f7be;">{message}</h2>
             }
 
 

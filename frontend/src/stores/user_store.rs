@@ -4,5 +4,5 @@ use yewdux::prelude::*;
 #[derive(Debug, Default, Clone, PartialEq, Eq, Store)]
 pub struct UserStore {
     pub username: Option<String>,
-    pub is_authenticated: bool
+    pub token: Option<String>
 }
