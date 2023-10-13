@@ -29,42 +29,33 @@ pub fn signup() -> Html {
     // Use Yewdux store to hold authentication information from text inputs temporarily
     let (auth_store, auth_dispatch) = use_store::<AuthStore>();
 
-    // Store username when <input/> onchange event occurs
-    let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+    // Store username when onchange event occurs to the username input field
+    let onchange_username = auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
         let username = event.target_unchecked_into::<HtmlInputElement>().value();
-        store.username = if username.is_empty() {
+        auth_store.username = if username.is_empty() {
             None
         } else {
             Some(username)
         }
     });
 
-    // Store password when <input/> onchange event occurs
-    let onchange_password = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+    // Store password when onchange event occurs to the password input field
+    let onchange_password = auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
         let password = event.target_unchecked_into::<HtmlInputElement>().value();
-        store.password =
-            if password.is_empty() || (store.confirmed_password != Some(password.clone())) {
-                store.passwords_match = false;
-                Some(password)
-            } else {
-                store.passwords_match = true;
-                Some(password)
-            }
+        auth_store.password = if password.is_empty() {
+            None
+        } else {
+            Some(password)
+        }
     });
 
-    // Store the confirmed password when <input/> onchange event occurs
+    // Store confirmed password when onchange event occurs to the confirmed password input field
     let onchange_confirmed_password =
-        auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
+        auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
             let confirmed_password = event.target_unchecked_into::<HtmlInputElement>().value();
-
-            // Verify the passwords match before saving to store
-            store.confirmed_password = if confirmed_password.is_empty()
-                || store.password != Some(confirmed_password.clone())
-            {
-                store.passwords_match = false;
-                Some(confirmed_password)
+            auth_store.confirmed_password = if confirmed_password.is_empty() {
+                None
             } else {
-                store.passwords_match = true;
                 Some(confirmed_password)
             }
         });
@@ -74,8 +65,8 @@ pub fn signup() -> Html {
         event.prevent_default();
         auth_store.message = None;
 
-        // Display error message to the user
-        if !auth_store.passwords_match {
+        // Verify the passwords match before making a POST request
+        if auth_store.password != auth_store.confirmed_password {
             auth_store.message = Some("Passwords Do Not Match".to_owned());
         } else {
             // Make a POST request to the backend to create a new user
@@ -110,6 +101,7 @@ pub fn signup() -> Html {
 
                         // TODO: Redirect to the home page
                     }
+
                     // User already exists
                     409 => {
                         let auth_dispatch = Dispatch::<AuthStore>::new();
