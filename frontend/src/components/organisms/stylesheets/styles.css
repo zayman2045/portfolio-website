@@ -1,0 +1,181 @@
+/* Common Styles */
+:root {
+  background-color: #0e0e2a;
+  color: #e0e0e0;
+  font-family: "Arial, sans-serif";
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+h1 {
+  color: #a056f3;
+  font-size: 36px;
+}
+
+h2 {
+  color: #08f7be;
+  font-size: 28px;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+button:hover {
+  background-color: #3c3c3c;
+  border-color: #08f7be;
+}
+
+/* Home Page Specific Styles */
+.home header {
+  text-align: center;
+  padding: 50px;
+}
+
+.home header h1 {
+  font-size: 2.5em;
+}
+
+.home header p {
+  font-size: 1.5em;
+}
+
+.home section {
+  margin: 50px;
+  padding: 20px;
+  border: 1px solid #a056f3;
+  border-radius: 30px;
+}
+
+.home section h2 {
+  font-size: 2em;
+  text-align: left;
+}
+
+.home section p {
+  font-size: 1.25em;
+}
+
+.home .projects ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .home .projects ul {
+    flex-direction: column;
+  }
+}
+
+.home .projects ul li {
+  font-size: 1.5em;
+  flex: 1 1 30%;
+  text-align: center;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.home .projects ul li a button {
+  padding: 20px 20px;
+  font-size: 1em;
+  color: #08f7be;
+  background-color: #2e2e2e;
+  border: 2px solid #a056f3;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home .projects ul li a button:hover {
+  background-color: #3c3c3c;
+  border-color: #08f7be;
+}
+
+.home footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #a056f3;
+}
+
+.home footer p {
+  margin: 10px 0;
+}
+
+.home footer p a {
+  color: #08f7be;
+}
+
+.home footer p a:hover {
+  text-decoration: underline;
+}
+
+/* Login and Signup Page Specific Styles */
+.login form,
+.signup form {
+  width: 300px;
+  margin: auto;
+}
+
+.login label,
+.signup label {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.login input[type="text"],
+.login input[type="password"],
+.signup input[type="text"],
+.signup input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 20px;
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+}
+
+.login button[type="submit"],
+.signup button[type="submit"] {
+  width: 60%;
+  margin: 0 auto;
+  display: block;
+  background-color: #08f7be;
+  color: #0e0e2a;
+  padding: 14px 20px;
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Stargaze, Funder, and Ello Page Specific Styles */
+.stargaze .button-container,
+.funder .button-container,
+.ello .button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

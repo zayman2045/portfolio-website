@@ -1,23 +1,18 @@
-use std::ops::Deref;
-
 use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use stylist::{yew::styled_component, Style};
-use web_sys::{console, HtmlInputElement};
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
     components::molecules::link_button::LinkButton,
     router::Route,
-    stores::{
-        auth_store::{self, AuthStore},
-        user_store::UserStore,
-    },
+    stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
+const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
 #[derive(Serialize, Deserialize, Default, Clone)]
 struct ResponseUser {
@@ -138,26 +133,28 @@ pub fn signup() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
+            <div class={"login"}>
+                <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
-            <h1>{"Sign Up"}</h1>
+                <h1>{"Sign Up"}</h1>
 
-            if let Some(message) = &auth_store.message {
-                <h2 style="color: #08f7be;">{message}</h2>
-            }
+                if let Some(message) = &auth_store.message {
+                    <h2 style="color: #08f7be;">{message}</h2>
+                }
 
-            <form {onsubmit}>
-                <label for="username">{"Username:"}</label>
-                <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
+                <form {onsubmit}>
+                    <label for="username">{"Username:"}</label>
+                    <input type="text" id="username" placeholder="Username" required=true onchange={onchange_username}/>
 
-                <label for="password">{"Password:"}</label>
-                <input type="password" id="password" placeholder="Password" required=true onchange={onchange_password}/>
+                    <label for="password">{"Password:"}</label>
+                    <input type="password" id="password" placeholder="Password" required=true onchange={onchange_password}/>
 
-                <label for="password">{"Confirm Password:"}</label>
-                <input type="password" id="confirmed_password" placeholder="Password" required=true onchange={onchange_confirmed_password}/>
+                    <label for="password">{"Confirm Password:"}</label>
+                    <input type="password" id="confirmed_password" placeholder="Password" required=true onchange={onchange_confirmed_password}/>
 
-                <button type="submit">{"Submit"}</button>
-            </form>
+                    <button type="submit">{"Submit"}</button>
+                </form>
+            </div>
         </div>
     )
 }

@@ -4,7 +4,7 @@ use yew::prelude::*;
 use crate::components::molecules::link_button::LinkButton;
 use crate::router::Route;
 
-const STYLE_FILE: &str = include_str!("stylesheets/stargaze.css");
+const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
 // Render the Stargaze project homepage
 #[styled_component(Stargaze)]
@@ -13,14 +13,16 @@ pub fn stargaze() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
-            <h1> {"Stargaze"} </h1>
+            <div class={"stargaze"}>
+                <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
+                <h1> {"Stargaze"} </h1>
 
-            // Should only render buttons if the user is not authenticated
-            <h2>{"Begin Your Journey"}</h2>
-            <div class={"button-container"}>
-                <LinkButton route={Route::Login} label={"Log In".to_string()} kind={"button".to_string()} />
-                <LinkButton route={Route::Signup} label={"Sign Up".to_string()} kind={"button".to_string()} />
+                // Should only render buttons if the user is not authenticated
+                <h2>{"Begin Your Journey"}</h2>
+                <div class={"button-container"}>
+                    <LinkButton route={Route::Login} label={"Log In".to_string()} kind={"button".to_string()} />
+                    <LinkButton route={Route::Signup} label={"Sign Up".to_string()} kind={"button".to_string()} />
+                </div>
             </div>
         </div>
     )

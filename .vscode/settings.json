@@ -6,6 +6,7 @@
         "Funder",
         "onchange",
         "onsubmit",
+        "reqwasm",
         "stylesheet",
         "yewdux"
     ],

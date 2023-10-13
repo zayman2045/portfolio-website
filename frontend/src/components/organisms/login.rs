@@ -6,7 +6,7 @@ use crate::{
     router::Route,
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/login.css");
+const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
 // Renders the log in page
 #[styled_component(Login)]
@@ -15,18 +15,20 @@ pub fn login() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
+            <div class={"login"}>
+                <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
-            <h1>{"Log In"}</h1>
-            <form>
-                <label for="username">{"Username:"}</label>
-                <input type="text" id="username" placeholder="Username" required=true/>
+                <h1>{"Log In"}</h1>
+                <form>
+                    <label for="username">{"Username:"}</label>
+                    <input type="text" id="username" placeholder="Username" required=true/>
 
-                <label for="password">{"Password:"}</label>
-                <input type="password" id="password" placeholder="Password" required=true/>
+                    <label for="password">{"Password:"}</label>
+                    <input type="password" id="password" placeholder="Password" required=true/>
 
-                <button type="submit">{"Submit"}</button>
-            </form>
+                    <button type="submit">{"Submit"}</button>
+                </form>
+            </div>
         </div>
     )
 }
