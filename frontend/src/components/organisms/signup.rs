@@ -11,7 +11,10 @@ use yewdux::prelude::*;
 use crate::{
     components::molecules::link_button::LinkButton,
     router::Route,
-    stores::{auth_store::AuthStore, user_store::UserStore},
+    stores::{
+        auth_store::{self, AuthStore},
+        user_store::UserStore,
+    },
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
@@ -29,10 +32,7 @@ pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Use Yewdux store to hold authentication information from text inputs temporarily
-    let auth_dispatch = Dispatch::<AuthStore>::new();
-
-    // Use Yewdux store to hold user information from the backend
-    let (user_store, user_dispatch) = use_store::<UserStore>();
+    let (auth_store, auth_dispatch) = use_store::<AuthStore>();
 
     // Store username when <input/> onchange event occurs
     let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
@@ -74,30 +74,21 @@ pub fn signup() -> Html {
             }
         });
 
-    // State to hold the message from the backend
-    let response_state = use_state(|| ResponseUser::default());
-
     // Handler for sign up form submission
-    let response_state_clone = response_state.clone();
-    let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
+    let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
-        response_state_clone.set(ResponseUser::default());
+        auth_store.message = None;
 
         // Display error message to the user
-        if !store.passwords_match {
-            response_state_clone.set(ResponseUser {
-                message: Some("Passwords Do Not Match".to_owned()),
-                ..Default::default()
-            });
+        if !auth_store.passwords_match {
+            auth_store.message = Some("Passwords Do Not Match".to_owned());
         } else {
-            let response_state_clone = response_state_clone.clone();
-            let store = store.clone();
-
             // Make a POST request to the backend to create a new user
+            let auth_store = auth_store.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 let user = json!({
-                    "username": store.username,
-                    "password": store.password,
+                    "username": auth_store.username,
+                    "password": auth_store.password,
                 })
                 .to_string();
 
@@ -112,33 +103,32 @@ pub fn signup() -> Html {
                     // User created successfully
                     200 => {
                         let user: ResponseUser = response.json().await.unwrap();
-                        //console::log_1(&serde_wasm_bindgen::to_value(&user).unwrap());
 
                         let user_dispatch = Dispatch::<UserStore>::new();
 
                         // Update the UserStore
-                        user_dispatch.reduce_mut(|store| {
-                            store.username = user.username.clone();
-                            store.token = user.token.clone();
-                            store.message = user.message.clone();
+                        user_dispatch.reduce_mut(|user_store| {
+                            user_store.username = user.username.clone();
+                            user_store.token = user.token.clone();
+                            user_store.message = user.message.clone();
                         });
 
-                        response_state_clone.set(ResponseUser {
-                            message: Some("Sign Up Successful".to_owned()),
-                            ..user
-                        });
-                        
+                        // TODO: Redirect to the home page
                     }
+                    // User already exists
                     409 => {
-                        response_state_clone.set(ResponseUser {
-                            message: Some("This Username Already Exists".to_owned()),
-                            ..Default::default()
+                        let auth_dispatch = Dispatch::<AuthStore>::new();
+
+                        auth_dispatch.reduce_mut(|auth_store| {
+                            auth_store.message = Some("This Username Already Exists".to_owned());
                         });
                     }
+                    // Error creating user
                     _ => {
-                        response_state_clone.set(ResponseUser {
-                            message: Some("Error Creating User".to_owned()),
-                            ..Default::default()
+                        let auth_dispatch = Dispatch::<AuthStore>::new();
+
+                        auth_dispatch.reduce_mut(|auth_store| {
+                            auth_store.message = Some("Error Creating User".to_owned());
                         });
                     }
                 }
@@ -146,14 +136,13 @@ pub fn signup() -> Html {
         }
     });
 
-
     html!(
         <div class={stylesheet}>
             <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
 
             <h1>{"Sign Up"}</h1>
 
-            if let Some(message) = &response_state.message {
+            if let Some(message) = &auth_store.message {
                 <h2 style="color: #08f7be;">{message}</h2>
             }
 
