@@ -1,7 +1,6 @@
 mod users;
 
 use axum::{
-    http::HeaderValue,
     routing::{get, post},
     Extension, Router,
 };
@@ -15,7 +14,6 @@ use users::{create_user, get_user};
 pub async fn create_router(database: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
-        //.allow_origin("http://localhost:8080".parse::<HeaderValue>().unwrap());
         .allow_origin(Any);
 
     Router::new()

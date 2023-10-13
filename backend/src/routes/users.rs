@@ -15,6 +15,8 @@ pub struct RequestUser {
 #[derive(Deserialize, Serialize)]
 pub struct ResponseUser {
     pub username: String,
+    pub token: String,
+    pub message: String,
 }
 
 // Create a new user in the database
@@ -35,10 +37,9 @@ pub async fn create_user(
         .await
     {
         Ok(user) => {
-            // If the user exists, return a conflict error
+            // If the user already exists, return a conflict error
             if user.is_some() {
                 return Err(StatusCode::CONFLICT);
-                //
             }
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
@@ -49,6 +50,8 @@ pub async fn create_user(
         Ok(_) => {
             return Ok(Json(ResponseUser {
                 username: user.username,
+                token: "test_token".to_string(),
+                message: "Sign Up Successful".to_string(),
             }))
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
@@ -58,6 +61,8 @@ pub async fn create_user(
 // TODO: Get a user from the database
 pub async fn get_user(Extension(_database): Extension<DatabaseConnection>) -> Json<ResponseUser> {
     Json(ResponseUser {
-        username: "test".to_string(),
+        username: "some_user".to_string(),
+        token: "test_token".to_string(),
+        message: "Log In Successful".to_string(),
     })
 }

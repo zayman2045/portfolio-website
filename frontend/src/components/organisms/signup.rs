@@ -4,7 +4,7 @@ use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use stylist::{yew::styled_component, Style};
-use web_sys::HtmlInputElement;
+use web_sys::{console, HtmlInputElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -16,7 +16,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/signup.css");
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Clone)]
 struct ResponseUser {
     username: Option<String>,
     token: Option<String>,
@@ -28,9 +28,11 @@ struct ResponseUser {
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
-    // Create shared state (store) to hold authentication information from text inputs
-    let (_auth_store, auth_dispatch) = use_store::<AuthStore>();
-    let (_user_store, user_dispatch) = use_store::<UserStore>();
+    // Use Yewdux store to hold authentication information from text inputs temporarily
+    let auth_dispatch = Dispatch::<AuthStore>::new();
+
+    // Use Yewdux store to hold user information from the backend
+    let (user_store, user_dispatch) = use_store::<UserStore>();
 
     // Store username when <input/> onchange event occurs
     let onchange_username = auth_dispatch.reduce_mut_callback_with(|store, event: Event| {
@@ -74,13 +76,12 @@ pub fn signup() -> Html {
 
     // State to hold the message from the backend
     let response_state = use_state(|| ResponseUser::default());
-    let response_state_clone = response_state.clone();
 
     // Handler for sign up form submission
+    let response_state_clone = response_state.clone();
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |store, event: SubmitEvent| {
         event.prevent_default();
         response_state_clone.set(ResponseUser::default());
-        let store = store.clone();
 
         // Display error message to the user
         if !store.passwords_match {
@@ -90,6 +91,8 @@ pub fn signup() -> Html {
             });
         } else {
             let response_state_clone = response_state_clone.clone();
+            let store = store.clone();
+
             // Make a POST request to the backend to create a new user
             wasm_bindgen_futures::spawn_local(async move {
                 let user = json!({
@@ -100,23 +103,35 @@ pub fn signup() -> Html {
 
                 let response = Request::post("/api/users")
                     .body(user)
-                    //.body(user.to_string())
                     .header("content-type", "application/json")
                     .send()
                     .await
                     .unwrap();
 
                 match response.status() {
+                    // User created successfully
                     200 => {
-                        // let user: User = response.json().await.unwrap();
-                        response_state_clone.set(ResponseUser {
-                            message: Some("User Created".to_owned()),
-                            ..Default::default()
+                        let user: ResponseUser = response.json().await.unwrap();
+                        //console::log_1(&serde_wasm_bindgen::to_value(&user).unwrap());
+
+                        let user_dispatch = Dispatch::<UserStore>::new();
+
+                        // Update the UserStore
+                        user_dispatch.reduce_mut(|store| {
+                            store.username = user.username.clone();
+                            store.token = user.token.clone();
+                            store.message = user.message.clone();
                         });
+
+                        response_state_clone.set(ResponseUser {
+                            message: Some("Sign Up Successful".to_owned()),
+                            ..user
+                        });
+                        
                     }
                     409 => {
                         response_state_clone.set(ResponseUser {
-                            message: Some("This Username Has Already Been Taken".to_owned()),
+                            message: Some("This Username Already Exists".to_owned()),
                             ..Default::default()
                         });
                     }
@@ -129,10 +144,8 @@ pub fn signup() -> Html {
                 }
             });
         }
-        // Add the username and token to the UserStore
-
-        // Redirect the user to the app they came from
     });
+
 
     html!(
         <div class={stylesheet}>
@@ -143,7 +156,6 @@ pub fn signup() -> Html {
             if let Some(message) = &response_state.message {
                 <h2 style="color: #08f7be;">{message}</h2>
             }
-
 
             <form {onsubmit}>
                 <label for="username">{"Username:"}</label>
