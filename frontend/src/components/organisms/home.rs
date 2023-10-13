@@ -16,7 +16,7 @@ pub fn home() -> Html {
             <div class={"home"}>
                 <header >
                     <h1>{"Xavier Griffith"}</h1>
-                    <p>{"Specializing in Rust Development"}</p>
+                    <h2>{"Specializing in Rust Development"}</h2>
                 </header>
 
                 <section>
