@@ -20,6 +20,7 @@ pub fn home() -> Html {
                 <section>
                     <h2>{"About Me"}</h2>
                     <p>{"I am a software developer proficient in the Rust programming language."}</p>
+                    <p>{"Learn more..."}</p>
                 </section>
                 <section>
                     <h2>{"About This Site"}</h2>

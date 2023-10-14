@@ -18,11 +18,9 @@ pub fn link_button() -> Html {
                     <h2>{"Specializing in Rust Development"}</h2>
                 </div>
                 <div class="navbar-right">
-                // TODO: Conditionally render the login and sign up buttons if the user is not logged in, unless they are on a application page (Stargaze, Funder, Ello)
-                // TODO: Link to the user's profile if the user is logged in
-                <LinkButton route={Route::Login} label={"About Me".to_string()} kind={"button".to_string()} />
-                <LinkButton route={Route::Login} label={"About This Site".to_string()} kind={"button".to_string()} />
-                <LinkButton route={Route::Login} label={"Projects".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::Home} label={"About Me".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::Home} label={"About This Site".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::Home} label={"Projects".to_string()} kind={"button".to_string()} />
                 </div>
             </div>
         </nav>

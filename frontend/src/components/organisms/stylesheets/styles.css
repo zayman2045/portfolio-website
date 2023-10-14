@@ -67,6 +67,11 @@ button:hover {
   width: auto;
   border-radius: 50px;
   display: inline;
+  border: 1px solid #a056f3;
+}
+
+.navbar-container .navbar-logo:hover {
+  border: 1px solid #08f7be;
 }
 
 .navbar-titles {
@@ -95,13 +100,13 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .navbar-right {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding: 0px 10px;
+  flex-wrap: wrap;
 }
 
 .navbar-right button {
