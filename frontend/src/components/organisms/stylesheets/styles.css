@@ -58,10 +58,14 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 100vw;
   padding: 0 20px;
 }
 
+.navbar-logo {
+  height: 75px;
+  width: auto;
+}
 .navbar h1,
 .navbar h2 {
   text-align: left;
@@ -78,7 +82,9 @@ button:hover {
   font-size: 18px;
 }
 
-/* .navbar-left {Styles for the left side of the navbar} */
+.navbar-left {
+  flex-direction: row;
+}
 
 /* .navbar-right {Styles for the right side of the navbar} */
 
@@ -87,8 +93,8 @@ button:hover {
 .home .background {
   display: block;
   margin: 0;
-  height: 100vh;
   width: 100vw;
+  height: auto;
 }
 
 .home section {
