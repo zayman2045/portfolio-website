@@ -43,18 +43,52 @@ button:hover {
   border-color: #08f7be;
 }
 
+/* Navbar Styles */
+.navbar {
+  background-color: #0e0e2a;
+  color: #e0e0e0;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.navbar h1,
+.navbar h2 {
+  text-align: left;
+  margin: 5px 0;
+}
+
+.navbar h1 {
+  color: #a056f3;
+  font-size: 24px;
+}
+
+.navbar h2 {
+  color: #08f7be;
+  font-size: 18px;
+}
+
+/* .navbar-left {Styles for the left side of the navbar} */
+
+/* .navbar-right {Styles for the right side of the navbar} */
+
 /* Home Page Specific Styles */
-.home header {
-  text-align: center;
-  padding: 50px;
-}
 
-.home header h1 {
-  font-size: 2.5em;
-}
-
-.home header p {
-  font-size: 1.5em;
+.home .background {
+  display: block;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
 }
 
 .home section {

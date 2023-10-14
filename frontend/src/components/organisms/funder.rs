@@ -2,6 +2,7 @@ use yew::prelude::*;
 use stylist::{yew::styled_component, Style};
 
 use crate::components::molecules::link_button::LinkButton;
+use crate::components::molecules::nav_bar::NavBar;
 use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
@@ -14,7 +15,7 @@ pub fn funder() -> Html {
     html!(
         <div class={stylesheet}>
             <div class={"funder"}>
-                <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
+                <NavBar />
                 <h1> {"Funder"} </h1>
 
                 // Should only render if the user is not authenticated

@@ -1,10 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::{
-    components::molecules::link_button::LinkButton,
-    router::Route,
-};
+use crate::components::molecules::nav_bar::NavBar;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -16,7 +13,7 @@ pub fn login() -> Html {
     html!(
         <div class={stylesheet}>
             <div class={"login"}>
-                <LinkButton route={Route::Home} label={"Home".to_string()} kind={"button".to_string()} />
+                <NavBar />
 
                 <h1>{"Log In"}</h1>
                 <form>
