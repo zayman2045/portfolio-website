@@ -45,9 +45,9 @@ button:hover {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #0e0e2a;
+  background-color: black;
   color: #e0e0e0;
-  padding: 15px 0;
+  padding: 5px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -62,10 +62,19 @@ button:hover {
   padding: 0 20px;
 }
 
-.navbar-logo {
-  height: 75px;
+.navbar-container .navbar-logo {
+  height: 60px;
   width: auto;
+  border-radius: 50px;
+  display: inline;
 }
+
+.navbar-titles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .navbar h1,
 .navbar h2 {
   text-align: left;
@@ -74,19 +83,43 @@ button:hover {
 
 .navbar h1 {
   color: #a056f3;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .navbar h2 {
   color: #08f7be;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .navbar-left {
-  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* .navbar-right {Styles for the right side of the navbar} */
+.navbar-right {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 0px 10px;
+}
+
+.navbar-right button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #e0e0e0;
+  background-color: black;
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.navbar-right button:hover {
+  background-color: #3c3c3c;
+  border-color: #08f7be;
+}
 
 /* Home Page Specific Styles */
 
