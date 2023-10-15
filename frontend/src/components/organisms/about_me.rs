@@ -13,8 +13,11 @@ pub fn stargaze() -> Html {
         <div class={stylesheet}>
             <div class={"about-me"}>
                 <NavBar />
-                <h1> {"Xavier Griffith"} </h1>
-                <p>{"I am a software developer proficient in the Rust programming language."}</p>
+                <h1> {"About Me"} </h1>
+                <div class={"content-container"}>
+                    <p>{"I am a software developer proficient in the Rust programming language."}</p>
+                    <img src={"img/developer-photo.jpeg"} alt={"A photograph of the developer"} />
+                </div>
             </div>
         </div>
     )

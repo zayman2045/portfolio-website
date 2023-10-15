@@ -262,6 +262,25 @@ button:hover {
   cursor: pointer;
 }
 
+/* About Me */
+
+.about-me .content-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin: 20px 50px;
+  flex-wrap: wrap;
+}
+
+.about-me img {
+  height: 70vh;
+  width: auto;
+  border: 2px solid #a056f3;
+  border-radius: 50px;
+}
+
 /* About Site */
 .about-site img {
   height: 150px;

@@ -25,7 +25,7 @@ pub fn home() -> Html {
                 </section>
                 <section>
                     <h2>{"About This Site"}</h2>
-                    <p>{"(Description of the site's architecture. Yew + Axum)"}</p>
+                    <p>{"Learn more about the technologies used to build this website."}</p>
                     <p>{"(Short description of each projects. More detailed descriptions in an info section within each project.)"}</p>
                 </section>
                 <section class="projects">
