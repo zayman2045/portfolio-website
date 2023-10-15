@@ -18,9 +18,9 @@ pub fn link_button() -> Html {
                     <h2>{"Specializing in Rust Development"}</h2>
                 </div>
                 <div class="navbar-right">
-                <LinkButton route={Route::Home} label={"About Me".to_string()} kind={"button".to_string()} />
-                <LinkButton route={Route::Home} label={"About This Site".to_string()} kind={"button".to_string()} />
-                <LinkButton route={Route::Home} label={"Projects".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::AboutMe} label={"Meet The Developer".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::AboutSite} label={"Site Overview".to_string()} kind={"button".to_string()} />
+                <LinkButton route={Route::AboutProjects} label={"My Projects".to_string()} kind={"button".to_string()} />
                 </div>
             </div>
         </nav>

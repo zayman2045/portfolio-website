@@ -1,6 +1,6 @@
 use crate::components::organisms::{
-    ello::Ello, funder::Funder, home::Home, login::Login,
-    signup::Signup, stargaze::Stargaze,
+    about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
+    funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze,
 };
 
 use yew::prelude::*;
@@ -11,6 +11,12 @@ use yew_router::prelude::*;
 pub enum Route {
     #[at("/")]
     Home,
+    #[at("/about-me")]
+    AboutMe,
+    #[at("/about-projects")]
+    AboutProjects,
+    #[at("/about-site")]
+    AboutSite,
     #[at("/stargaze")]
     Stargaze,
     #[at("/funder")]
@@ -32,5 +38,8 @@ pub fn switch(routes: Route) -> Html {
         Route::Ello => html! { <Ello /> },
         Route::Login => html! {<Login />},
         Route::Signup => html! {<Signup />},
+        Route::AboutMe => html! {<AboutMe />},
+        Route::AboutProjects => html! {<AboutProjects />},
+        Route::AboutSite => html! {<AboutSite />},
     }
 }
