@@ -1,6 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
+use crate::components::molecules::contact_footer::ContactFooter;
 use crate::components::molecules::link_button::LinkButton;
 use crate::components::molecules::nav_bar::NavBar;
 use crate::router::Route;
@@ -24,6 +25,7 @@ pub fn stargaze() -> Html {
                     <LinkButton route={Route::Login} label={"Log In".to_string()} kind={"button".to_string()} />
                     <LinkButton route={Route::Signup} label={"Sign Up".to_string()} kind={"button".to_string()} />
                 </div>
+                <ContactFooter />
             </div>
         </div>
     )

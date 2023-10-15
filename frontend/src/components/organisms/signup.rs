@@ -8,7 +8,7 @@ use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::molecules::nav_bar::NavBar,
+    components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter},
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
@@ -151,6 +151,7 @@ pub fn signup() -> Html {
 
                     <button type="submit">{"Submit"}</button>
                 </form>
+                <ContactFooter />
             </div>
         </div>
     )

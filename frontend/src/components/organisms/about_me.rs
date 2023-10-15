@@ -1,7 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::molecules::nav_bar::NavBar;
+use crate::components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -18,6 +18,7 @@ pub fn stargaze() -> Html {
                     <p>{"I am a software developer proficient in the Rust programming language."}</p>
                     <img src={"img/developer-photo.jpeg"} alt={"A photograph of the developer"} />
                 </div>
+                <ContactFooter />
             </div>
         </div>
     )

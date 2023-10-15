@@ -43,6 +43,24 @@ button:hover {
   border-color: #08f7be;
 }
 
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #a056f3;
+}
+
+footer p {
+  margin: 10px 0;
+}
+
+footer p a {
+  color: #08f7be;
+}
+
+footer p a:hover {
+  text-decoration: underline;
+}
+
 /* Navbar */
 .navbar {
   background-color: black;
@@ -187,24 +205,6 @@ button:hover {
   transform: scale(1.1);
 }
 
-.home footer {
-  text-align: center;
-  padding: 20px;
-  border-top: 1px solid #a056f3;
-}
-
-.home footer p {
-  margin: 10px 0;
-}
-
-.home footer p a {
-  color: #08f7be;
-}
-
-.home footer p a:hover {
-  text-decoration: underline;
-}
-
 /* Login and Signup */
 .login form,
 .signup form {
@@ -302,23 +302,28 @@ button:hover {
 }
 
 .about-projects .content-container img {
-  width: 25%;
+  width: 100%;
   height: auto;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .about-projects .content-container a {
+    width: 70%;
+  }
+}
+
+.about-projects .content-container a:hover {
+  border-color: #08f7be;
+  transform: scale(1.1);
+}
+
+.about-projects .content-container a {
+  width: 30%;
   border-radius: 10px;
   border: 2px solid #0e0e2a;
   transition: border-color 0.3s, transform 1.5s;
   margin: 10px 0px;
-}
-
-@media (max-width: 768px) {
-  .about-projects .content-container img {
-    width: 50%;
-  }
-}
-
-.about-projects .content-container img:hover {
-  border-color: #08f7be;
-  transform: scale(1.1);
 }
 
 /* Stargaze, Funder, and Ello */

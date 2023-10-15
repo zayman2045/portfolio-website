@@ -1,7 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::molecules::nav_bar::NavBar;
+use crate::components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -49,6 +49,7 @@ pub fn stargaze() -> Html {
                         <p>{"This website is built using Docker. Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers."}</p>
                     </div>
                 </div>
+                <ContactFooter />
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ use yew::prelude::*;
 use yew_router::prelude::Link;
 
 
+use crate::components::molecules::contact_footer::ContactFooter;
 use crate::components::molecules::nav_bar::NavBar;
 use crate::router::Route;
 
@@ -48,10 +49,7 @@ pub fn home() -> Html {
                         </li>
                     </ul>
                 </section>
-                <footer>
-                    <p>{"Contact: "}<a href="mailto:xavierorlandogriffith@gmail.com">{"xavierorlandogriffith@gmail.com"}</a></p>
-                    <p>{"GitHub: "}<a href="https://github.com/zayman2045">{"zayman2045"}</a></p>
-                </footer>
+                <ContactFooter />
             </div>
         </div>
     )

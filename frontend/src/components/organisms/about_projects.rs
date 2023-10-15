@@ -1,7 +1,8 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
+use yew_router::prelude::Link;
 
-use crate::components::molecules::nav_bar::NavBar;
+use crate::{components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter}, router::Route};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -15,10 +16,17 @@ pub fn stargaze() -> Html {
                 <NavBar />
                 <h1> {"Explore My Projects"} </h1>
                 <div class={"content-container"}>
-                    <img src={"img/stargaze-portrait.jpeg"} />
-                    <img src={"img/funder-portrait.jpeg"} />
-                    <img src={"img/ello-portrait.jpeg"} />
+                    <Link<Route> to={Route::Stargaze}>
+                        <img src={"img/stargaze-portrait.jpeg"} />
+                    </Link<Route>>
+                    <Link<Route> to={Route::Funder}>
+                        <img src={"img/funder-portrait.jpeg"} />
+                    </Link<Route>>
+                    <Link<Route> to={Route::Ello}>
+                        <img src={"img/ello-portrait.jpeg"} />
+                    </Link<Route>>
                 </div>
+                <ContactFooter />
             </div>
         </div>
     )

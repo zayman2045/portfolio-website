@@ -1,7 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::molecules::nav_bar::NavBar;
+use crate::components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -25,6 +25,7 @@ pub fn login() -> Html {
 
                     <button type="submit">{"Submit"}</button>
                 </form>
+                <ContactFooter />
             </div>
         </div>
     )
