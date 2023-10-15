@@ -14,7 +14,11 @@ pub fn stargaze() -> Html {
             <div class={"about-projects"}>
                 <NavBar />
                 <h1> {"Explore My Projects"} </h1>
-                <p>{"..."}</p>
+                <div class={"content-container"}>
+                    <img src={"img/stargaze-portrait.jpeg"} />
+                    <img src={"img/funder-portrait.jpeg"} />
+                    <img src={"img/ello-portrait.jpeg"} />
+                </div>
             </div>
         </div>
     )

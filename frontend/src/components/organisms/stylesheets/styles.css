@@ -43,7 +43,7 @@ button:hover {
   border-color: #08f7be;
 }
 
-/* Navbar Styles */
+/* Navbar */
 .navbar {
   background-color: black;
   color: #e0e0e0;
@@ -126,7 +126,7 @@ button:hover {
   border-color: #08f7be;
 }
 
-/* Home Page Specific Styles */
+/* Home Page */
 
 .home .background {
   display: block;
@@ -174,24 +174,6 @@ button:hover {
   box-sizing: border-box;
 }
 
-/* .home .projects ul li a button {
-  padding: 20px 20px;
-  font-size: 1em;
-  color: #08f7be;
-  background-color: #2e2e2e;
-  border: 2px solid #a056f3;
-  border-radius: 8px;
-  cursor: pointer;
-  
-  width: 100%;
-  box-sizing: border-box;
-} */
-
-.home .projects ul li a button:hover {
-  background-color: #3c3c3c;
-  border-color: #08f7be;
-}
-
 .home .projects img {
   height: 300px;
   width: auto;
@@ -223,7 +205,7 @@ button:hover {
   text-decoration: underline;
 }
 
-/* Login and Signup Page Specific Styles */
+/* Login and Signup */
 .login form,
 .signup form {
   width: 300px;
@@ -300,6 +282,43 @@ button:hover {
 
 .about-site .crate-container .content-container {
   width: 50%;
+}
+
+/* About Projects */
+
+.about-projects .content-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0px;
+  margin: 30px 0px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .about-projects .content-container {
+    flex-direction: column;
+  }
+}
+
+.about-projects .content-container img {
+  width: 25%;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid #0e0e2a;
+  transition: border-color 0.3s, transform 1.5s;
+  margin: 10px 0px;
+}
+
+@media (max-width: 768px) {
+  .about-projects .content-container img {
+    width: 50%;
+  }
+}
+
+.about-projects .content-container img:hover {
+  border-color: #08f7be;
+  transform: scale(1.1);
 }
 
 /* Stargaze, Funder, and Ello */
