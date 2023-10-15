@@ -1,7 +1,8 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
+use yew_router::prelude::Link;
 
-use crate::components::molecules::link_button::LinkButton;
+
 use crate::components::molecules::nav_bar::NavBar;
 use crate::router::Route;
 
@@ -16,7 +17,7 @@ pub fn home() -> Html {
         <div class={stylesheet}>
             <div class={"home"}>
                 <NavBar />
-                <img class={"background"} src={"img/space-background.jpg"} alt={"Space Background"} />
+                <img class={"background"} src={"img/space-background.jpeg"} alt={"Space Background"} />
                 <section>
                     <h2>{"About Me"}</h2>
                     <p>{"I am a software developer proficient in the Rust programming language."}</p>
@@ -30,9 +31,21 @@ pub fn home() -> Html {
                 <section class="projects">
                     <h2>{"Explore My Projects"}</h2>
                     <ul>
-                        <li><LinkButton route={Route::Stargaze} label={"Stargaze".to_string()} kind={"button".to_string()} /></li>
-                        <li><LinkButton route={Route::Funder} label={"Funder".to_string()} kind={"button".to_string()} /></li>
-                        <li><LinkButton route={Route::Ello} label={"Ello".to_string()} kind={"button".to_string()} /></li>
+                        <li>
+                            <Link<Route> to={Route::Stargaze}>
+                                <img src={"img/stargaze-square1.jpeg"} alt={"Stargaze Logo"} id={"stargaze-square"}/>
+                            </Link<Route>>
+                        </li>
+                        <li>
+                            <Link<Route> to={Route::Funder}>
+                                <img src={"img/funder-square1.jpeg"} alt={"Funder Logo"} id={"funder-square"} />
+                            </Link<Route>>
+                        </li>
+                        <li>
+                            <Link<Route> to={Route::Ello}>
+                                <img src={"img/ello-square1.jpeg"} alt={"Ello Logo"} id={"ello-square"} />
+                            </Link<Route>>
+                        </li>
                     </ul>
                 </section>
                 <footer>

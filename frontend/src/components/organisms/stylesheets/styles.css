@@ -68,6 +68,7 @@ button:hover {
   border-radius: 50px;
   display: inline;
   border: 1px solid #a056f3;
+  transition: border-color 0.3s;
 }
 
 .navbar-container .navbar-logo:hover {
@@ -118,11 +119,10 @@ button:hover {
   border: 1px solid #a056f3;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: border-color 0.3s;
 }
 
 .navbar-right button:hover {
-  background-color: #3c3c3c;
   border-color: #08f7be;
 }
 
@@ -174,7 +174,7 @@ button:hover {
   box-sizing: border-box;
 }
 
-.home .projects ul li a button {
+/* .home .projects ul li a button {
   padding: 20px 20px;
   font-size: 1em;
   color: #08f7be;
@@ -182,14 +182,32 @@ button:hover {
   border: 2px solid #a056f3;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  
   width: 100%;
   box-sizing: border-box;
-}
+} */
 
 .home .projects ul li a button:hover {
   background-color: #3c3c3c;
   border-color: #08f7be;
+}
+
+.home .projects img {
+  height: 300px;
+  width: auto;
+  border: 2px solid #a056f3;
+  border-radius: 50px;
+  transition: border-color 0.3s, transform 1.5s;
+}
+
+.home .projects img:hover {
+  border-color: #08f7be;
+  background-image: url("../../../../img/stargaze-square2.jpeg");
+  transform: scale(1.1);
+}
+
+.home .projects #stargaze-square:hover {
+  background-image: url("../../../../img/stargaze-square2.jpeg");
 }
 
 .home footer {
