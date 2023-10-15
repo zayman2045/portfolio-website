@@ -202,12 +202,7 @@ button:hover {
 
 .home .projects img:hover {
   border-color: #08f7be;
-  background-image: url("../../../../img/stargaze-square2.jpeg");
   transform: scale(1.1);
-}
-
-.home .projects #stargaze-square:hover {
-  background-image: url("../../../../img/stargaze-square2.jpeg");
 }
 
 .home footer {
@@ -267,7 +262,28 @@ button:hover {
   cursor: pointer;
 }
 
-/* Stargaze, Funder, and Ello Page Specific Styles */
+/* About Site */
+.about-site img {
+  height: 150px;
+  width: 150px;
+  border: 2px solid #a056f3;
+  border-radius: 50px;
+}
+
+.about-site .crate-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin: 20px 50px;
+}
+
+.about-site .crate-container .content-container {
+  width: 50%;
+}
+
+/* Stargaze, Funder, and Ello */
 .stargaze .button-container,
 .funder .button-container,
 .ello .button-container {
