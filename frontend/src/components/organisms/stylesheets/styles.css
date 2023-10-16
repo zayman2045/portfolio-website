@@ -257,10 +257,15 @@ footer p a:hover {
 }
 
 .about-me img {
-  height: 70vh;
-  width: auto;
+  height: auto;
+  width: 35vw;
   border: 2px solid #a056f3;
   border-radius: 50px;
+}
+
+.about-me .content-container p {
+  height: auto;
+  width: 40vw;
 }
 
 /* About Site */
