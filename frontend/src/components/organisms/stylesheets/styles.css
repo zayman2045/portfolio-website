@@ -300,22 +300,10 @@ footer p a:hover {
   flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
-  .about-projects .content-container {
-    flex-direction: column;
-  }
-}
-
 .about-projects .content-container img {
   width: 100%;
   height: auto;
   border-radius: 10px;
-}
-
-@media (max-width: 768px) {
-  .about-projects .content-container a {
-    width: 70%;
-  }
 }
 
 .about-projects .content-container a:hover {
