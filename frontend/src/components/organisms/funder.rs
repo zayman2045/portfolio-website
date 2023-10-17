@@ -1,5 +1,5 @@
-use yew::prelude::*;
 use stylist::{yew::styled_component, Style};
+use yew::prelude::*;
 
 use crate::components::molecules::contact_footer::ContactFooter;
 use crate::components::molecules::link_button::LinkButton;
@@ -17,8 +17,10 @@ pub fn funder() -> Html {
         <div class={stylesheet}>
             <div class={"funder"}>
                 <NavBar />
-                <h1> {"Funder"} </h1>
-
+                <header>
+                    <h1> {"Funder"} </h1>
+                    <p>{"Funder is a ..."}</p>
+                </header>
                 // Should only render if the user is not authenticated
                 <h2>{"Begin Your Journey"}</h2>
                 <div class={"button-container"}>

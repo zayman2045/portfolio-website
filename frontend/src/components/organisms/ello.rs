@@ -17,8 +17,10 @@ pub fn ello() -> Html {
         <div class={stylesheet}>
             <div class={"ello"}>
                 <NavBar />
-                <h1> {"Ello"} </h1>
-
+                <header>
+                    <h1> {"Ello"} </h1>
+                    <p>{"Ello is a ..."}</p>
+                </header>
                 // Should only render if the user is not authenticated
                 <h2>{"Begin Your Journey"}</h2>
                 <div class={"button-container"}>

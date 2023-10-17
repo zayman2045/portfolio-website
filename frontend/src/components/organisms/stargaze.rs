@@ -17,8 +17,10 @@ pub fn stargaze() -> Html {
         <div class={stylesheet}>
             <div class={"stargaze"}>
                 <NavBar />
-                <h1> {"Stargaze"} </h1>
-
+                <header>
+                    <h1> {"Stargaze"} </h1>
+                    <p>{"Stargaze is a ..."}</p>
+                </header>
                 // Should only render buttons if the user is not authenticated
                 <h2>{"Begin Your Journey"}</h2>
                 <div class={"button-container"}>

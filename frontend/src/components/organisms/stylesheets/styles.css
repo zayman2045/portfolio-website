@@ -327,3 +327,9 @@ footer p a:hover {
   justify-content: center;
   gap: 20px;
 }
+
+.stargaze header,
+.funder header,
+.ello header {
+  text-align: center;
+}
