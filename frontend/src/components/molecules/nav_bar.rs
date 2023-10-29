@@ -4,7 +4,7 @@ use yew_router::prelude::Link;
 use crate::components::molecules::link_button::LinkButton;
 use crate::router::Route;
 
-// Navagation bar that contains a logo and links to other pages
+// Navigation bar that contains a logo and links to other pages
 #[function_component(NavBar)]
 pub fn link_button() -> Html {
     html!(
