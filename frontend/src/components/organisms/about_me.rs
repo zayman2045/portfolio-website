@@ -15,7 +15,7 @@ pub fn stargaze() -> Html {
                 <NavBar />
                 <h1> {"About Me"} </h1>
                 <div class={"content-container"}>
-                    <p>{"Hello! I am a software developer with a profound enthusiasm for the world of technology and innovation. I'm a Biomedical Engineering graduate from The Johns Hopkins University, originally from Baltimore, Maryland, and now living in Miami, Florida. My academic journey equipped me with a diverse programming toolkit, including C, Java, Python, JavaScript, HTML, CSS, and Matlab. However, it was Rust's promise of performance and reliability that captured my professional dedication.
+                    <p>{"Hello! My name is Xavier Griffith and I am a software developer with a profound enthusiasm for the world of technology and innovation, and specializing in the Rust programming language. Originally from Baltimore, Maryland, I'm a Biomedical Engineering graduate from The Johns Hopkins University, currently living in Miami, Florida. My academic journey equipped me with a diverse programming toolkit, including C, Java, Python, JavaScript, HTML, CSS, and Matlab. However, it was Rust's promise of performance and reliability that captured my professional dedication.
 
                     My passion for Rust is not just about the language itself, but about the potential it holds in areas that intrigue me the most: the precision of biotechnology, the dynamism of cryptocurrency markets, the challenge of mastering foreign languages, and the immersive experiences of video games. I approach learning with a voracious appetite, ever-eager to explore how the robustness of Rust can be leveraged to solve complex problems in these domains.
                     
