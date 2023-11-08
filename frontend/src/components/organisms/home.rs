@@ -2,7 +2,6 @@ use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
-
 use crate::components::molecules::contact_footer::ContactFooter;
 use crate::components::molecules::nav_bar::NavBar;
 use crate::router::Route;
@@ -19,16 +18,20 @@ pub fn home() -> Html {
             <div class={"home"}>
                 <NavBar />
                 <img class={"background"} src={"img/space-background.jpeg"} alt={"Space Background"} />
-                <section>
-                    <h2>{"About Me"}</h2>
-                    <p>{"I am a software developer proficient in the Rust programming language."}</p>
-                    <p>{"Learn more..."}</p>
-                </section>
-                <section>
-                    <h2>{"About This Site"}</h2>
-                    <p>{"Learn more about the technologies used to build this website."}</p>
-                    <p>{"(Short description of each projects. More detailed descriptions in an info section within each project.)"}</p>
-                </section>
+                <div class={"flex-container"}>
+                    <Link<Route> to={Route::AboutMe}>
+                        <section>
+                            <h2>{"About Me"}</h2>
+                            <p>{"I am a software developer proficient in the Rust programming language."}</p>
+                        </section>
+                    </Link<Route>>
+                    <Link<Route> to={Route::AboutSite}>
+                        <section>
+                            <h2>{"About This Site"}</h2>
+                            <p>{"Learn more about the technologies used to build this website."}</p>
+                        </section>
+                    </Link<Route>>
+                </div>
                 <section class="projects">
                     <h2>{"Explore My Projects"}</h2>
                     <ul>
