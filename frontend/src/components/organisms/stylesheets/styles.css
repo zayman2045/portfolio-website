@@ -122,13 +122,17 @@ footer p a:hover {
   flex-wrap: wrap;
 }
 
+.navbar-left a {
+  border-radius: 50px;
+}
+
 .navbar-right {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.navbar-right button {
+.navbar-right a {
   margin: 10px;
   padding: 10px 20px;
   font-size: 16px;
@@ -140,12 +144,11 @@ footer p a:hover {
   transition: border-color 0.3s;
 }
 
-.navbar-right button:hover {
+.navbar-right a:hover {
   border-color: #08f7be;
 }
 
 /* Home Page */
-
 .home .background {
   display: block;
   margin: 0;
@@ -185,7 +188,6 @@ footer p a:hover {
 }
 
 .home .projects ul li {
-  font-size: 1.5em;
   flex: 1 1 30%;
   text-align: center;
   margin: 10px;
@@ -198,6 +200,12 @@ footer p a:hover {
   border: 2px solid #a056f3;
   border-radius: 50px;
   transition: border-color 0.3s, transform 1.5s;
+}
+
+.home .projects a {
+  display: inline-block;
+  height: 0px;
+  width: auto;
 }
 
 .home .projects img:hover {
