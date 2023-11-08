@@ -1,7 +1,7 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter};
+use crate::components::molecules::{contact_footer::ContactFooter, nav_bar::NavBar};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -15,11 +15,15 @@ pub fn stargaze() -> Html {
                 <NavBar />
                 <h1> {"About Me"} </h1>
                 <div class={"content-container"}>
-                    <p>{"Hello! My name is Xavier Griffith and I am a software developer with a profound enthusiasm for the world of technology and innovation, and specializing in the Rust programming language. Originally from Baltimore, Maryland, I'm a Biomedical Engineering graduate from The Johns Hopkins University, currently living in Miami, Florida. My academic journey equipped me with a diverse programming toolkit, including C, Java, Python, JavaScript, HTML, CSS, and Matlab. However, it was Rust's promise of performance and reliability that captured my professional dedication.
+                    <section>
+                        <p>{"My name is Xavier Griffith and I am a software developer with a profound enthusiasm for the world of technology, innovation, and pushing the boundaries of imagination."}</p>
 
-                    My passion for Rust is not just about the language itself, but about the potential it holds in areas that intrigue me the most: the precision of biotechnology, the dynamism of cryptocurrency markets, the challenge of mastering foreign languages, and the immersive experiences of video games. I approach learning with a voracious appetite, ever-eager to explore how the robustness of Rust can be leveraged to solve complex problems in these domains.
-                    
-                    As a developer, my goal is to intertwine my technical skills with my interests, creating solutions that are not only efficient and safe but also groundbreaking. With each line of code, I strive to bring a blend of engineering acumen and creative insight, driven by a belief that software is a pivotal tool in sculpting the innovations of tomorrow."}</p>
+                        <p>{"Originally from Baltimore, Maryland, I'm a Biomedical Engineering graduate from The Johns Hopkins University, currently living in Miami, Florida. My academic journey equipped me with a diverse problem-solving toolkit, including experience programming in C, Java, Python, JavaScript, HTML, CSS, and Matlab. However, it was only after graduating that I discovered my passion for the Rust programming language."}</p>
+
+                        <p>{"Beyond its syntax, I'm drawn to Rust's rich ecosystem, particularly its community-driven crates that fuel my endeavors in cutting-edge fields like game development with Bevy, blockchain innovation through Solana, and seamless integration with artificial intelligence through the OpenAI API by way of the async-openai crate. I approach learning with a voracious appetite, ever-eager to explore how the robustness of Rust can be leveraged to solve complex problems in these domains."}</p>
+
+                        <p>{"As a developer, my goal is to intertwine my technical skills with my interests, creating solutions that are not only efficient and safe but also groundbreaking. With each line of code, I strive to bring a blend of engineering acumen and creative insight, driven by a belief that software is a pivotal tool in sculpting the innovations of tomorrow."}</p>
+                    </section>
                     <img src={"img/developer-photo.jpeg"} alt={"A photograph of the developer"} />
                 </div>
                 <ContactFooter />
