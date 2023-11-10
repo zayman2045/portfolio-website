@@ -13,7 +13,6 @@ pub fn stargaze() -> Html {
         <div class={stylesheet}>
             <div class={"about-me"}>
                 <NavBar />
-                <h1> {"About Me"} </h1>
                 <div class={"content-container"}>
                     <section>
                         <p>{"My name is Xavier Griffith and I am a software developer with a profound enthusiasm for the world of technology, innovation, and pushing the boundaries of imagination."}</p>

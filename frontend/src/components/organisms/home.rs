@@ -22,13 +22,13 @@ pub fn home() -> Html {
                     <Link<Route> to={Route::AboutMe}>
                         <section>
                             <h2>{"About Me"}</h2>
-                            <p>{"I am a software developer proficient in the Rust programming language."}</p>
+                            <p>{"A short biography highlighting my technical background and interests."}</p>
                         </section>
                     </Link<Route>>
                     <Link<Route> to={Route::AboutSite}>
                         <section>
                             <h2>{"About This Site"}</h2>
-                            <p>{"Learn more about the technologies used to build this website."}</p>
+                            <p>{"A brief overview of the tools and technologies used to build this website."}</p>
                         </section>
                     </Link<Route>>
                 </div>

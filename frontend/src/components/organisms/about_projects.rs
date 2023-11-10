@@ -14,7 +14,6 @@ pub fn stargaze() -> Html {
         <div class={stylesheet}>
             <div class={"about-projects"}>
                 <NavBar />
-                <h1> {"Explore My Projects"} </h1>
                 <div class={"content-container"}>
                     <Link<Route> to={Route::Stargaze}>
                         <img src={"img/stargaze-portrait.jpeg"} />

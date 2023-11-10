@@ -13,19 +13,18 @@ pub fn stargaze() -> Html {
         <div class={stylesheet}>
             <div class={"about-site"}>
                 <NavBar />
-                <h1> {"About This Website"} </h1>
                 <div class={"crate-container"}>
                     <img src={"img/yew-logo.jpeg"} alt={"Yew Logo"} />
                     <div class={"content-container"}>
                         <h2>{"Yew"} </h2>
-                        <p>{"Yew is a modern Rust framework for creating multi-threaded front-end web apps with WebAssembly."}</p>
+                        <p>{"The front-end of this website was built using Yew. Yew is a modern Rust framework for creating multi-threaded web apps with WebAssembly."}</p>
                     </div>
                 </div>
                 <div class={"crate-container"}>
                     <img src={"img/tokio-logo.jpeg"} alt={"Tokio Logo"} />
                     <div class={"content-container"}>
                         <h2>{"Axum"} </h2>
-                        <p>{"Axum is a web application framework that focuses on ergonomics and modularity."}</p>
+                        <p>{"The back-end of this site is coded using Axum. Axum is a web application framework that focuses on ergonomics and modularity."}</p>
                     </div>
                 </div>
                 <div class={"crate-container"}>
