@@ -9,6 +9,9 @@ const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 pub fn stargaze() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
+    // Scroll to top of page on load
+    crate::scroll_to_top();
+
     html!(
         <div class={stylesheet}>
             <div class={"about-site"}>
@@ -17,7 +20,7 @@ pub fn stargaze() -> Html {
                     <img src={"img/yew-logo.jpeg"} alt={"Yew Logo"} />
                     <div class={"content-container"}>
                         <h2>{"Yew"} </h2>
-                        <p>{"The front-end of this website was built using Yew. Yew is a modern Rust framework for creating multi-threaded web apps with WebAssembly."}</p>
+                        <p>{"The front-end of this website was built using Yew, a modern Rust framework for creating multi-threaded web apps with WebAssembly. Yew is inspired by modern JavaScript frameworks such as React and Vue, which use a component-based architecture that allows for the reuse of UI elements, and a lightweight Virtual DOM to improve performance."}</p>
                     </div>
                 </div>
                 <div class={"crate-container"}>

@@ -13,6 +13,9 @@ const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 pub fn home() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
+    // Scroll to top of page on load
+    crate::scroll_to_top();
+
     html!(
         <div class={stylesheet}>
             <div class={"home"}>

@@ -3,6 +3,7 @@ mod router;
 mod stores;
 
 use router::{switch, Route};
+use web_sys::window;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -12,5 +13,11 @@ pub fn app() -> Html {
         <BrowserRouter>
             <Switch<Route> render={switch} />
         </BrowserRouter>
+    }
+}
+
+fn scroll_to_top() {
+    if let Some(window) = window() {
+        window.scroll_to_with_x_and_y(0.0, 0.0);
     }
 }

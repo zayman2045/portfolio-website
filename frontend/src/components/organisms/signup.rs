@@ -27,6 +27,9 @@ struct ResponseUser {
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
+    // Scroll to top of page on load
+    crate::scroll_to_top();
+
     // Use Yewdux store to hold authentication information from text inputs temporarily
     let (auth_store, auth_dispatch) = use_store::<AuthStore>();
 
