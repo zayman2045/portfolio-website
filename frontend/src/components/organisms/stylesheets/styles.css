@@ -169,12 +169,13 @@ footer p a:hover {
   border-radius: 30px;
   border: 1px solid #a056f3;
   padding: 20px;
-  transition: background-color 0.3s, border-color 0.3s, transform 1.5s;
+  transition: background-color 1.5s, border-color 0.3s, transform 1.5s;
 }
 
 .home .flex-container a:hover {
   border-color: #08f7be;
   transform: scale(1.1);
+  background-color: black;
 }
 
 .home .flex-container section {
