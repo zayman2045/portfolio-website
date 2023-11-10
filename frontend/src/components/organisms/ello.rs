@@ -19,8 +19,6 @@ pub fn ello() -> Html {
                     <h1> {"Ello"} </h1>
                     <p>{"A chatbot powered by the OpenAI GPT-3 Turbo model, designed to help users practice simple conversations in a chosen language."}</p>
                 </header>
-                // Should only render if the user is not authenticated
-                <h2>{"Begin Your Journey"}</h2>
                 <ContactFooter />
             </div>
         </div>

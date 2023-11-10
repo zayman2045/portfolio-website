@@ -358,14 +358,6 @@ footer p a:hover {
 }
 
 /* Stargaze, Funder, and Ello */
-.stargaze .button-container,
-.funder .button-container,
-.ello .button-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
 .stargaze header,
 .funder header,
 .ello header {

@@ -19,8 +19,6 @@ pub fn funder() -> Html {
                     <h1> {"Funder"} </h1>
                     <p>{"Funder is a ..."}</p>
                 </header>
-                // Should only render if the user is not authenticated
-                <h2>{"Begin Your Journey"}</h2>
                 <ContactFooter />
             </div>
         </div>

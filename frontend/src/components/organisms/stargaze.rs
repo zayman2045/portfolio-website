@@ -19,8 +19,6 @@ pub fn stargaze() -> Html {
                     <h1> {"Stargaze"} </h1>
                     <p>{"A 2D game developed using the Bevy game engine in Rust, showcasing modern game development techniques and performance optimization."}</p>
                 </header>
-                // Should only render buttons if the user is not authenticated
-                <h2>{"Begin Your Journey"}</h2>
                 <ContactFooter />
             </div>
         </div>
