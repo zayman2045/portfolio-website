@@ -20,7 +20,7 @@ pub fn funder() -> Html {
                 <NavBar />
                 <header>
                     <h1> {"Funder"} </h1>
-                    <p>{"Funder is a ..."}</p>
+                    <p>{"Funder is a Solana on-chain program."}</p>
                 </header>
                 <ContactFooter />
             </div>
