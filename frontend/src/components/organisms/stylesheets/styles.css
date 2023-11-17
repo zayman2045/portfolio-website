@@ -304,6 +304,7 @@ footer p a:hover {
 .about-me .content-container p {
   height: auto;
   width: 40vw;
+  font-size: 18px;
 }
 
 /* About Site */
