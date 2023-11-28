@@ -8,13 +8,14 @@ use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter},
+    components::subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+// Struct to hold the response from the backend API
 #[derive(Serialize, Deserialize, Default, Clone)]
 struct ResponseUser {
     username: Option<String>,
@@ -64,20 +65,22 @@ pub fn signup() -> Html {
             }
         });
 
-    // Use navigator to redirect after a successful sign up
+    // Use navigator to redirect the user after a successful sign up
     let navigator = use_navigator().unwrap();
 
     // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
         auth_store.message = None;
-        // Verify the passwords match before making a POST request
+
+        // Verify the passwords match
         if auth_store.password != auth_store.confirmed_password {
             auth_store.message = Some("Passwords Do Not Match".to_owned());
         } else {
-            // Make a POST request to the backend to create a new user
             let auth_store = auth_store.clone();
             let navigator = navigator.clone();
+
+            // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
                 let user = json!({
                     "username": auth_store.username,
@@ -85,6 +88,7 @@ pub fn signup() -> Html {
                 })
                 .to_string();
 
+                // Send a POST request to the backend API to create a new user
                 let response = Request::post("/api/users")
                     .body(user)
                     .header("content-type", "application/json")
@@ -96,7 +100,6 @@ pub fn signup() -> Html {
                     // User created successfully
                     200 => {
                         let user: ResponseUser = response.json().await.unwrap();
-
                         let user_dispatch = Dispatch::<UserStore>::new();
 
                         // Update the UserStore
@@ -135,7 +138,6 @@ pub fn signup() -> Html {
         <div class={stylesheet}>
             <div class={"login"}>
                 <NavBar />
-
                 <h1>{"Sign Up"}</h1>
 
                 if let Some(message) = &auth_store.message {
