@@ -2,7 +2,7 @@ use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
-use crate::{components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter}, router::Route};
+use crate::{components::subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, router::Route};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 

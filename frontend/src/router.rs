@@ -1,4 +1,4 @@
-use crate::components::organisms::{
+use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
     funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze,
 };

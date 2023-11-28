@@ -13,6 +13,7 @@
         "Signup",
         "Solana",
         "stylesheet",
+        "subcomponents",
         "yewdux"
     ],
 }

@@ -1,14 +1,14 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::molecules::contact_footer::ContactFooter;
-use crate::components::molecules::nav_bar::NavBar;
+use crate::components::subcomponents::contact_footer::ContactFooter;
+use crate::components::subcomponents::nav_bar::NavBar;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Render the Funder project homepage
-#[styled_component(Funder)]
-pub fn funder() -> Html {
+// Render the Ello project homepage
+#[styled_component(Ello)]
+pub fn ello() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
@@ -16,11 +16,11 @@ pub fn funder() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <div class={"funder"}>
+            <div class={"ello"}>
                 <NavBar />
                 <header>
-                    <h1> {"Funder"} </h1>
-                    <p>{"Funder is a Solana on-chain program."}</p>
+                    <h1> {"Ello"} </h1>
+                    <p>{"A chatbot powered by the OpenAI GPT-3 Turbo model, designed to help users practice simple conversations in a chosen language."}</p>
                 </header>
                 <ContactFooter />
             </div>

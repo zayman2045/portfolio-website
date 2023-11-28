@@ -2,8 +2,8 @@ use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
-use crate::components::molecules::contact_footer::ContactFooter;
-use crate::components::molecules::nav_bar::NavBar;
+use crate::components::subcomponents::contact_footer::ContactFooter;
+use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");

@@ -8,7 +8,7 @@ use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::molecules::{nav_bar::NavBar, contact_footer::ContactFooter},
+    components::subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter},
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
