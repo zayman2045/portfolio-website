@@ -81,16 +81,19 @@ footer p a:hover {
 }
 
 .navbar-container .navbar-logo {
-  height: 60px;
-  width: auto;
-  border-radius: 50px;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
   display: inline;
-  border: 1px solid #a056f3;
+  border: 2px solid #a056f3;
   transition: border-color 0.3s;
+  padding: 2px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .navbar-container .navbar-logo:hover {
-  border: 1px solid #08f7be;
+  border: 2px solid #08f7be;
 }
 
 .navbar-titles {
