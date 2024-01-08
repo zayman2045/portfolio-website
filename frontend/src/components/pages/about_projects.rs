@@ -2,7 +2,7 @@ use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
-use crate::{components::subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, router::Route};
+use crate::{components::{subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, pages::scroll_to_top}, router::Route};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -11,7 +11,7 @@ pub fn stargaze() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
-    crate::scroll_to_top();
+    scroll_to_top();
 
     html!(
         <div class={stylesheet}>

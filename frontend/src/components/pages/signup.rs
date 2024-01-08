@@ -8,7 +8,7 @@ use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 use crate::{
-    components::subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+    components::{subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar}, pages::scroll_to_top},
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
@@ -29,7 +29,7 @@ pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
-    crate::scroll_to_top();
+    scroll_to_top();
 
     // Use Yewdux store to hold authentication information from text inputs temporarily
     let (auth_store, auth_dispatch) = use_store::<AuthStore>();
