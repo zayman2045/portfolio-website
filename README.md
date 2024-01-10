@@ -1,9 +1,13 @@
 # Portfolio Website
 
-This repository contains the code for a portfolio website built with Rust on both the front and back end. 
+This web application serves as my development portfolio. It's written in Rust for both the frontend and backend, demonstrating the language's versatility, safety, and efficiency.
 
 ## Overview
 
-The front end is built using Yew, a robust Rust framework for creating multi-threaded front-end web apps with WebAssembly. It utilizes a component-based architecture, offering a reactive and modular user interface. The back end, on the other hand, utilizes Axum, a Rust web framework built for highly concurrent and asynchronous web services and API layers. It is used in conjunction with SeaORM to programmatically generate SQL queries to a connected Postgres database. The front end, back end and database are deployed with Docker & Docker Compose. This project showcases modern web development practices using Rust by leveraging the power of the language's strong type system, facilitating a high-performance, robust and secure web application.
+The frontend is built using Yew, a robust Rust framework for creating multi-threaded web applications that compile to WebAssembly. It utilizes a component-based architecture, offering a reactive and modular user interface. This is similar to React and Vue.js, but with the added benefits of Rust's strong type system and exceptional performance.
+
+The backend uses Axum, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. It works in conjunction with the SeaORM crate to programmatically generate SQL queries for a connected Postgres database. The frontend, backend, and database are coordinated and deployed using Docker & Docker Compose.
 
 ## Getting Started
+
+To run this project locally:
