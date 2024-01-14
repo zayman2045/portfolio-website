@@ -9,7 +9,6 @@
 .gitignore
 
 # Build system
-**/Cargo.lock
 **/*.rs.bk
 
 # Editor-specific files
