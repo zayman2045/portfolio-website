@@ -1,0 +1,23 @@
+# General
+**/target/
+**/*.log
+**/*.tmp
+**/tmp
+
+# Version Control
+.git
+.gitignore
+
+# Build system
+**/Cargo.lock
+**/*.rs.bk
+
+# Editor-specific files
+**/.idea
+**/*.swp
+**/*.swo
+**/*.vscode
+
+# Operating System specific files
+.DS_Store
+Thumbs.db

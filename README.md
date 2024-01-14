@@ -11,3 +11,13 @@ The backend uses Axum, a Rust web framework designed for highly concurrent and a
 ## Getting Started
 
 ### To run this project locally:
+
+Make sure you have Docker and Docker Compose installed. If not, you can download and install Docker from [here](https://docs.docker.com/get-docker/) and Docker Compose from [here](https://docs.docker.com/compose/install/).
+
+Once Docker and Docker Compose are installed, you can build and run the application using the following command from the project root directory:
+
+```zsh
+docker-compose up --build
+``` 
+
+The application will be available at http://localhost:1334.
