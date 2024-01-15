@@ -1,15 +1,22 @@
-# Build stage
+# # Development Stage
+# FROM rust:latest
+# RUN rustup target add wasm32-unknown-unknown
+# RUN cargo install trunk
+# WORKDIR /code
+# COPY . /code
+# EXPOSE 8080
+# CMD trunk serve --address 0.0.0.0
+
+# Production Build Stage
 FROM rust:1.74 as builder
 WORKDIR /usr/src/app
-RUN rustup target add wasm32-unknown-unknown
-RUN cargo install wasm-bindgen-cli --vers 0.2.87
-RUN cargo install wasm-server-runner
+RUN rustup target add wasm32-unknown-unknown && cargo install trunk
 COPY . .
-RUN cargo build --release --target wasm32-unknown-unknown
+RUN trunk build --release
 
-# Runtime stage
-FROM ubuntu:21.10
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app/target/wasm32-unknown-unknown/release/frontend.wasm .
-COPY --from=builder /usr/local/cargo/bin/wasm-server-runner /usr/local/bin/
-CMD ["wasm-server-runner", "frontend.wasm"]
+# Production Runtime Stage
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist .
+COPY nginx.conf /etc/nginx/nginx.conf
+CMD ["nginx", "-g", "daemon off;"]

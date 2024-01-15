@@ -6,9 +6,7 @@ services:
     volumes:
       - ./frontend:/code/
     ports:
-      - "1334:1334"
-    environment:
-      - WASM_SERVER_RUNNER_ADDRESS=0.0.0.0:1334
+      - "8080:8080"
 
   backend:
     build:
