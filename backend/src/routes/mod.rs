@@ -4,14 +4,14 @@ pub mod users;
 pub mod missions;
 
 use axum::{
-    routing::{get, post},
+    routing::post,
     Extension, Router,
 };
 
 use hyper::Method;
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{CorsLayer, Any};
-use users::{create_user, get_user};
+use users::{create_user, login_user};
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
@@ -23,7 +23,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     // Define the routes and attaches layers
     Router::new()
         .route("/users", post(create_user))
-        .route("/users", get(get_user))
+        .route("/login", post(login_user))
         .layer(Extension(database))
         .layer(cors)
 }

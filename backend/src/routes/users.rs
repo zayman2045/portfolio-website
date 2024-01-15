@@ -17,8 +17,8 @@ pub struct RequestUser {
 #[derive(Deserialize, Serialize)]
 pub struct ResponseUser {
     pub username: String,
+    pub id: i32,
     pub token: String,
-    pub message: String,
 }
 
 /// Creates a new user in the database.
@@ -26,6 +26,7 @@ pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user): Json<RequestUser>,
 ) -> Result<Json<ResponseUser>, StatusCode> {
+    // Create a new user model
     let new_user = users::ActiveModel {
         username: ActiveValue::Set(user.username.clone()),
         password: ActiveValue::Set(user.password),
@@ -39,32 +40,55 @@ pub async fn create_user(
         .await
     {
         Ok(user) => {
-            // If the user already exists, return a conflict error
+            // Return a conflict status code if the user is found
             if user.is_some() {
                 return Err(StatusCode::CONFLICT);
+            } else {
+                // Insert the new user into the database
+                match Users::insert(new_user).exec(&database).await {
+                    Ok(_) => {
+                        return Ok(Json(ResponseUser {
+                            username: user.clone().unwrap().username,
+                            id: user.clone().unwrap().id,
+                            token: String::from("Hello World!"),
+                        }))
+                    }
+                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                };
             }
-        }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
-    };
-
-    // Insert the new user into the database, return an error if it fails
-    match Users::insert(new_user).exec(&database).await {
-        Ok(_) => {
-            return Ok(Json(ResponseUser {
-                username: user.username,
-                token: "test_token".to_string(),
-                message: "Sign Up Successful".to_string(),
-            }))
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
 }
 
-/// TODO: Gets a user from the database.
-pub async fn get_user(Extension(_database): Extension<DatabaseConnection>) -> Json<ResponseUser> {
-    Json(ResponseUser {
-        username: "some_user".to_string(),
-        token: "test_token".to_string(),
-        message: "Log In Successful".to_string(),
-    })
+/// Logs in a user.
+pub async fn login_user(
+    Extension(database): Extension<DatabaseConnection>,
+    Json(request_user): Json<RequestUser>,
+) -> Result<Json<ResponseUser>, StatusCode> {
+    // Check if the user exists
+    match Users::find()
+        .filter(users::Column::Username.eq(request_user.username.clone()))
+        .one(&database)
+        .await
+    {
+        Ok(database_user) => {
+            // Return a not found status code if the user is not found
+            if database_user.is_none() {
+                return Err(StatusCode::NOT_FOUND);
+            } else {
+                // Check if the password is correct
+                if database_user.clone().unwrap().password == request_user.password {
+                    return Ok(Json(ResponseUser {
+                        username: database_user.clone().unwrap().username,
+                        id: database_user.clone().unwrap().id,
+                        token: String::from("Hello World!"),
+                    }));
+                } else {
+                    return Err(StatusCode::UNAUTHORIZED);
+                }
+            }
+        }
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+    };
 }
