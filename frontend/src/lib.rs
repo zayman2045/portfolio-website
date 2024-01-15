@@ -1,4 +1,4 @@
-//! Core functionality for the web application.
+//! Core functionality for the client-side web application.
 //!
 //! Contains the primary application logic and sets up the application environment,
 //! including the initialization of various components, routers, and stores.

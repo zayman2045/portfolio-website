@@ -1,4 +1,4 @@
-//! Main entry point for the frontend.
+//! Entry point for the frontend.
 
 use frontend::App;
 
