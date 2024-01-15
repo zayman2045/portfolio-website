@@ -1,3 +1,7 @@
+//! Routing functionality for the web application.
+//!
+//! Contains the definition of all routes in the application and the logic to switch between them.
+
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
     funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze,
@@ -6,7 +10,10 @@ use crate::components::pages::{
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-// Create yew routes that will be requested by the browser
+/// Represents the different routes in the application.
+///
+/// Each variant of this enum corresponds to a different page in the application.
+/// The `#[at]` attribute defines the path for each route.
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
     #[at("/")]
@@ -29,7 +36,10 @@ pub enum Route {
     Signup,
 }
 
-// Dispatch routes and render functional components
+/// Returns the component corresponding to the given route.
+///
+/// This function takes a `Route` and returns the Yew component for the corresponding page.
+/// It is used to render the correct page when the route changes.
 pub fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <Home /> },

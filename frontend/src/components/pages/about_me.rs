@@ -1,3 +1,5 @@
+//! Webpage that describes the developer.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
@@ -5,8 +7,9 @@ use crate::components::{subcomponents::{contact_footer::ContactFooter, nav_bar::
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+/// Represents the page of the web application that describes the developer.
 #[styled_component(AboutMe)]
-pub fn stargaze() -> Html {
+pub fn about_me() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load

@@ -1,3 +1,5 @@
+//! Webpage for the root of the application.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
@@ -9,7 +11,7 @@ use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Renders the website homepage
+/// Represents the home page of the web application.
 #[styled_component(Home)]
 pub fn home() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

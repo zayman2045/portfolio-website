@@ -1,6 +1,8 @@
+//! Stores the authentication information of a user.
+
 use yewdux::prelude::*;
 
-// Shared state used to authenticate users
+/// Represents the authentication information of a user.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Store)]
 pub struct AuthStore {
     pub username: Option<String>,

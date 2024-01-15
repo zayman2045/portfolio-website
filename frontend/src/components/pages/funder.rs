@@ -1,3 +1,5 @@
+//! Webpage for the Funder project.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
@@ -7,7 +9,7 @@ use crate::components::subcomponents::nav_bar::NavBar;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Render the Funder project homepage
+/// Represents the page of the web application that describes the Funder project.
 #[styled_component(Funder)]
 pub fn funder() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

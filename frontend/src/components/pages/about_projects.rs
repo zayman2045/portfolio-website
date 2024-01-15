@@ -1,3 +1,5 @@
+//! Webpage for displaying projects.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::prelude::Link;
@@ -6,8 +8,9 @@ use crate::{components::{subcomponents::{nav_bar::NavBar, contact_footer::Contac
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+/// Represents the page of the web application that describes the projects.
 #[styled_component(AboutProjects)]
-pub fn stargaze() -> Html {
+pub fn about_projects() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load

@@ -1,11 +1,19 @@
-mod components;
-mod router;
+//! Core functionality for the web application.
+//!
+//! Contains the primary application logic and sets up the application environment,
+//! including the initialization of various components, routers, and stores.
+
+pub mod components;
+pub mod router;
 mod stores;
 
 use router::{switch, Route};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+/// Represents the main application component.
+///
+/// This functional component sets up the application environment, initializes the router and starts the rendering loop.
 #[function_component(App)]
 pub fn app() -> Html {
     html! {

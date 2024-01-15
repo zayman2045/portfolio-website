@@ -1,11 +1,16 @@
+//! Contains the navigation bar of the application.
+
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
 use crate::router::Route;
 
-// Navigation bar that contains a logo and links to other pages
+/// Represents the navigation bar of the application.
+///
+/// This functional component renders a navigation bar with links to the Home, About Me, About Site, and My Projects pages.
+/// Each link is represented by a `Link` component from the `yew_router` crate, with the `to` prop set to the corresponding route.
 #[function_component(NavBar)]
-pub fn link_button() -> Html {
+pub fn nav_bar() -> Html {
     html!(
         <nav class="navbar">
             <div class="navbar-container">

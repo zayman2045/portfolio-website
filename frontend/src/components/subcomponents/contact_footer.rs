@@ -1,8 +1,13 @@
+//! Contains the footer of the application.
+
 use yew::prelude::*;
 
-// Footer that contains contact information
+/// Represents the footer of the application.
+///
+/// This functional component renders a footer with contact information.
+/// It includes an email address and a GitHub username, both of which are rendered as links.
 #[function_component(ContactFooter)]
-pub fn link_button() -> Html {
+pub fn contact_footer() -> Html {
     html!(
         <footer>
             <p>{"Contact: "}<a href="mailto:xavierorlandogriffith@gmail.com">{"xavierorlandogriffith@gmail.com"}</a></p>

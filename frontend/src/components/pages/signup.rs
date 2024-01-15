@@ -1,3 +1,5 @@
+//! Webpage for signing up for an account.
+
 use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -15,7 +17,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Struct to hold the response from the backend API
+/// Represents the response from the backend API when a user is created.
 #[derive(Serialize, Deserialize, Default, Clone)]
 struct ResponseUser {
     username: Option<String>,
@@ -23,7 +25,7 @@ struct ResponseUser {
     message: Option<String>,
 }
 
-// Renders the sign up page
+/// Represents the page of the web application that allows users to sign up for an account.
 #[styled_component(Signup)]
 pub fn signup() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

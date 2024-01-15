@@ -1,3 +1,5 @@
+//! Webpage for the Stargaze project.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
@@ -7,7 +9,7 @@ use crate::components::subcomponents::nav_bar::NavBar;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Render the Stargaze project homepage
+/// Represents the page of the web application that describes the Stargaze project.
 #[styled_component(Stargaze)]
 pub fn stargaze() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

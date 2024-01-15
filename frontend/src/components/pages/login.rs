@@ -1,3 +1,5 @@
+//! Webpage for logging in to the website.
+
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
@@ -5,7 +7,7 @@ use crate::components::{subcomponents::{nav_bar::NavBar, contact_footer::Contact
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-// Renders the log in page
+/// Represents the page of the web application that allows users to log in.
 #[styled_component(Login)]
 pub fn login() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
