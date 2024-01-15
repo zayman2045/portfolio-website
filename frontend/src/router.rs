@@ -4,7 +4,7 @@
 
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
-    funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze,
+    funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze, missions::Missions
 };
 
 use yew::prelude::*;
@@ -34,6 +34,8 @@ pub enum Route {
     Login,
     #[at("/signup")]
     Signup,
+    #[at("/missions")]
+    Missions,
 }
 
 /// Returns the component corresponding to the given route.
@@ -51,5 +53,6 @@ pub fn switch(routes: Route) -> Html {
         Route::AboutMe => html! {<AboutMe />},
         Route::AboutProjects => html! {<AboutProjects />},
         Route::AboutSite => html! {<AboutSite />},
+        Route::Missions => html! {<Missions />},
     }
 }

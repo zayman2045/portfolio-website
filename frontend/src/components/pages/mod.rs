@@ -9,6 +9,7 @@ pub mod home;
 pub mod login;
 pub mod signup;
 pub mod stargaze;
+pub mod missions;
 
 use web_sys::window;
 
