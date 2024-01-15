@@ -1,4 +1,7 @@
-mod users;
+//! Handles the routing of the web service.
+
+pub mod users;
+pub mod missions;
 
 use axum::{
     routing::{get, post},
@@ -10,12 +13,14 @@ use sea_orm::DatabaseConnection;
 use tower_http::cors::{CorsLayer, Any};
 use users::{create_user, get_user};
 
-// Create Axum router, define paths and assign handler functions
+/// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
+    // Enable CORS, allowing GET and POST requests from any origin
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any);
 
+    // Define the routes and attaches layers
     Router::new()
         .route("/users", post(create_user))
         .route("/users", get(get_user))

@@ -1,11 +1,15 @@
-mod entities;
-mod routes;
+//! Core functionality for the server-side web service.
+//!
+//! Connects to the database and serves the API.
+
+pub mod entities;
+pub mod routes;
 
 use sea_orm::*;
 
 const DATABASE_URL: &str = "postgres://postgres:mysecretpassword@database:5432/postgres";
 
-// Run the server
+/// Runs the server and connects to the database.
 pub async fn run() -> Result<(), DbErr> {
     // Connect to the database
     let db = match Database::connect(DATABASE_URL).await {

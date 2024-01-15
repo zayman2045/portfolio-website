@@ -1,3 +1,5 @@
+//! Handles user specific routes.
+
 use axum::http::StatusCode;
 use axum::{Extension, Json};
 use sea_orm::*;
@@ -19,7 +21,7 @@ pub struct ResponseUser {
     pub message: String,
 }
 
-// Create a new user in the database
+/// Creates a new user in the database.
 pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user): Json<RequestUser>,
@@ -58,7 +60,7 @@ pub async fn create_user(
     };
 }
 
-// TODO: Get a user from the database
+/// TODO: Gets a user from the database.
 pub async fn get_user(Extension(_database): Extension<DatabaseConnection>) -> Json<ResponseUser> {
     Json(ResponseUser {
         username: "some_user".to_string(),
