@@ -24,18 +24,18 @@ pub struct ResponseUser {
 /// Creates a new user in the database.
 pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
-    Json(user): Json<RequestUser>,
+    Json(request_user): Json<RequestUser>,
 ) -> Result<Json<ResponseUser>, StatusCode> {
     // Create a new user model
     let new_user = users::ActiveModel {
-        username: ActiveValue::Set(user.username.clone()),
-        password: ActiveValue::Set(user.password),
+        username: ActiveValue::Set(request_user.username.clone()),
+        password: ActiveValue::Set(request_user.password),
         ..Default::default()
     };
 
     // Check if the user already exists
     match Users::find()
-        .filter(users::Column::Username.eq(user.username.clone()))
+        .filter(users::Column::Username.eq(request_user.username.clone()))
         .one(&database)
         .await
     {
@@ -46,10 +46,10 @@ pub async fn create_user(
             } else {
                 // Insert the new user into the database
                 match Users::insert(new_user).exec(&database).await {
-                    Ok(_) => {
+                    Ok(insert_result) => {
                         return Ok(Json(ResponseUser {
-                            username: user.clone().unwrap().username,
-                            id: user.clone().unwrap().id,
+                            username: request_user.username,
+                            id: insert_result.last_insert_id,
                             token: String::from("Hello World!"),
                         }))
                     }

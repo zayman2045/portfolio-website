@@ -37,11 +37,11 @@ pub fn missions() -> Html {
                         </ul>
                         <h2>{"You must be logged in to view your missions."}</h2>
                         <div class="btn-container">
-                            <Link<Route> to={Route::Login}>
-                                {"Log In"}
-                            </Link<Route>>
                             <Link<Route> to={Route::Signup}>
                                 {"Sign Up"}
+                            </Link<Route>>
+                            <Link<Route> to={Route::Login}>
+                                {"Log In"}
                             </Link<Route>>
                         </div>
                     </div>

@@ -7,6 +7,6 @@ use yewdux::prelude::*;
 #[derive(Debug, Default, Clone, PartialEq, Eq, Store, Serialize, Deserialize)]
 pub struct UserStore {
     pub username: Option<String>,
+    pub id: Option<i32>,
     pub token: Option<String>,
-    pub message: Option<String>
 }

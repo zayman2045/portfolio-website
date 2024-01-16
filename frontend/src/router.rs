@@ -34,6 +34,12 @@ pub enum Route {
     Login,
     #[at("/signup")]
     Signup,
+    #[at("/signup/user-exists")]
+    SignupUserExists,
+    #[at("/signup/password-mismatch")]
+    SignupPasswordMismatch,
+    #[at("/signup/error")]
+    SignupError,
     #[at("/missions")]
     Missions,
 }
@@ -50,6 +56,9 @@ pub fn switch(routes: Route) -> Html {
         Route::Ello => html! { <Ello /> },
         Route::Login => html! {<Login />},
         Route::Signup => html! {<Signup />},
+        Route::SignupUserExists => html! {<Signup message={Some("Username already exists.".to_string())} />},
+        Route::SignupPasswordMismatch => html! {<Signup message={Some("Passwords do not match.".to_string())} />},
+        Route::SignupError => html! {<Signup message={Some("An error occurred.".to_string())} />},
         Route::AboutMe => html! {<AboutMe />},
         Route::AboutProjects => html! {<AboutProjects />},
         Route::AboutSite => html! {<AboutSite />},

@@ -7,34 +7,44 @@ use stylist::{yew::styled_component, Style};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use yewdux::prelude::*;
+use yewdux::dispatch::Dispatch;
 
 use crate::{
-    components::{subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar}, pages::scroll_to_top},
+    components::{
+        pages::scroll_to_top,
+        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+    },
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    #[prop_or_default]
+    pub message: Option<String>,
+}
+
 /// Represents the response from the backend API when a user is created.
 #[derive(Serialize, Deserialize, Default, Clone)]
 struct ResponseUser {
     username: Option<String>,
+    id: Option<i32>,
     token: Option<String>,
-    message: Option<String>,
 }
 
 /// Represents the page of the web application that allows users to sign up for an account.
 #[styled_component(Signup)]
-pub fn signup() -> Html {
+pub fn signup(props: &Props) -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
     scroll_to_top();
 
     // Use Yewdux store to hold authentication information from text inputs temporarily
-    let (auth_store, auth_dispatch) = use_store::<AuthStore>();
+    // let (auth_store, auth_dispatch) = use_store::<AuthStore>();
+    let auth_dispatch = Dispatch::<AuthStore>::new();
 
     // Store username when onchange event occurs to the username input field
     let onchange_username = auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
@@ -73,11 +83,10 @@ pub fn signup() -> Html {
     // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
-        auth_store.message = None;
 
         // Verify the passwords match
         if auth_store.password != auth_store.confirmed_password {
-            auth_store.message = Some("Passwords Do Not Match".to_owned());
+            navigator.push(&Route::SignupPasswordMismatch);
         } else {
             let auth_store = auth_store.clone();
             let navigator = navigator.clone();
@@ -108,28 +117,20 @@ pub fn signup() -> Html {
                         user_dispatch.reduce_mut(|user_store| {
                             user_store.username = user.username.clone();
                             user_store.token = user.token.clone();
-                            user_store.message = user.message.clone();
+                            user_store.id = user.id.clone();
                         });
 
-                        // TODO: Redirect to the page the user came from
-                        navigator.push(&Route::Home);
+                        // Redirect to the mission page
+                        navigator.push(&Route::Missions);
                     }
 
                     // User already exists
                     409 => {
-                        let auth_dispatch = Dispatch::<AuthStore>::new();
-
-                        auth_dispatch.reduce_mut(|auth_store| {
-                            auth_store.message = Some("This Username Already Exists".to_owned());
-                        });
+                        navigator.push(&Route::SignupUserExists);
                     }
                     // Error creating user
                     _ => {
-                        let auth_dispatch = Dispatch::<AuthStore>::new();
-
-                        auth_dispatch.reduce_mut(|auth_store| {
-                            auth_store.message = Some("Error Creating User".to_owned());
-                        });
+                        navigator.push(&Route::SignupError);
                     }
                 }
             });
@@ -142,7 +143,7 @@ pub fn signup() -> Html {
                 <NavBar />
                 <h1>{"Sign Up"}</h1>
 
-                if let Some(message) = &auth_store.message {
+                if let Some(message) = props.message.as_ref() {
                     <h2 style="color: #08f7be;">{message}</h2>
                 }
 
