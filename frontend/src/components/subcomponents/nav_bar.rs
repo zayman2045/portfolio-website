@@ -31,7 +31,10 @@ pub fn nav_bar() -> Html {
                     <Link<Route> to={Route::AboutProjects}>
                         {"My Projects"}
                     </Link<Route>>
-                </div>
+                    <Link<Route> to={Route::Missions}>
+                        {"Your Missions"}
+                    </Link<Route>> 
+                </div> 
             </div>
         </nav>
     )

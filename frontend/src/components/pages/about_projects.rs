@@ -2,9 +2,9 @@
 
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
-use yew_router::prelude::Link;
 
-use crate::{components::{subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, pages::scroll_to_top}, router::Route};
+
+use crate::components::{subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, pages::scroll_to_top};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
@@ -13,7 +13,7 @@ const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 pub fn about_projects() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
-    // Scroll to top of page on load
+    // Scroll to top of page on load 
     scroll_to_top();
 
     html!(
@@ -37,9 +37,9 @@ pub fn about_projects() -> Html {
                         <img src={"img/funder-portrait.jpeg"} />
                     </a>
                     <a href={"https://github.com/zayman2045/ello"}>
-                        <img src={"img/ello-portrait.jpeg"} />
+                        <img src={"img/ello-portrait.jpeg"} /> 
                     </a>
-                </div>
+                </div> 
                 <ContactFooter />
             </div>
         </div>
