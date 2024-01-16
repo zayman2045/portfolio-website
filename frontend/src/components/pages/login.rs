@@ -11,7 +11,8 @@ use yewdux::dispatch::Dispatch;
 use crate::{
     components::{
         pages::scroll_to_top,
-        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar}, types::ResponseUser,
+        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+        types::ResponseUser,
     },
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
@@ -97,8 +98,8 @@ pub fn login(props: &Props) -> Html {
                     });
 
                     // Redirect the user to their mission page
-                    let user_id = user_dispatch.get().id.unwrap();
-                    navigator.push(&Route::MissionsUsers { user_id });
+                    let username = user_dispatch.get().username.as_ref().unwrap().clone();
+                    navigator.push(&Route::MissionsUsers { username });
                 }
 
                 // User credentials are incorrect

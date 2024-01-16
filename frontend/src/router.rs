@@ -4,7 +4,8 @@
 
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
-    funder::Funder, home::Home, login::Login, signup::Signup, stargaze::Stargaze, missions::Missions
+    funder::Funder, home::Home, login::Login, missions::Missions, signup::Signup,
+    stargaze::Stargaze,
 };
 
 use yew::prelude::*;
@@ -46,8 +47,8 @@ pub enum Route {
     LoginInvalid,
     #[at("/missions")]
     Missions,
-    #[at("/missions/users/:user_id")]
-    MissionsUsers { user_id: i32 },
+    #[at("/missions/users/:username")]
+    MissionsUsers { username: String },
 }
 
 /// Returns the component corresponding to the given route.
@@ -64,13 +65,19 @@ pub fn switch(routes: Route) -> Html {
         Route::Funder => html! { <Funder /> },
         Route::Ello => html! { <Ello /> },
         Route::Signup => html! {<Signup />},
-        Route::SignupUserExists => html! {<Signup message={Some("Username already exists.".to_string())} />},
-        Route::SignupPasswordMismatch => html! {<Signup message={Some("Passwords do not match.".to_string())} />},
+        Route::SignupUserExists => {
+            html! {<Signup message={Some("Username already exists.".to_string())} />}
+        }
+        Route::SignupPasswordMismatch => {
+            html! {<Signup message={Some("Passwords do not match.".to_string())} />}
+        }
         Route::SignupError => html! {<Signup message={Some("An error occurred.".to_string())} />},
         Route::Login => html! {<Login />},
-        Route::LoginInvalid => html! {<Login message={Some("Invalid username or password.".to_string())} />},
+        Route::LoginInvalid => {
+            html! {<Login message={Some("Invalid username or password.".to_string())} />}
+        }
         Route::LoginError => html! {<Login message={Some("An error occurred.".to_string())} />},
         Route::Missions => html! {<Missions />},
-        Route::MissionsUsers { user_id } => html! {<Missions user_id={Some(user_id)} />},
+        Route::MissionsUsers { username } => html! {<Missions username={Some(username)} />},
     }
 }
