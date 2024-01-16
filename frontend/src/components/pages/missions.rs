@@ -35,13 +35,26 @@ pub fn missions(props: &Props) -> Html {
                     <h1> {"Mission Log"} </h1>
                     </header>
                     // Conditionally render the login and signup links if the user is not logged in
-                    if let Some(username) = &props.username {
+                    if let Some(_username) = &props.username {
                         <div class={"logged-in"}> 
-                            <h2>{"Welcome to your mission log, "}{username}{"."}</h2>
-                            <h2>{"Select a mission to view its details."}</h2>
-                            <div class="btn-container">
+                            <div class="new-mission-container">
                                 <Link<Route> to={Route::Home}>
-                                    {"View Missions"}
+                                    {"Create New Mission"}
+                                </Link<Route>>
+                            </div>
+                            <div class="mission-container">
+                                <Link<Route> to={Route::Home}>
+                                    {"First Mission"}
+                                </Link<Route>>
+                            </div>
+                            <div class="mission-container">
+                                <Link<Route> to={Route::Home}>
+                                    {"Second Mission"}
+                                </Link<Route>>
+                            </div>
+                            <div class="mission-container">
+                                <Link<Route> to={Route::Home}>
+                                    {"Third Mission"}
                                 </Link<Route>>
                             </div>
                         </div>

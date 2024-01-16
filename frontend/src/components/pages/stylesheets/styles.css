@@ -393,6 +393,52 @@ footer p a:hover {
   margin: 10px;
 }
 
+.missions .logged-in {
+  width: 70vw;
+  margin: 20px auto;
+}
+
+.new-mission-container a {
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+  width: 60%;
+  margin: 20px auto;
+  display: block;
+  color: #a056f3;
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.3s, transform 1.5s, background-color 0.3s, color 0.3s;
+}
+
+.new-mission-container a:hover {
+  border-color: #08f7be;
+  background-color: #3c3c3c;
+  color: #08f7be; 
+  transform: scale(1.1);
+}
+
+.mission-container a {
+  border: 1px solid #a056f3;
+  border-radius: 5px;
+  width: 60%;
+  margin: 20px auto;
+  display: block;
+  background-color: black;
+  color: #08f7be;
+  padding: 15px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.3s, transform 1.5s, background-color 0.3s, color 0.3s;
+}
+
+.mission-container a:hover {
+  border-color: #08f7be;
+  background-color: #3c3c3c;
+  color: #08f7be; 
+  transform: scale(1.1);
+}
+
 .missions .btn-container {
   display: flex;
   justify-content: space-evenly;
