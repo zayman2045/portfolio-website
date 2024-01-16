@@ -1,5 +1,5 @@
 # Development Stage
-FROM rust:latest
+FROM rust:1.74
 RUN cargo install cargo-watch
 WORKDIR /code
 COPY . /code

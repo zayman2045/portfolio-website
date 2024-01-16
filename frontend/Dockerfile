@@ -1,5 +1,5 @@
 # Development Stage
-FROM rust:latest
+FROM rust:1.74
 RUN rustup target add wasm32-unknown-unknown
 RUN cargo install trunk
 WORKDIR /code
