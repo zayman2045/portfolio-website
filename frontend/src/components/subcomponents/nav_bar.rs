@@ -16,7 +16,7 @@ pub fn nav_bar() -> Html {
             <div class="navbar-container">
                 <div class="navbar-left">
                     <Link<Route> to={Route::Home}>
-                        <img class={"navbar-logo"} src={"img/xg-logo.jpeg"} alt={"XG Logo"} />
+                        <img class={"navbar-logo"} src={"/img/xg-logo.jpeg"} alt={"XG Logo"} />
                     </Link<Route>>
                     <h1>{"Xavier Griffith"}</h1>
                     <h2>{"Specializing in Rust Development"}</h2>
