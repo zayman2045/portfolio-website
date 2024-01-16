@@ -1,7 +1,6 @@
 //! Webpage for signing up for an account.
 
 use reqwasm::http::Request;
-use serde::{Deserialize, Serialize};
 use serde_json::json;
 use stylist::{yew::styled_component, Style};
 use web_sys::HtmlInputElement;
@@ -12,7 +11,7 @@ use yewdux::dispatch::Dispatch;
 use crate::{
     components::{
         pages::scroll_to_top,
-        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar}, types::ResponseUser,
     },
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
@@ -27,14 +26,6 @@ pub struct Props {
     pub message: Option<String>,
 }
 
-/// Represents the response from the backend API when a user is created.
-#[derive(Serialize, Deserialize, Default, Clone)]
-struct ResponseUser {
-    username: Option<String>,
-    id: Option<i32>,
-    token: Option<String>,
-}
-
 /// Represents the page of the web application that allows users to sign up for an account.
 #[styled_component(Signup)]
 pub fn signup(props: &Props) -> Html {
@@ -44,7 +35,6 @@ pub fn signup(props: &Props) -> Html {
     scroll_to_top();
 
     // Use Yewdux store to hold authentication information from text inputs temporarily
-    // let (auth_store, auth_dispatch) = use_store::<AuthStore>();
     let auth_dispatch = Dispatch::<AuthStore>::new();
 
     // Store username when onchange event occurs to the username input field
@@ -146,7 +136,7 @@ pub fn signup(props: &Props) -> Html {
                 <h1>{"Sign Up"}</h1>
 
                 if let Some(message) = props.message.as_ref() {
-                    <h2 style="color: #08f7be;">{message}</h2>
+                    <h2>{message}</h2>
                 }
 
                 <form {onsubmit}>

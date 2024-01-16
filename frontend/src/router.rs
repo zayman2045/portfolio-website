@@ -30,8 +30,6 @@ pub enum Route {
     Funder,
     #[at("/ello")]
     Ello,
-    #[at("/login")]
-    Login,
     #[at("/signup")]
     Signup,
     #[at("/signup/user-exists")]
@@ -40,6 +38,12 @@ pub enum Route {
     SignupPasswordMismatch,
     #[at("/signup/error")]
     SignupError,
+    #[at("/login")]
+    Login,
+    #[at("/login/error")]
+    LoginError,
+    #[at("/login/invalid")]
+    LoginInvalid,
     #[at("/missions")]
     Missions,
     #[at("/missions/users/:user_id")]
@@ -64,6 +68,8 @@ pub fn switch(routes: Route) -> Html {
         Route::SignupPasswordMismatch => html! {<Signup message={Some("Passwords do not match.".to_string())} />},
         Route::SignupError => html! {<Signup message={Some("An error occurred.".to_string())} />},
         Route::Login => html! {<Login />},
+        Route::LoginInvalid => html! {<Login message={Some("Invalid username or password.".to_string())} />},
+        Route::LoginError => html! {<Login message={Some("An error occurred.".to_string())} />},
         Route::Missions => html! {<Missions />},
         Route::MissionsUsers { user_id } => html! {<Missions user_id={Some(user_id)} />},
     }

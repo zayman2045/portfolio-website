@@ -2,3 +2,4 @@
 
 pub mod subcomponents;
 pub mod pages;
+pub mod types;
