@@ -11,9 +11,16 @@ use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+/// Represents the properties of the Signup component.
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    #[prop_or_default]
+    pub user_id: Option<i32>,
+}
+
 /// Represents the page of the web application that houses user missions.
 #[styled_component(Missions)]
-pub fn missions() -> Html {
+pub fn missions(props: &Props) -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
@@ -27,7 +34,18 @@ pub fn missions() -> Html {
                     <h1> {"Mission Log"} </h1>
                     </header>
                     // Conditionally render the login and signup links if the user is not logged in
-                    <div class={"logged-out"}>
+                    if let Some(user_id) = props.user_id {
+                        <div class={"logged-in"}>
+                            <h2>{"Welcome to your mission log, user "}{user_id}{"."}</h2>
+                            <h2>{"Select a mission to view its details."}</h2>
+                            <div class="btn-container">
+                                <Link<Route> to={Route::MissionsUsers { user_id }}>
+                                    {"View Missions"}
+                                </Link<Route>>
+                            </div>
+                        </div>
+                    } else
+                    {<div class={"logged-out"}>
                         <h2>{"From this terminal you will be able to:"}</h2>
                         <ul>
                             <li>{"Commence new missions and detail their objectives."}</li>
@@ -44,7 +62,7 @@ pub fn missions() -> Html {
                                 {"Log In"}
                             </Link<Route>>
                         </div>
-                    </div>
+                    </div>}
                 <ContactFooter />
             </div>
         </div>

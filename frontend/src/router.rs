@@ -42,6 +42,8 @@ pub enum Route {
     SignupError,
     #[at("/missions")]
     Missions,
+    #[at("/missions/users/:user_id")]
+    MissionsUsers { user_id: i32 },
 }
 
 /// Returns the component corresponding to the given route.
@@ -51,17 +53,18 @@ pub enum Route {
 pub fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <Home /> },
+        Route::AboutMe => html! {<AboutMe />},
+        Route::AboutSite => html! {<AboutSite />},
+        Route::AboutProjects => html! {<AboutProjects />},
         Route::Stargaze => html! { <Stargaze /> },
         Route::Funder => html! { <Funder /> },
         Route::Ello => html! { <Ello /> },
-        Route::Login => html! {<Login />},
         Route::Signup => html! {<Signup />},
         Route::SignupUserExists => html! {<Signup message={Some("Username already exists.".to_string())} />},
         Route::SignupPasswordMismatch => html! {<Signup message={Some("Passwords do not match.".to_string())} />},
         Route::SignupError => html! {<Signup message={Some("An error occurred.".to_string())} />},
-        Route::AboutMe => html! {<AboutMe />},
-        Route::AboutProjects => html! {<AboutProjects />},
-        Route::AboutSite => html! {<AboutSite />},
+        Route::Login => html! {<Login />},
         Route::Missions => html! {<Missions />},
+        Route::MissionsUsers { user_id } => html! {<Missions user_id={Some(user_id)} />},
     }
 }

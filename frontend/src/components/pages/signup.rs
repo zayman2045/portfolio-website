@@ -20,6 +20,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
+/// Represents the properties of the Signup component.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
@@ -120,8 +121,9 @@ pub fn signup(props: &Props) -> Html {
                             user_store.id = user.id.clone();
                         });
 
-                        // Redirect to the mission page
-                        navigator.push(&Route::Missions);
+                        // Redirect the user to their mission page
+                        let user_id = user_dispatch.get().id.unwrap();
+                        navigator.push(&Route::MissionsUsers { user_id });
                     }
 
                     // User already exists
