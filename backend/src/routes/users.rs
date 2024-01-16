@@ -8,12 +8,14 @@ use serde::{Deserialize, Serialize};
 use crate::entities::prelude::*;
 use crate::entities::users;
 
+/// The request body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
 pub struct RequestUser {
     pub username: String,
     pub password: String,
 }
 
+// The response body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
 pub struct ResponseUser {
     pub username: String,

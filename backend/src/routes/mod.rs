@@ -11,7 +11,6 @@ use axum::{
 use hyper::Method;
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{CorsLayer, Any};
-use users::{create_user, login_user};
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
@@ -22,8 +21,9 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
 
     // Define the routes and attaches layers
     Router::new()
-        .route("/users", post(create_user))
-        .route("/login", post(login_user))
+        .route("/users", post(users::create_user))
+        .route("/login", post(users::login_user))
+        .route("/missions", post(missions::create_mission))
         .layer(Extension(database))
         .layer(cors)
 }
