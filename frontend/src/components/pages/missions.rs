@@ -12,11 +12,9 @@ use crate::components::pages::scroll_to_top;
 use crate::components::subcomponents::contact_footer::ContactFooter;
 use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
-use crate::stores::mission_store::{Mission, MissionStore};
+use crate::stores::mission_store::{Mission, MissionListStore};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
-
-
 
 /// The response from the backend API containing a list of missions.
 #[derive(Serialize, Deserialize, Default, Clone)]
@@ -33,7 +31,7 @@ pub fn missions() -> Html {
     scroll_to_top();
 
     // Use Yewdux to hold missions
-    let (missions_store, _missions_dispatch) = use_store::<MissionStore>();
+    let (mission_list_store, _mission_list_dispatch) = use_store::<MissionListStore>();
 
     // Use Yewdux to get user information
     let (user_store, user_dispatch) = use_store::<crate::stores::user_store::UserStore>();
@@ -59,9 +57,9 @@ pub fn missions() -> Html {
                         let missions: MissionsList = response.json().await.unwrap();
 
                         // Use Yewdux store to hold missions
-                        let missions_dispatch = Dispatch::<MissionStore>::new();
-                        missions_dispatch.reduce_mut(|missions_store| {
-                            missions_store.missions = missions.missions;
+                        let mission_list_dispatch = Dispatch::<MissionListStore>::new();
+                        mission_list_dispatch.reduce_mut(|mission_list_store| {
+                            mission_list_store.missions = missions.missions;
                         });
                     }
 
@@ -94,7 +92,7 @@ pub fn missions() -> Html {
                                 </Link<Route>>
                             </div>
                             // Check if there are any missions
-                            if let Some(missions) = &missions_store.missions {
+                            if let Some(missions) = &mission_list_store.missions {
                                 <h2>{"Your Missions:"}</h2>
                                 {for missions.iter().map(|mission| {
                                     html! {
