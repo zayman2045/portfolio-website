@@ -19,7 +19,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the BuildMission component.
+/// The properties of the BuildMission component. Used to determine if the user is creating a new mission or editing an existing one.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
@@ -89,11 +89,8 @@ pub fn build_mission(props: &Props) -> Html {
             match response.status() {
                 // 
                 200 => {
-                    let user_dispatch = Dispatch::<UserStore>::new();
-
                     // Redirect the user to their mission page
-                    let username = user_dispatch.get().username.as_ref().unwrap().clone();
-                    navigator.push(&Route::MissionsUsers { username });
+                    navigator.push(&Route::Missions);
                 }
 
                 // 

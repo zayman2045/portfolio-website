@@ -11,7 +11,7 @@ use crate::components::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the DeleteMission component.
+/// The properties of the DeleteMission component. Used to delete a mission in the database.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub mission_id: i32

@@ -20,7 +20,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the Login component.
+/// The properties of the Login component. Used to conditionally render a message to the user.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
@@ -87,10 +87,11 @@ pub fn login(props: &Props) -> Html {
             match response.status() {
                 // User logged in successfully
                 200 => {
+                    // Convert the response to a user
                     let user: UserResponse = response.json().await.unwrap();
-                    let user_dispatch = Dispatch::<UserStore>::new();
-
+                    
                     // Update the UserStore
+                    let user_dispatch = Dispatch::<UserStore>::new();
                     user_dispatch.reduce_mut(|user_store| {
                         user_store.username = user.username.clone();
                         user_store.token = user.token.clone();
@@ -98,8 +99,7 @@ pub fn login(props: &Props) -> Html {
                     });
 
                     // Redirect the user to their mission page
-                    let username = user_dispatch.get().username.as_ref().unwrap().clone();
-                    navigator.push(&Route::MissionsUsers { username });
+                    navigator.push(&Route::Missions);
                 }
 
                 // User credentials are incorrect

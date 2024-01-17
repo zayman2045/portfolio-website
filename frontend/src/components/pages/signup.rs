@@ -20,7 +20,7 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the Signup component.
+/// The properties of the Signup component. Used to conditionally render a message to the user.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
@@ -113,8 +113,7 @@ pub fn signup(props: &Props) -> Html {
                         });
 
                         // Redirect the user to their mission page
-                        let username = user_dispatch.get().username.as_ref().unwrap().clone();
-                        navigator.push(&Route::MissionsUsers { username });
+                        navigator.push(&Route::Missions);
                     }
 
                     // User already exists

@@ -12,7 +12,7 @@ use crate::{components::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the InspectMission component.
+/// The properties of the InspectMission component. Used to request a mission from the server.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub mission_id: i32
