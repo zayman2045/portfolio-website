@@ -102,3 +102,28 @@ pub async fn list_missions(
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
 }
+
+/// Gets a mission by its ID.
+pub async fn get_mission(
+    Extension(database): Extension<DatabaseConnection>,
+    Path(mission_id): Path<i32>,
+) -> Result<Json<Mission>, StatusCode> {
+    // Get the mission by its ID
+    match Missions::find_by_id(mission_id).one(&database).await {
+        Ok(mission) => {
+            match mission {
+                Some(mission) => {
+                    // Return the mission
+                    return Ok(Json(Mission {
+                        id: mission.id,
+                        user_id: mission.user_id,
+                        title: mission.title,
+                        content: mission.content.unwrap_or(String::from("")),
+                    }))
+                }
+                None => return Err(StatusCode::NOT_FOUND),
+            }
+        }
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+    };
+}
