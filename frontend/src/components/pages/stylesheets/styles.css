@@ -446,6 +446,19 @@ footer p a:hover {
   transform: scale(1.1);
 }
 
+.mission-container h3, .mission-container p {
+  text-align: left;
+  margin: 10px 30px;
+}
+
+.mission-container h3 {
+  font-size: 1.5em;
+}
+
+.mission-container p {
+  color: white;
+}
+
 .missions .btn-container {
   display: flex;
   justify-content: space-evenly;

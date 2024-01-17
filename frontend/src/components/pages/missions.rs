@@ -85,7 +85,7 @@ pub fn missions(props: &Props) -> Html {
                 <header>
                     <h1> {"Mission Log"} </h1>
                     </header>
-                    // Conditionally render the login and signup links if the user is not logged in
+                    // If the user is logged in, show the missions
                     if let Some(_username) = &props.username {
                         <div class={"logged-in"}>
                             <div class="new-mission-container">
@@ -93,13 +93,20 @@ pub fn missions(props: &Props) -> Html {
                                     {"Create New Mission"}
                                 </Link<Route>>
                             </div>
-                            if let Some(_missions) = &missions_store.missions {
-                                <div class="mission-container">
-                                <Link<Route> to={Route::Home}>
-                                    {"Found Mission!"}
-                                </Link<Route>>
-                            </div>
-                            }
+                            // Check if there are any missions
+                            if let Some(missions) = &missions_store.missions {
+                                <h2>{"Your Missions:"}</h2>
+                                {for missions.iter().map(|mission| {
+                                    html! {
+                                        <div class="mission-container">
+                                            <Link<Route> to={Route::Home}>
+                                                <h3>{ &mission.title }</h3>
+                                                <p>{ mission.content.as_ref().unwrap_or(&"No content".to_string()) }</p>
+                                            </Link<Route>>
+                                        </div>
+                                    }
+                                })}
+                    }
                         </div>
                     } else {
                         <div class={"logged-out"}>
