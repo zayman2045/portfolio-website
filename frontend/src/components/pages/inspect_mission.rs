@@ -5,25 +5,28 @@ use stylist::{yew::styled_component, Style};
 
 use yew::prelude::*;
 use yew_router::components::Link;
-use yewdux::{functional::use_store, dispatch::Dispatch};
+use yewdux::{dispatch::Dispatch, functional::use_store};
 
-use crate::{components::{
-    pages::scroll_to_top,
-    subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
-}, router::Route, stores::mission_store::MissionStore};
-
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::{
+    styles::STYLESHEET,
+    components::{
+        pages::scroll_to_top,
+        subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+    },
+    router::Route,
+    stores::mission_store::MissionStore,
+};
 
 /// The properties of the InspectMission component. Used to request a mission from the server.
 #[derive(Properties, PartialEq)]
 pub struct Props {
-    pub mission_id: i32
+    pub mission_id: i32,
 }
 
 /// The page of the web application that allows users to inspect a mission.
 #[styled_component(InspectMission)]
 pub fn inspect_mission(props: &Props) -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();
@@ -37,8 +40,6 @@ pub fn inspect_mission(props: &Props) -> Html {
         move |_| {
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
-
-
                 // Send a GET request to the backend API to get the mission
                 let response = Request::get(&format!("/api/missions/{}", mission_id))
                     .header("content-type", "application/json")
@@ -54,13 +55,12 @@ pub fn inspect_mission(props: &Props) -> Html {
 
                         // Use Yewdux store to hold mission
                         let mission_dispatch = Dispatch::<MissionStore>::new();
-                        mission_dispatch.reduce_mut( |mission_store| {
+                        mission_dispatch.reduce_mut(|mission_store| {
                             mission_store.id = mission.id;
                             mission_store.user_id = mission.user_id;
                             mission_store.title = mission.title;
                             mission_store.content = mission.content;
                         });
-
                     }
 
                     // Error retrieving mission

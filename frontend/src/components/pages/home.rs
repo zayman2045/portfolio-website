@@ -8,14 +8,13 @@ use crate::components::pages::scroll_to_top;
 use crate::components::subcomponents::contact_footer::ContactFooter;
 use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
+use crate::styles::STYLESHEET;
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
 /// The home page of the web application.
 #[styled_component(Home)]
 pub fn home() -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
-
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
     // Scroll to top of page on load
     scroll_to_top();
 

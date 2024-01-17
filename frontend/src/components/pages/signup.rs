@@ -18,7 +18,7 @@ use crate::{
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The properties of the Signup component. Used to conditionally render a message to the user.
 #[derive(Properties, PartialEq)]
@@ -30,7 +30,7 @@ pub struct Props {
 /// The page of the web application that allows users to sign up for an account.
 #[styled_component(Signup)]
 pub fn signup(props: &Props) -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

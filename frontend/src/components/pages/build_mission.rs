@@ -17,7 +17,7 @@ use crate::{
     stores::{build_store::BuildStore, user_store::UserStore},
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The properties of the BuildMission component. Used to determine if the user is creating a new mission or editing an existing one.
 #[derive(Properties, PartialEq)]
@@ -29,7 +29,7 @@ pub struct Props {
 /// The page of the web application that allows users to create or edit a mission.
 #[styled_component(BuildMission)]
 pub fn build_mission(props: &Props) -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

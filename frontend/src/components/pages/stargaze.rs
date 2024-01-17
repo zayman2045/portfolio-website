@@ -7,12 +7,12 @@ use crate::components::pages::scroll_to_top;
 use crate::components::subcomponents::contact_footer::ContactFooter;
 use crate::components::subcomponents::nav_bar::NavBar;
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The page of the web application that describes the Stargaze project.
 #[styled_component(Stargaze)]
 pub fn stargaze() -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

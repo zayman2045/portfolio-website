@@ -8,12 +8,12 @@ use crate::components::{
     subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The page of the web application that describes the site itself.
 #[styled_component(AboutSite)]
 pub fn about_site() -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

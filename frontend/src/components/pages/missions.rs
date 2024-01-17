@@ -14,7 +14,7 @@ use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
 use crate::stores::mission_store::{Mission, MissionListStore};
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The response from the backend API containing a list of missions.
 #[derive(Serialize, Deserialize, Default, Clone)]
@@ -25,7 +25,7 @@ pub struct MissionsList {
 /// The page of the web application that houses user missions.
 #[styled_component(Missions)]
 pub fn missions() -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

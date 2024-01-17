@@ -4,7 +4,7 @@ use reqwasm::http::Request;
 use stylist::{yew::styled_component, Style};
 
 use yew::prelude::*;
-use yew_router::{components::Link, hooks::use_navigator, navigator};
+use yew_router::{components::Link, hooks::use_navigator};
 
 use crate::{
     components::{
@@ -14,7 +14,7 @@ use crate::{
     router::Route,
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The properties of the DeleteMission component. Used to delete a mission in the database.
 #[derive(Properties, PartialEq)]
@@ -25,7 +25,7 @@ pub struct Props {
 /// The page of the web application that allows users to delete a mission.
 #[styled_component(DeleteMission)]
 pub fn delete_mission(props: &Props) -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();

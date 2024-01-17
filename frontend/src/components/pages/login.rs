@@ -18,7 +18,7 @@ use crate::{
     stores::{auth_store::AuthStore, user_store::UserStore},
 };
 
-const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
+use crate::styles::STYLESHEET;
 
 /// The properties of the Login component. Used to conditionally render a message to the user.
 #[derive(Properties, PartialEq)]
@@ -30,7 +30,7 @@ pub struct Props {
 /// The page of the web application that allows users to log in.
 #[styled_component(Login)]
 pub fn login(props: &Props) -> Html {
-    let stylesheet = Style::new(STYLE_FILE).unwrap();
+    let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
     scroll_to_top();
@@ -61,7 +61,7 @@ pub fn login(props: &Props) -> Html {
     // Use navigator to redirect the user after a successful log in
     let navigator = use_navigator().unwrap();
 
-    // Handler for log in form submission
+    // Callback for log in form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
 
@@ -89,7 +89,7 @@ pub fn login(props: &Props) -> Html {
                 200 => {
                     // Convert the response to a user
                     let user: UserResponse = response.json().await.unwrap();
-                    
+
                     // Update the UserStore
                     let user_dispatch = Dispatch::<UserStore>::new();
                     user_dispatch.reduce_mut(|user_store| {

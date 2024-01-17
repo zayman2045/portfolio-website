@@ -5,7 +5,8 @@
 
 pub mod components;
 pub mod router;
-mod stores;
+pub mod stores;
+pub mod styles;
 
 use router::{switch, Route};
 use yew::prelude::*;

@@ -1,10 +1,9 @@
-/* Common Styles */
-:root {
+pub const STYLESHEET: &str = r#"
+
   background-color: #0e0e2a;
   color: #e0e0e0;
   font-family: "Arial, sans-serif";
   min-height: 100vh;
-}
 
 h1,
 h2 {
@@ -498,3 +497,4 @@ footer p a:hover {
   color: #08f7be;
   transform: scale(1.1);
 }
+"#;
