@@ -4,7 +4,7 @@ pub mod users;
 pub mod missions;
 
 use axum::{
-    routing::{post, get},
+    routing::{post, get, delete},
     Extension, Router,
 };
 
@@ -27,6 +27,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .route("/users/:user_id", get(missions::list_missions))
         .route("/missions/:mission_id", get(missions::get_mission))
         .route("/missions/:mission_id", post(missions::update_mission))
+        .route("/missions/:mission_id", delete(missions::delete_mission))
         .layer(Extension(database))
         .layer(cors)
 }

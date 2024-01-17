@@ -165,3 +165,16 @@ pub async fn update_mission(
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }
+
+/// Deletes a mission by its ID.
+pub async fn delete_mission(
+    Extension(database): Extension<DatabaseConnection>,
+    Path(mission_id): Path<i32>,
+) -> Result<(), StatusCode> {
+    match Missions::delete_by_id(mission_id).exec(&database).await {
+        Ok(_) => {
+            return Ok(())
+        }
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+    }
+}
