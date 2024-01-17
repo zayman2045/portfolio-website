@@ -23,7 +23,7 @@ pub struct Mission {
 pub struct RequestMission {
     pub user_id: i32,
     pub title: String,
-    pub content: String,
+    pub content: Option<String>,
 }
 
 /// The response body for creating a new mission.
@@ -56,7 +56,7 @@ pub async fn create_mission(
     let new_mission = missions::ActiveModel {
         user_id: ActiveValue::Set(request_mission.user_id),
         title: ActiveValue::Set(request_mission.title.clone()),
-        content: ActiveValue::Set(Some(request_mission.content.clone())),
+        content: ActiveValue::Set(request_mission.content.clone()),
         ..Default::default()
     };
 
@@ -67,7 +67,7 @@ pub async fn create_mission(
                 id: insert_result.last_insert_id,
                 user_id: request_mission.user_id,
                 title: request_mission.title,
-                content: request_mission.content,
+                content: request_mission.content.unwrap_or(String::from("")),
             }))
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
@@ -141,7 +141,7 @@ pub async fn update_mission(
                 Some(mission) => {
                     let mut mission: missions::ActiveModel = mission.into();
                     mission.title = ActiveValue::Set(request_mission.title);
-                    mission.content = ActiveValue::Set(Some(request_mission.content));
+                    mission.content = ActiveValue::Set(request_mission.content);
                     match mission.save(&database).await {
                         Ok(update_result) => {
                             match update_result.try_into_model() {
