@@ -20,7 +20,7 @@ pub struct Mission {
 
 /// The request body for creating a new mission.
 #[derive(Deserialize, Serialize)]
-pub struct RequestMissionCreate {
+pub struct RequestMission {
     pub user_id: i32,
     pub title: String,
     pub content: String,
@@ -28,7 +28,7 @@ pub struct RequestMissionCreate {
 
 /// The response body for creating a new mission.
 #[derive(Deserialize, Serialize)]
-pub struct ResponseMissionCreate {
+pub struct ResponseMission {
     pub id: i32,
     pub user_id: i32,
     pub title: String,
@@ -50,8 +50,8 @@ pub struct ResponseAllMissions {
 /// Creates a new mission in the database.
 pub async fn create_mission(
     Extension(database): Extension<DatabaseConnection>,
-    Json(request_mission): Json<RequestMissionCreate>,
-) -> Result<Json<ResponseMissionCreate>, StatusCode> {
+    Json(request_mission): Json<RequestMission>,
+) -> Result<Json<ResponseMission>, StatusCode> {
     // Create a new mission model
     let new_mission = missions::ActiveModel {
         user_id: ActiveValue::Set(request_mission.user_id),
@@ -63,7 +63,7 @@ pub async fn create_mission(
     // Insert the new mission into the database
     match Missions::insert(new_mission).exec(&database).await {
         Ok(insert_result) => {
-            return Ok(Json(ResponseMissionCreate {
+            return Ok(Json(ResponseMission {
                 id: insert_result.last_insert_id,
                 user_id: request_mission.user_id,
                 title: request_mission.title,
@@ -126,4 +126,42 @@ pub async fn get_mission(
         }
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
+}
+
+/// Updates a mission by its ID.
+pub async fn update_mission(
+    Extension(database): Extension<DatabaseConnection>,
+    Path(mission_id): Path<i32>,
+    Json(request_mission): Json<RequestMission>,
+) -> Result<Json<ResponseMission>, StatusCode> {
+    // Get the mission by its ID
+    match Missions::find_by_id(mission_id).one(&database).await {
+        Ok(mission) => {
+            match mission {
+                Some(mission) => {
+                    let mut mission: missions::ActiveModel = mission.into();
+                    mission.title = ActiveValue::Set(request_mission.title);
+                    mission.content = ActiveValue::Set(Some(request_mission.content));
+                    match mission.save(&database).await {
+                        Ok(update_result) => {
+                            match update_result.try_into_model() {
+                                Ok(mission) => {
+                                    return Ok(Json(ResponseMission {
+                                        id: mission.id,
+                                        user_id: mission.user_id,
+                                        title: mission.title,
+                                        content: mission.content.unwrap_or(String::from("")),
+                                    }));
+                                }
+                                Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                            }
+                        },
+                        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                    }
+                }
+                None => return Err(StatusCode::NOT_FOUND),
+            }
+        }
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+    }
 }

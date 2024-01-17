@@ -26,6 +26,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .route("/missions", post(missions::create_mission))
         .route("/users/:user_id", get(missions::list_missions))
         .route("/missions/:mission_id", get(missions::get_mission))
+        .route("/missions/:mission_id", post(missions::update_mission))
         .layer(Extension(database))
         .layer(cors)
 }
