@@ -10,14 +10,14 @@ use crate::entities::users;
 
 /// The request body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
-pub struct RequestUser {
+pub struct UserRequest {
     pub username: String,
     pub password: String,
 }
 
 // The response body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
-pub struct ResponseUser {
+pub struct UserResponse {
     pub username: String,
     pub id: i32,
     pub token: String,
@@ -26,18 +26,18 @@ pub struct ResponseUser {
 /// Creates a new user in the database.
 pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
-    Json(request_user): Json<RequestUser>,
-) -> Result<Json<ResponseUser>, StatusCode> {
+    Json(user_request): Json<UserRequest>,
+) -> Result<Json<UserResponse>, StatusCode> {
     // Create a new user model
     let new_user = users::ActiveModel {
-        username: ActiveValue::Set(request_user.username.clone()),
-        password: ActiveValue::Set(request_user.password),
+        username: ActiveValue::Set(user_request.username.clone()),
+        password: ActiveValue::Set(user_request.password),
         ..Default::default()
     };
 
     // Check if the user already exists
     match Users::find()
-        .filter(users::Column::Username.eq(request_user.username.clone()))
+        .filter(users::Column::Username.eq(user_request.username.clone()))
         .one(&database)
         .await
     {
@@ -49,8 +49,8 @@ pub async fn create_user(
                 // Insert the new user into the database
                 match Users::insert(new_user).exec(&database).await {
                     Ok(insert_result) => {
-                        return Ok(Json(ResponseUser {
-                            username: request_user.username,
+                        return Ok(Json(UserResponse {
+                            username: user_request.username,
                             id: insert_result.last_insert_id,
                             token: String::from("Hello World!"),
                         }))
@@ -66,11 +66,11 @@ pub async fn create_user(
 /// Logs in a user.
 pub async fn login_user(
     Extension(database): Extension<DatabaseConnection>,
-    Json(request_user): Json<RequestUser>,
-) -> Result<Json<ResponseUser>, StatusCode> {
+    Json(user_request): Json<UserRequest>,
+) -> Result<Json<UserResponse>, StatusCode> {
     // Check if the user exists
     match Users::find()
-        .filter(users::Column::Username.eq(request_user.username.clone()))
+        .filter(users::Column::Username.eq(user_request.username.clone()))
         .one(&database)
         .await
     {
@@ -80,8 +80,8 @@ pub async fn login_user(
                 return Err(StatusCode::NOT_FOUND);
             } else {
                 // Check if the password is correct
-                if database_user.clone().unwrap().password == request_user.password {
-                    return Ok(Json(ResponseUser {
+                if database_user.clone().unwrap().password == user_request.password {
+                    return Ok(Json(UserResponse {
                         username: database_user.clone().unwrap().username,
                         id: database_user.clone().unwrap().id,
                         token: String::from("Hello World!"),

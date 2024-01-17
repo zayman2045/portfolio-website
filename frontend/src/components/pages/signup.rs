@@ -12,7 +12,7 @@ use crate::{
     components::{
         pages::scroll_to_top,
         subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
-        types::ResponseUser,
+        types::UserResponse,
     },
     router::Route,
     stores::{auth_store::AuthStore, user_store::UserStore},
@@ -102,7 +102,7 @@ pub fn signup(props: &Props) -> Html {
                 match response.status() {
                     // User created successfully
                     200 => {
-                        let user: ResponseUser = response.json().await.unwrap();
+                        let user: UserResponse = response.json().await.unwrap();
                         let user_dispatch = Dispatch::<UserStore>::new();
 
                         // Update the UserStore

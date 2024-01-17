@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 /// The response from the backend API when a user is created or logged in.
 #[derive(Serialize, Deserialize, Default, Clone)]
-pub struct ResponseUser {
+pub struct UserResponse {
     pub username: Option<String>,
     pub id: Option<i32>,
     pub token: Option<String>,
