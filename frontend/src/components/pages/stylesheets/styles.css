@@ -320,10 +320,20 @@ footer p a:hover {
 }
 
 /* About Site */
-.about-site img {
+.about-site .crate-container img {
   height: 150px;
   width: 150px;
   border: 2px solid #a056f3;
+  border-radius: 50px;
+  transition: border-color 0.3s, transform 1.5s;
+}
+
+.about-site .crate-container img:hover {
+  border-color: #08f7be;
+  transform: scale(1.1);
+}
+
+.about-site .crate-container a {
   border-radius: 50px;
 }
 
