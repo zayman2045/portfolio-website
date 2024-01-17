@@ -42,19 +42,28 @@ pub fn home() -> Html {
                     <h2>{"Explore My Projects"}</h2>
                     <ul>
                         <li>
-                            <Link<Route> to={Route::Stargaze}>
-                                <img src={"img/stargaze-square1.jpeg"} alt={"Stargaze Logo"} id={"stargaze-square"}/>
-                            </Link<Route>>
+                            // <Link<Route> to={Route::Stargaze}>
+                            //     <img src={"img/stargaze-square1.jpeg"} alt={"Stargaze Logo"} id={"stargaze-square"}/>
+                            // </Link<Route>>
+                            <a href={"https://github.com/zayman2045/stargaze"}>
+                                <img src={"img/stargaze-square1.jpeg"} />
+                            </a>
                         </li>
                         <li>
-                            <Link<Route> to={Route::Funder}>
-                                <img src={"img/funder-square1.jpeg"} alt={"Funder Logo"} id={"funder-square"} />
-                            </Link<Route>>
+                            // <Link<Route> to={Route::Funder}>
+                            //     <img src={"img/funder-square1.jpeg"} alt={"Funder Logo"} id={"funder-square"} />
+                            // </Link<Route>>
+                            <a href={"https://github.com/zayman2045/funder"}>
+                                <img src={"img/funder-square1.jpeg"} />
+                            </a>
                         </li>
                         <li>
-                            <Link<Route> to={Route::Ello}>
-                                <img src={"img/ello-square1.jpeg"} alt={"Ello Logo"} id={"ello-square"} />
-                            </Link<Route>>
+                            // <Link<Route> to={Route::Ello}>
+                            //     <img src={"img/ello-square1.jpeg"} alt={"Ello Logo"} id={"ello-square"} />
+                            // </Link<Route>>
+                            <a href={"https://github.com/zayman2045/ello"}>
+                                <img src={"img/ello-square1.jpeg"} />
+                            </a>
                         </li>
                     </ul>
                 </section>
