@@ -10,6 +10,9 @@ pub mod login;
 pub mod signup;
 pub mod stargaze;
 pub mod missions;
+pub mod build_mission;
+pub mod inspect_mission;
+pub mod delete_mission;
 
 use web_sys::window;
 

@@ -5,7 +5,7 @@
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
     funder::Funder, home::Home, login::Login, missions::Missions, signup::Signup,
-    stargaze::Stargaze,
+    stargaze::Stargaze, build_mission::BuildMission, inspect_mission::InspectMission, delete_mission::DeleteMission,
 };
 
 use yew::prelude::*;
@@ -49,6 +49,17 @@ pub enum Route {
     Missions,
     #[at("/missions/users/:username")]
     MissionsUsers { username: String },
+    #[at("/missions/new")]
+    NewMission,
+    #[at("/missions/:mission_id")]
+    InspectMission { mission_id: i32 },
+    #[at("/missions/:mission_id/edit")]
+    EditMission { mission_id: i32},
+    #[at("/missions/:mission_id/delete")]
+    DeleteMission { mission_id: i32 },
+    #[not_found]
+    #[at("/404")]
+    NotFound,
 }
 
 /// Returns the component corresponding to the given route.
@@ -79,5 +90,10 @@ pub fn switch(routes: Route) -> Html {
         Route::LoginError => html! {<Login message={Some("An error occurred.".to_string())} />},
         Route::Missions => html! {<Missions />},
         Route::MissionsUsers { username } => html! {<Missions username={Some(username)} />},
+        Route::NewMission => html! {<BuildMission />},
+        Route::InspectMission { mission_id } => html! {<InspectMission mission_id={mission_id} />},
+        Route::EditMission { mission_id } => html! {<BuildMission mission_id={Some(mission_id)} />},
+        Route::DeleteMission { mission_id } => html! {<DeleteMission mission_id={mission_id} />},
+        Route::NotFound => html! {<div>{"404 - Not Found"}</div>},
     }
 }

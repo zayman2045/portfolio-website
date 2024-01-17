@@ -41,12 +41,18 @@ pub fn missions(props: &Props) -> Html {
     // Use Yewdux to hold missions
     let (missions_store, _missions_dispatch) = use_store::<MissionStore>();
 
+    // Use Yewdux to get user information
+    let (user_store, user_dispatch) = use_store::<crate::stores::user_store::UserStore>();
+
     use_effect_with_deps(
         move |_| {
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
+                // Get the user_id from the user_store
+                let user_id = user_dispatch.get().id.unwrap_or(1);
+
                 // Send a GET request to the backend API to get all missions
-                let response = Request::get("/api/users/2")
+                let response = Request::get(&format!("/api/users/{}", user_id))
                     .header("content-type", "application/json")
                     .send()
                     .await
@@ -86,10 +92,10 @@ pub fn missions(props: &Props) -> Html {
                     <h1> {"Mission Log"} </h1>
                     </header>
                     // If the user is logged in, show the missions
-                    if let Some(_username) = &props.username {
+                    if let Some(_username) = &user_store.username {
                         <div class={"logged-in"}>
                             <div class="new-mission-container">
-                                <Link<Route> to={Route::Home}>
+                                <Link<Route> to={Route::NewMission}>
                                     {"Create New Mission"}
                                 </Link<Route>>
                             </div>
@@ -99,7 +105,7 @@ pub fn missions(props: &Props) -> Html {
                                 {for missions.iter().map(|mission| {
                                     html! {
                                         <div class="mission-container">
-                                            <Link<Route> to={Route::Home}>
+                                            <Link<Route> to={Route::InspectMission {mission_id: mission.id}}>
                                                 <h3>{ &mission.title }</h3>
                                                 <p>{ mission.content.as_ref().unwrap_or(&"No content".to_string()) }</p>
                                             </Link<Route>>
