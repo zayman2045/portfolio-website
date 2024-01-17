@@ -277,8 +277,8 @@ footer p a:hover {
   width: 60%;
   margin: 15px auto;
   display: block;
-  background-color: #08f7be;
-  color: #0e0e2a;
+  background-color: #000;
+  color: #08f7be;
   padding: 14px 20px;
   border: 1px solid #a056f3;
   border-radius: 5px;
@@ -387,6 +387,7 @@ footer p a:hover {
   border-radius: 5px;
   width: 50vw;
   margin: 20px auto;
+  padding: 10px 20px;
 }
 
 .missions .logged-out h3 {
@@ -449,17 +450,18 @@ footer p a:hover {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   padding: 20px;
   margin: 20px auto;
   flex-wrap: wrap;
 }
 
 .missions .btn-container a {
-  width: 10%;
-  background-color: #08f7be;
-  color: #0e0e2a;
-  padding: 14px 20px;
+  width: 20%;
+  background-color: black;
+  color: #08f7be;
+  padding: 14px 25px;
+  margin: 10px;
   border: 1px solid #a056f3;
   border-radius: 5px;
   cursor: pointer;

@@ -35,7 +35,7 @@ pub fn login(props: &Props) -> Html {
     // Scroll to top of page on load
     scroll_to_top();
 
-    // Use Yewdux store to hold authentication information from text inputs temporarily
+    // Use Yewdux store to hold authentication information from text inputs
     let auth_dispatch = Dispatch::<AuthStore>::new();
 
     // Store username when onchange event occurs to the username input field
