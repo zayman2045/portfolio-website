@@ -26,7 +26,6 @@ pub struct Props {
     pub mission_id: Option<i32>,
 }
 
-
 /// The page of the web application that allows users to create or edit a mission.
 #[styled_component(BuildMission)]
 pub fn build_mission(props: &Props) -> Html {
@@ -41,11 +40,7 @@ pub fn build_mission(props: &Props) -> Html {
     // Store title when onchange event occurs to the title input field
     let onchange_title = build_dispatch.reduce_mut_callback_with(|build_store, event: Event| {
         let title = event.target_unchecked_into::<HtmlInputElement>().value();
-        build_store.title = if title.is_empty() {
-            None
-        } else {
-            Some(title)
-        }
+        build_store.title = if title.is_empty() { None } else { Some(title) }
     });
 
     // Store content when onchange event occurs to the content input field
@@ -61,45 +56,72 @@ pub fn build_mission(props: &Props) -> Html {
     // Use navigator to redirect the user after a form submission
     let navigator = use_navigator().unwrap();
 
+    // Clone the mission ID from the properties
+    let mission_id = props.mission_id;
+
     // Handler for form submission
-    let onsubmit = build_dispatch.reduce_mut_callback_with(move |build_store, event: SubmitEvent| {
-        event.prevent_default();
+    let onsubmit =
+        build_dispatch.reduce_mut_callback_with(move |build_store, event: SubmitEvent| {
+            event.prevent_default();
 
-        let build_store = build_store.clone();
-        let navigator = navigator.clone();
-        let user_dispatch = Dispatch::<UserStore>::new();
+            let build_store = build_store.clone();
+            let navigator = navigator.clone();
+            let user_dispatch = Dispatch::<UserStore>::new();
 
-        // Spawn a new thread
-        wasm_bindgen_futures::spawn_local(async move {
-            let build_request = json!({
-                "user_id": user_dispatch.get().id.unwrap(),
-                "title": build_store.title.unwrap(),
-                "content": build_store.content.unwrap_or_default(),
-            })
-            .to_string();
+            // Spawn a new thread
+            wasm_bindgen_futures::spawn_local(async move {
+                let build_request = json!({
+                    "user_id": user_dispatch.get().id.unwrap(),
+                    "title": build_store.title.unwrap(),
+                    "content": build_store.content.unwrap_or_default(),
+                })
+                .to_string();
 
-            // Send a POST request to the backend API to log in user
-            let response = Request::post("/api/missions")
-                .body(build_request)
-                .header("content-type", "application/json")
-                .send()
-                .await
-                .unwrap();
+                if let Some(mission_id) = mission_id {
+                    // Send a POST request to the backend API to update the mission
+                    let response = Request::post(&format!("/api/missions/{}", mission_id))
+                        .body(build_request)
+                        .header("content-type", "application/json")
+                        .send()
+                        .await
+                        .unwrap();
 
-            match response.status() {
-                // 
-                200 => {
-                    // Redirect the user to their mission page
-                    navigator.push(&Route::Missions);
+                    match response.status() {
+                        // Successfully updated the mission
+                        200 => {
+                            // Redirect the user to their mission page
+                            navigator.push(&Route::Missions);
+                        }
+
+                        // Failed to update the mission
+                        _ => {
+                            navigator.push(&Route::LoginError); // TODO: Create a BuildError page
+                        }
+                    }
+                } else {
+                    // Send a POST request to the backend API to create the mission
+                    let response = Request::post("/api/missions")
+                        .body(build_request)
+                        .header("content-type", "application/json")
+                        .send()
+                        .await
+                        .unwrap();
+
+                    match response.status() {
+                        // Successfully created the mission
+                        200 => {
+                            // Redirect the user to their mission page
+                            navigator.push(&Route::Missions);
+                        }
+
+                        // Failed to create the mission
+                        _ => {
+                            navigator.push(&Route::LoginError); // TODO: Create a BuildError page
+                        }
+                    }
                 }
-
-                // 
-                _ => {
-                    navigator.push(&Route::LoginError); // TODO: Create a BuildError page
-                }
-            }
+            });
         });
-    });
 
     html!(
         <div class={stylesheet}>
