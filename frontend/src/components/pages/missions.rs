@@ -16,13 +16,7 @@ use crate::stores::mission_store::{Mission, MissionStore};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// The properties of the Signup component.
-#[derive(Properties, PartialEq)]
-pub struct Props {
-    #[prop_or_default]
-    pub user_id: Option<i32>,
-    pub username: Option<String>,
-}
+
 
 /// The response from the backend API containing a list of missions.
 #[derive(Serialize, Deserialize, Default, Clone)]
@@ -32,7 +26,7 @@ pub struct MissionsList {
 
 /// The page of the web application that houses user missions.
 #[styled_component(Missions)]
-pub fn missions(props: &Props) -> Html {
+pub fn missions() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
     // Scroll to top of page on load
@@ -92,7 +86,7 @@ pub fn missions(props: &Props) -> Html {
                     <h1> {"Mission Log"} </h1>
                     </header>
                     // If the user is logged in, show the missions
-                    if let Some(_username) = &user_store.username {
+                    if let Some(username) = &user_store.username {
                         <div class={"logged-in"}>
                             <div class="new-mission-container">
                                 <Link<Route> to={Route::NewMission}>

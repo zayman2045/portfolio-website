@@ -47,8 +47,6 @@ pub enum Route {
     LoginInvalid,
     #[at("/missions")]
     Missions,
-    #[at("/missions/users/:username")]
-    MissionsUsers { username: String },
     #[at("/missions/new")]
     NewMission,
     #[at("/missions/:mission_id")]
@@ -89,7 +87,6 @@ pub fn switch(routes: Route) -> Html {
         }
         Route::LoginError => html! {<Login message={Some("An error occurred.".to_string())} />},
         Route::Missions => html! {<Missions />},
-        Route::MissionsUsers { username } => html! {<Missions username={Some(username)} />},
         Route::NewMission => html! {<BuildMission />},
         Route::InspectMission { mission_id } => html! {<InspectMission mission_id={mission_id} />},
         Route::EditMission { mission_id } => html! {<BuildMission mission_id={Some(mission_id)} />},
