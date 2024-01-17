@@ -4,7 +4,7 @@ This web application serves as my development portfolio. It's written in Rust fo
 
 ## Overview
 
-The frontend is built using Yew, a robust Rust framework for creating multi-threaded web applications that compile to WebAssembly. It utilizes a component-based architecture, offering a reactive and modular user interface. This is similar to React and Vue.js, but with the added benefits of Rust's strong type system and exceptional performance.
+The frontend is built using Yew, a robust Rust framework for creating multi-threaded web applications that compile to WebAssembly. It utilizes a component-based architecture, offering a reactive and modular user interface. This is similar to React and Vue.js, but with the added benefits of Rust's strong type system and exceptional performance. The styling is contained within its own module, using a CSS-like syntax. This syntax is written as a raw string literal, which is then parsed by the Stylist crate to style the functional components.
 
 Yewdux is used for state management across the application. It allows for the persistence of state and can be scoped to local storage, session storage, or to a single window’s current render. In this application, Yewdux stores are used for collecting and submitting form data, displaying JSON response data, and maintaining user sessions across pages.
 
