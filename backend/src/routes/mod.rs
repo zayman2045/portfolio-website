@@ -8,7 +8,7 @@ use axum::{
     Extension, Router,
 };
 
-use hyper::Method;
+use hyper::Method; 
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{CorsLayer, Any};
 
@@ -24,7 +24,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .route("/users", post(users::create_user))
         .route("/login", post(users::login_user))
         .route("/missions", post(missions::create_mission))
-        .route("/missions", get(missions::list_missions))
+        .route("/users/:user_id", get(missions::list_missions))
         .layer(Extension(database))
         .layer(cors)
 }

@@ -1,5 +1,6 @@
 //! Handles mission specific routes.
 
+use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::{extract::Extension, Json};
 use sea_orm::{entity::*, DatabaseConnection, QueryFilter};
@@ -76,11 +77,11 @@ pub async fn create_mission(
 /// Lists all missions for a user.
 pub async fn list_missions(
     Extension(database): Extension<DatabaseConnection>,
-    Json(request_missions): Json<RequestAllMissions>,
+    Path(user_id): Path<u32>
 ) -> Result<Json<ResponseAllMissions>, StatusCode> {
     // Get all missions for the user
     match Missions::find()
-        .filter(missions::Column::UserId.eq(request_missions.user_id))
+        .filter(missions::Column::UserId.eq(user_id))
         .all(&database)
         .await
     {
