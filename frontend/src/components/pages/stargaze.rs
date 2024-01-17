@@ -9,7 +9,7 @@ use crate::components::subcomponents::nav_bar::NavBar;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the page of the web application that describes the Stargaze project.
+/// The page of the web application that describes the Stargaze project.
 #[styled_component(Stargaze)]
 pub fn stargaze() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

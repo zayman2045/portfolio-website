@@ -1,15 +1,15 @@
 //! Stores user's list of missions.
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use yewdux::prelude::*;
 
-/// Represents the user's list of missions.
+/// The user's list of missions.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Store)]
 pub struct MissionStore {
-    pub missions: Option<Vec<Mission>>
+    pub missions: Option<Vec<Mission>>,
 }
 
-/// Represents a single mission.
+/// A single mission.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Mission {
     pub id: i32,
@@ -17,5 +17,3 @@ pub struct Mission {
     pub title: String,
     pub content: Option<String>,
 }
-
-

@@ -20,14 +20,14 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the properties of the Login component.
+/// The properties of the Login component.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
     pub message: Option<String>,
 }
 
-/// Represents the page of the web application that allows users to log in.
+/// The page of the web application that allows users to log in.
 #[styled_component(Login)]
 pub fn login(props: &Props) -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

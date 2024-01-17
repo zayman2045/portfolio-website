@@ -2,7 +2,7 @@
 
 use yew::prelude::*;
 
-/// Represents the footer of the application.
+/// The footer of the application.
 ///
 /// This functional component renders a footer with contact information.
 /// It includes an email address and a GitHub username, both of which are rendered as links.

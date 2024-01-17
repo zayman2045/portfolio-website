@@ -12,11 +12,11 @@ use crate::components::pages::scroll_to_top;
 use crate::components::subcomponents::contact_footer::ContactFooter;
 use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
-use crate::stores::mission_store::{MissionStore, Mission};
+use crate::stores::mission_store::{Mission, MissionStore};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the properties of the Signup component.
+/// The properties of the Signup component.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
@@ -24,13 +24,13 @@ pub struct Props {
     pub username: Option<String>,
 }
 
-/// Represents the response from the backend API containing a list of missions.
+/// The response from the backend API containing a list of missions.
 #[derive(Serialize, Deserialize, Default, Clone)]
 pub struct MissionsList {
     pub missions: Option<Vec<Mission>>,
 }
 
-/// Represents the page of the web application that houses user missions.
+/// The page of the web application that houses user missions.
 #[styled_component(Missions)]
 pub fn missions(props: &Props) -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
@@ -38,42 +38,45 @@ pub fn missions(props: &Props) -> Html {
     // Scroll to top of page on load
     scroll_to_top();
 
-    // Use Yewdux to hold missions 
+    // Use Yewdux to hold missions
     let (missions_store, _missions_dispatch) = use_store::<MissionStore>();
 
-        use_effect_with_deps(move |_| {
+    use_effect_with_deps(
+        move |_| {
+            // Spawn a new thread
+            wasm_bindgen_futures::spawn_local(async move {
+                // Send a GET request to the backend API to get all missions
+                let response = Request::get("/api/users/2")
+                    .header("content-type", "application/json")
+                    .send()
+                    .await
+                    .unwrap();
 
-        // Spawn a new thread
-        wasm_bindgen_futures::spawn_local(async move {
+                match response.status() {
+                    // Successfully retrieved missions
+                    200 => {
+                        // Convert the response to a list of missions
+                        let missions: MissionsList = response.json().await.unwrap();
 
-            // Send a GET request to the backend API to get all missions
-            let response = Request::get("/api/users/2")
-                .header("content-type", "application/json")
-                .send()
-                .await
-                .unwrap(); 
+                        // Use Yewdux store to hold missions
+                        let missions_dispatch = Dispatch::<MissionStore>::new();
+                        missions_dispatch.reduce_mut(|missions_store| {
+                            missions_store.missions = missions.missions;
+                        });
+                    }
 
-            match response.status() {
-                // Successfully retrieved missions
-                200 => {
-                    // Convert the response to a list of missions
-                    let missions: MissionsList = response.json().await.unwrap();
-                    
-                    // Use Yewdux store to hold missions
-                    let missions_dispatch = Dispatch::<MissionStore>::new();
-                    missions_dispatch.reduce_mut(|missions_store| {
-                        missions_store.missions = missions.missions;
-                    });
+                    // Error retrieving missions
+                    _ => {
+                        // Log a message to the console
+                        web_sys::console::log_1(
+                            &format!("Error retrieving missions: {:?}", response).into(),
+                        );
+                    }
                 }
-
-                // Error retrieving missions
-                _ => {
-                    // Log a message to the console
-                    web_sys::console::log_1(&format!("Error retrieving missions: {:?}", response).into());
-                }
-            }
-        });
-    }, ());
+            });
+        },
+        (),
+    );
 
     html!(
         <div class={stylesheet}>

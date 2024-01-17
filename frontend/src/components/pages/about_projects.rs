@@ -3,17 +3,19 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-
-use crate::components::{subcomponents::{nav_bar::NavBar, contact_footer::ContactFooter}, pages::scroll_to_top};
+use crate::components::{
+    pages::scroll_to_top,
+    subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the page of the web application that describes the projects.
+/// The page of the web application that describes the projects.
 #[styled_component(AboutProjects)]
 pub fn about_projects() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();
 
-    // Scroll to top of page on load 
+    // Scroll to top of page on load
     scroll_to_top();
 
     html!(
@@ -37,9 +39,9 @@ pub fn about_projects() -> Html {
                         <img src={"img/funder-portrait.jpeg"} />
                     </a>
                     <a href={"https://github.com/zayman2045/ello"}>
-                        <img src={"img/ello-portrait.jpeg"} /> 
+                        <img src={"img/ello-portrait.jpeg"} />
                     </a>
-                </div> 
+                </div>
                 <ContactFooter />
             </div>
         </div>

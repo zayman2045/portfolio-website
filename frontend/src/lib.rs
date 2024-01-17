@@ -11,7 +11,7 @@ use router::{switch, Route};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-/// Represents the main application component.
+/// The main application component.
 ///
 /// This functional component sets up the application environment, initializes the router and starts the rendering loop.
 #[function_component(App)]

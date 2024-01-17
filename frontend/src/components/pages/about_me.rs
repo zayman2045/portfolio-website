@@ -3,11 +3,14 @@
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 
-use crate::components::{subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar}, pages::scroll_to_top};
+use crate::components::{
+    pages::scroll_to_top,
+    subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
+};
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the page of the web application that describes the developer.
+/// The page of the web application that describes the developer.
 #[styled_component(AboutMe)]
 pub fn about_me() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

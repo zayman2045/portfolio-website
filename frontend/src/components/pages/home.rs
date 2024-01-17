@@ -11,7 +11,7 @@ use crate::router::Route;
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the home page of the web application.
+/// The home page of the web application.
 #[styled_component(Home)]
 pub fn home() -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

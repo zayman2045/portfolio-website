@@ -1,9 +1,9 @@
 //! Stores the user's username and token for authentication
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use yewdux::prelude::*;
 
-/// Represents the user during a session.
+/// The user during a session.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Store, Serialize, Deserialize)]
 pub struct UserStore {
     pub username: Option<String>,

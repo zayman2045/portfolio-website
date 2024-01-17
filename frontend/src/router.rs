@@ -11,7 +11,7 @@ use crate::components::pages::{
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-/// Represents the different routes in the application.
+/// The different routes in the application.
 ///
 /// Each variant of this enum corresponds to a different page in the application.
 /// The `#[at]` attribute defines the path for each route.

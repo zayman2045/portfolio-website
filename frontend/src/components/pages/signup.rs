@@ -20,14 +20,14 @@ use crate::{
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
 
-/// Represents the properties of the Signup component.
+/// The properties of the Signup component.
 #[derive(Properties, PartialEq)]
 pub struct Props {
     #[prop_or_default]
     pub message: Option<String>,
 }
 
-/// Represents the page of the web application that allows users to sign up for an account.
+/// The page of the web application that allows users to sign up for an account.
 #[styled_component(Signup)]
 pub fn signup(props: &Props) -> Html {
     let stylesheet = Style::new(STYLE_FILE).unwrap();

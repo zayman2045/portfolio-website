@@ -5,7 +5,7 @@ use yew_router::prelude::Link;
 
 use crate::router::Route;
 
-/// Represents the navigation bar of the application.
+/// The navigation bar of the application.
 ///
 /// This functional component renders a navigation bar with links to the Home, About Me, About Site, and My Projects pages.
 /// Each link is represented by a `Link` component from the `yew_router` crate, with the `to` prop set to the corresponding route.
@@ -33,8 +33,8 @@ pub fn nav_bar() -> Html {
                     </Link<Route>>
                     <Link<Route> to={Route::Missions}>
                         {"Your Missions"}
-                    </Link<Route>> 
-                </div> 
+                    </Link<Route>>
+                </div>
             </div>
         </nav>
     )
