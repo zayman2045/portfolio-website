@@ -67,7 +67,7 @@ pub fn missions(props: &Props) -> Html {
                                 <li>{"Uplink new data to ongoing missions, including new information and status changes."}</li>
                                 <li>{"Decommission active missions, removing them from the log."}</li>
                             </ul>
-                            <h2>{"You must be logged in to view your missions."}</h2>
+                            <h3>{"You must be logged in to view your missions."}</h3>
                             <div class="btn-container">
                                 <Link<Route> to={Route::Signup}>
                                     {"Sign Up"}

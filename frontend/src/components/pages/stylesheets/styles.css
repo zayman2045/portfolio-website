@@ -389,6 +389,12 @@ footer p a:hover {
   margin: 20px auto;
 }
 
+.missions .logged-out h3 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #a056f3
+}
+
 .missions .logged-out li {
   margin: 10px;
 }
