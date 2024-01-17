@@ -2,3 +2,4 @@
 pub mod auth_store;
 pub mod user_store;
 pub mod mission_store;
+pub mod build_store;

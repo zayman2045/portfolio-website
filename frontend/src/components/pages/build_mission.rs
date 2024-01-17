@@ -12,10 +12,9 @@ use crate::{
     components::{
         pages::scroll_to_top,
         subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
-        types::ResponseUser,
     },
     router::Route,
-    stores::{auth_store::AuthStore, user_store::UserStore},
+    stores::{build_store::BuildStore, user_store::UserStore},
 };
 
 const STYLE_FILE: &str = include_str!("stylesheets/styles.css");
@@ -36,80 +35,70 @@ pub fn build_mission(props: &Props) -> Html {
     // Scroll to top of page on load
     scroll_to_top();
 
-    // 
-    let auth_dispatch = Dispatch::<AuthStore>::new();
+    // Use Yewdux to access mission build state
+    let build_dispatch = Dispatch::<BuildStore>::new();
 
-    // 
-    let onchange_username = auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
-        let username = event.target_unchecked_into::<HtmlInputElement>().value();
-        auth_store.username = if username.is_empty() {
+    // Store title when onchange event occurs to the title input field
+    let onchange_title = build_dispatch.reduce_mut_callback_with(|build_store, event: Event| {
+        let title = event.target_unchecked_into::<HtmlInputElement>().value();
+        build_store.title = if title.is_empty() {
             None
         } else {
-            Some(username)
+            Some(title)
         }
     });
 
-    // Store password when onchange event occurs to the password input field
-    let onchange_password = auth_dispatch.reduce_mut_callback_with(|auth_store, event: Event| {
-        let password = event.target_unchecked_into::<HtmlInputElement>().value();
-        auth_store.password = if password.is_empty() {
+    // Store content when onchange event occurs to the content input field
+    let onchange_content = build_dispatch.reduce_mut_callback_with(|build_store, event: Event| {
+        let content = event.target_unchecked_into::<HtmlInputElement>().value();
+        build_store.content = if content.is_empty() {
             None
         } else {
-            Some(password)
+            Some(content)
         }
     });
 
-    // Use navigator to redirect the user after a successful log in
+    // Use navigator to redirect the user after a form submission
     let navigator = use_navigator().unwrap();
 
-    // Handler for log in form submission
-    let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
+    // Handler for form submission
+    let onsubmit = build_dispatch.reduce_mut_callback_with(move |build_store, event: SubmitEvent| {
         event.prevent_default();
 
-        let auth_store = auth_store.clone();
+        let build_store = build_store.clone();
         let navigator = navigator.clone();
+        let user_dispatch = Dispatch::<UserStore>::new();
 
         // Spawn a new thread
         wasm_bindgen_futures::spawn_local(async move {
-            let user = json!({
-                "username": auth_store.username,
-                "password": auth_store.password,
+            let build_request = json!({
+                "user_id": user_dispatch.get().id.unwrap(),
+                "title": build_store.title.unwrap(),
+                "content": build_store.content.unwrap_or_default(),
             })
             .to_string();
 
             // Send a POST request to the backend API to log in user
-            let response = Request::post("/api/login")
-                .body(user)
+            let response = Request::post("/api/missions")
+                .body(build_request)
                 .header("content-type", "application/json")
                 .send()
                 .await
                 .unwrap();
 
             match response.status() {
-                // User logged in successfully
+                // 
                 200 => {
-                    let user: ResponseUser = response.json().await.unwrap();
                     let user_dispatch = Dispatch::<UserStore>::new();
-
-                    // Update the UserStore
-                    user_dispatch.reduce_mut(|user_store| {
-                        user_store.username = user.username.clone();
-                        user_store.token = user.token.clone();
-                        user_store.id = user.id.clone();
-                    });
 
                     // Redirect the user to their mission page
                     let username = user_dispatch.get().username.as_ref().unwrap().clone();
                     navigator.push(&Route::MissionsUsers { username });
                 }
 
-                // User credentials are incorrect
-                404 | 401 => {
-                    navigator.push(&Route::LoginInvalid);
-                }
-                // Error logging in user
+                // 
                 _ => {
-                    navigator.push(&Route::LoginError);
+                    navigator.push(&Route::LoginError); // TODO: Create a BuildError page
                 }
             }
         });
@@ -127,11 +116,11 @@ pub fn build_mission(props: &Props) -> Html {
                 }
 
                 <form {onsubmit}>
-                    <label for="username">{"Title:"}</label>
-                    <input type="text" id="username" placeholder="Title" required=true onchange={onchange_username}/>
+                    <label for="title">{"Title:"}</label>
+                    <input type="text" id="title" placeholder="Title" required=true onchange={onchange_title}/>
 
-                    <label for="password">{"Details:"}</label>
-                    <input type="password" id="password" placeholder="Password" required=true onchange={onchange_password}/>
+                    <label for="content">{"Details:"}</label>
+                    <textarea id="content" placeholder="Detail your mission..." onchange={onchange_content}></textarea>
 
                     <button type="submit">{"Submit"}</button>
                 </form>
