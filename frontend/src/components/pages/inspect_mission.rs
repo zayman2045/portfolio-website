@@ -80,15 +80,28 @@ pub fn inspect_mission(props: &Props) -> Html {
         <div class={stylesheet}>
             <div class={"inspect"}>
                 <NavBar />
-                <h1>{"Inspect Mission Page Here!"}</h1>
-                <h2>{&mission_store.title}</h2>
-                <p>{mission_store.content.as_ref().unwrap_or(&"No content".to_string())}</p>
-                <Link<Route> to={Route::EditMission {mission_id: props.mission_id}}>
-                                    {"Edit Mission"}
-                </Link<Route>>
-                <Link<Route> to={Route::DeleteMission {mission_id: props.mission_id}}>
-                                    {"Delete Mission"}
-                </Link<Route>>
+                <div class={"mission-details"}>
+                    <h1>{"Mission Summary"}</h1> 
+                    <h2>{&mission_store.title}</h2>
+                    <p>{mission_store.content.as_ref().unwrap_or(&"No content".to_string())}</p>
+                    <div class={"mission-btn-container"}>
+                        <div class={"mission-btn"}>
+                            <Link<Route> to={Route::Missions}>
+                                                {"Close"}
+                            </Link<Route>>
+                        </div>
+                        <div class={"mission-btn"}>
+                        <Link<Route> to={Route::EditMission {mission_id: props.mission_id}}>
+                                            {"Edit"}
+                        </Link<Route>>
+                        </div>
+                        <div class={"mission-btn"}>
+                        <Link<Route> to={Route::DeleteMission {mission_id: props.mission_id}}>
+                                            {"Delete"}
+                        </Link<Route>>
+                        </div>
+                    </div>
+                </div>
                 <ContactFooter />
             </div>
         </div>

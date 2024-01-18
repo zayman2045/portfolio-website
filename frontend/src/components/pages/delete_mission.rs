@@ -68,15 +68,15 @@ pub fn delete_mission(props: &Props) -> Html {
         <div class={stylesheet}>
             <div class={"delete"}>
                 <NavBar />
-
-                <h1>{"Are you sure you want to delete this mission?"}</h1>
-                <Link<Route> to={Route::Missions}>
-                    {"Cancel"}
-                </Link<Route>>
-                <form {onsubmit}>
-                    <button class={"delete-button"} type="submit">{"Delete"}</button>
-                </form>
-
+                <div class={"delete-content"}>
+                    <h1>{"Are you sure you want to delete this mission?"}</h1>
+                    <form class={"delete-btn-container"} {onsubmit}>
+                        <Link<Route> to={Route::Missions}>
+                            {"Cancel"}
+                        </Link<Route>>
+                        <button class={"delete-button"} type="submit">{"Delete"}</button>
+                    </form>
+                </div>
                 <ContactFooter />
             </div>
         </div>

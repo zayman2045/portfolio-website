@@ -245,15 +245,17 @@ footer p a:hover {
   transform: scale(1.1);
 }
 
-/* Login and Signup */
+/* Login, Signup and Build */
 .login form,
-.signup form {
-  width: 300px;
+.signup form, 
+.build form {
+  width: 80%;
   margin: auto;
 }
 
 .login label,
-.signup label {
+.signup label,
+.build label {
   display: inline-block;
   width: 100%;
   margin-bottom: 10px;
@@ -263,16 +265,36 @@ footer p a:hover {
 .login input[type="text"],
 .login input[type="password"],
 .signup input[type="text"],
-.signup input[type="password"] {
+.signup input[type="password"],
+.build input[type="text"], 
+.build textarea{
   width: 100%;
   padding: 10px;
   margin: 5px 0 20px;
   border: 1px solid #a056f3;
   border-radius: 5px;
+  background-color: #0e0e2a;
+  color: white;
+}
+
+.build textarea {
+    height: 200px;
+    background-color: #0e0e2a;
+    color: white;
+}
+
+.build-content {
+    width: 50vw;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #a056f3;
+    border-radius: 5px;
+    background-color: black;
 }
 
 .login button[type="submit"],
-.signup button[type="submit"] {
+.signup button[type="submit"],
+.build button[type="submit"] {
   width: 60%;
   margin: 15px auto;
   display: block;
@@ -286,7 +308,8 @@ footer p a:hover {
 }
 
 .login button[type="submit"]:hover,
-.signup button[type="submit"]:hover {
+.signup button[type="submit"]:hover,
+.build button[type="submit"]:hover {
   border-color: #08f7be;
   background-color: #3c3c3c;
   color: #08f7be;
@@ -386,6 +409,8 @@ footer p a:hover {
 .ello header {
   text-align: center;
 }
+
+/* Missions */
 
 .missions {
   text-align: left;
@@ -497,4 +522,102 @@ footer p a:hover {
   color: #08f7be;
   transform: scale(1.1);
 }
+
+/* Inspect */
+
+.inspect .mission-details {
+    width: 50vw;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #a056f3;
+    border-radius: 5px;
+    background-color: black;
+}
+
+.inspect .mission-details h1 {
+    margin-bottom: 20px;
+}
+
+.inspect .mission-details h2 {
+    text-align: left;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    color: #08f7be;
+    border-bottom: 1px solid #a056f3;
+}
+
+.inspect .mission-details p {
+    text-align: left;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    color: white;
+}
+
+.inspect .mission-btn-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5px;
+    margin: 300px auto 5px auto;
+    flex-wrap: wrap;
+    }
+  
+  .inspect .mission-btn a {
+      width: 20px;
+      background-color: #000;
+      color: #08f7be;
+      padding: 10px 20px;
+      border: 1px solid #a056f3;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 1.5s, background-color 0.3s, color 0.3s;
+    }
+  
+    .inspect .mission-btn a:hover {
+      border-color: #08f7be;
+      background-color: #3c3c3c;
+      color: #08f7be;
+      transform: scale(1.1);
+    }
+
+    /* Delete */
+
+    .delete-content {
+        width: 50vw;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #a056f3;
+        border-radius: 5px;
+        background-color: black;
+    }
+
+    .delete-btn-container {
+        width: 50vw;
+        margin: 20px auto;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .delete button[type="submit"], .delete-btn-container a {
+        margin: 15px auto;
+        background-color: #000;
+        color: #08f7be;
+        padding: 14px 20px;
+        border: 1px solid #a056f3;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: border-color 0.3s, transform 1.5s, background-color 0.3s, color 0.3s;
+    }
+
+    .delete button[type="submit"]:hover, .delete-btn-container a:hover {
+        border-color: #08f7be;
+        background-color: #3c3c3c;
+        color: #08f7be;
+        transform: scale(1.1);
+    }
+
 "#;

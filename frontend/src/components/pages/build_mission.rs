@@ -125,24 +125,25 @@ pub fn build_mission(props: &Props) -> Html {
 
     html!(
         <div class={stylesheet}>
-            <div class={"login"}>
+            <div class={"build"}>
                 <NavBar />
+                <div class={"build-content"}>
+                    if let Some(_mission_id) = &props.mission_id {
+                        <h1>{"Edit Mission"}</h1>
+                    } else {
+                        <h1>{"Log a New Mission"}</h1>
+                    }
 
-                if let Some(mission_id) = &props.mission_id {
-                    <h1>{"Edit Mission: "}{mission_id}</h1>
-                } else {
-                    <h1>{"Log a New Mission"}</h1>
-                }
+                    <form {onsubmit}>
+                        <label for="title">{"Title:"}</label>
+                        <input type="text" id="title" placeholder="Title" required=true onchange={onchange_title}/>
 
-                <form {onsubmit}>
-                    <label for="title">{"Title:"}</label>
-                    <input type="text" id="title" placeholder="Title" required=true onchange={onchange_title}/>
+                        <label for="content">{"Details:"}</label>
+                        <textarea id="content" placeholder="Detail your mission..." onchange={onchange_content}></textarea>
 
-                    <label for="content">{"Details:"}</label>
-                    <textarea id="content" placeholder="Detail your mission..." onchange={onchange_content}></textarea>
-
-                    <button type="submit">{"Submit"}</button>
-                </form>
+                        <button type="submit">{"Submit"}</button>
+                    </form>
+                </div>
                 <ContactFooter />
             </div>
         </div>
