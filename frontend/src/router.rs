@@ -5,7 +5,7 @@
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
     funder::Funder, home::Home, login::Login, missions::Missions, signup::Signup,
-    stargaze::Stargaze, build_mission::BuildMission, inspect_mission::InspectMission, delete_mission::DeleteMission,
+    stargaze::Stargaze, build_mission::BuildMission, inspect_mission::InspectMission, delete_mission::DeleteMission, display_error::DisplayError,
 };
 
 use yew::prelude::*;
@@ -55,6 +55,8 @@ pub enum Route {
     EditMission { mission_id: i32},
     #[at("/missions/:mission_id/delete")]
     DeleteMission { mission_id: i32 },
+    #[at("/error/:error_message")]
+    DisplayError { error_message: String },
     #[not_found]
     #[at("/404")]
     NotFound,
@@ -91,6 +93,7 @@ pub fn switch(routes: Route) -> Html {
         Route::InspectMission { mission_id } => html! {<InspectMission mission_id={mission_id} />},
         Route::EditMission { mission_id } => html! {<BuildMission mission_id={Some(mission_id)} />},
         Route::DeleteMission { mission_id } => html! {<DeleteMission mission_id={mission_id} />},
+        Route::DisplayError {error_message } => html! {<DisplayError error_message={error_message}/>},
         Route::NotFound => html! {<div>{"404 - Not Found"}</div>},
     }
 }

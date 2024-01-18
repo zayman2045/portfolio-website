@@ -95,7 +95,7 @@ pub fn build_mission(props: &Props) -> Html {
 
                         // Failed to update the mission
                         _ => {
-                            navigator.push(&Route::LoginError); // TODO: Create a BuildError page
+                            navigator.push(&Route::DisplayError { error_message: "Failed to update the mission".to_string() });
                         }
                     }
                 } else {
@@ -116,7 +116,7 @@ pub fn build_mission(props: &Props) -> Html {
 
                         // Failed to create the mission
                         _ => {
-                            navigator.push(&Route::LoginError); // TODO: Create a BuildError page
+                            navigator.push(&Route::DisplayError { error_message: "Failed to create the mission".to_string() });
                         }
                     }
                 }

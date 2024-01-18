@@ -13,6 +13,7 @@ pub mod missions;
 pub mod build_mission;
 pub mod inspect_mission;
 pub mod delete_mission;
+pub mod display_error;
 
 use web_sys::window;
 

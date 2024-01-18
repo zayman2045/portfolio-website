@@ -57,8 +57,8 @@ pub fn delete_mission(props: &Props) -> Html {
                     navigator.push(&Route::Missions);
                 }
                 _ => {
-                    // Redirect to the login page
-                    navigator.push(&Route::LoginError); // TODO: Create a general error page
+                    // Failed to delete the mission
+                    navigator.push(&Route::DisplayError { error_message: "Failed to delete the mission".to_string() });
                 }
             }
         });
