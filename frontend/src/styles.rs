@@ -267,14 +267,18 @@ footer p a:hover {
 .signup input[type="text"],
 .signup input[type="password"],
 .build input[type="text"], 
-.build textarea{
+.build textarea {
   width: 100%;
   padding: 10px;
   margin: 5px 0 20px;
   border: 1px solid #a056f3;
   border-radius: 5px;
-  background-color: #0e0e2a;
-  color: white;
+}
+
+.build input[type="text"], 
+.build textarea {
+    background-color: #0e0e2a;
+    color: white;
 }
 
 .build textarea {
@@ -290,6 +294,12 @@ footer p a:hover {
     border: 1px solid #a056f3;
     border-radius: 5px;
     background-color: black;
+}
+
+.login-signup-content {
+    width: 30vw;
+    margin: 20px auto;
+    padding: 20px;
 }
 
 .login button[type="submit"],
@@ -478,6 +488,30 @@ footer p a:hover {
   background-color: #3c3c3c;
   color: #08f7be; 
   transform: scale(1.1);
+}
+
+.missions header {
+    position: relative; 
+    display: flex;              
+    justify-content: center; 
+    align-items: center;                    
+}
+
+.missions header h1 {
+    flex: 0 1 auto;              
+}
+
+.missions .logout-button {
+    position: absolute;     
+    right: 10px;
+    top: 45%; 
+    transform: translateY(-50%);
+}
+
+.missions button {
+   color: #08f7be;
+    background-color: black;
+    margin-left: 20px;
 }
 
 .mission-container h3, .mission-container p {

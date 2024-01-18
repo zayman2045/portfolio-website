@@ -36,6 +36,13 @@ pub fn missions() -> Html {
     // Use Yewdux to get user information
     let (user_store, user_dispatch) = use_store::<crate::stores::user_store::UserStore>();
 
+    // Callback for logout button
+    let onclick: Callback<MouseEvent> = user_dispatch.reduce_mut_callback(|user_store| {
+        user_store.id = None;
+        user_store.username = None;
+        user_store.token = None;
+    });
+
     use_effect_with_deps(
         move |_| {
             // Spawn a new thread
@@ -80,11 +87,18 @@ pub fn missions() -> Html {
         <div class={stylesheet}>
             <div class={"missions"}>
                 <NavBar />
-                <header>
-                    <h1> {"Mission Log"} </h1>
+                if let Some(username) = &user_store.username {
+                    <header>
+                        <h1>{format!("Mission Log: {}", username)}</h1>
+                        <div class="logout-button">
+                            <button {onclick}>{"Log Out"}</button>
+                        </div>
                     </header>
+                }  else {
+                    <h1> {"Mission Log"} </h1>
+                }
                     // If the user is logged in, show the missions
-                    if let Some(username) = &user_store.username {
+                    if let Some(_) = &user_store.username {
                         <div class={"logged-in"}>
                             <div class="new-mission-container">
                                 <Link<Route> to={Route::NewMission}>
@@ -104,7 +118,7 @@ pub fn missions() -> Html {
                                         </div>
                                     }
                                 })}
-                    }
+                            }
                         </div>
                     } else {
                         <div class={"logged-out"}>
