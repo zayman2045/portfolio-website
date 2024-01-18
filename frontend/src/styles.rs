@@ -1,3 +1,6 @@
+//! This file contains the CSS styles for the frontend.
+
+/// The CSS stylesheet for the frontend.
 pub const STYLESHEET: &str = r#"
 
   background-color: #0e0e2a;
