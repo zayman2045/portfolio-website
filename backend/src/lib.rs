@@ -7,12 +7,10 @@ pub mod routes;
 
 use sea_orm::*;
 
-const DATABASE_URL: &str = "postgres://postgres:mysecretpassword@database:5432/postgres";
-
 /// Runs the server and connects to the database.
-pub async fn run() -> Result<(), DbErr> {
+pub async fn run(database_url: String) -> Result<(), DbErr> {
     // Connect to the database
-    let db = match Database::connect(DATABASE_URL).await {
+    let db = match Database::connect(database_url).await {
         Ok(db) => db,
         Err(error) => {
             eprintln!("Error connecting to the database: {:?}", error);
