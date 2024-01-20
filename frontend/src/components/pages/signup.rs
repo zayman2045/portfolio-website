@@ -1,7 +1,5 @@
 //! Webpage for signing up for an account.
 
-use std::rc::Rc;
-
 use reqwasm::http::Request;
 use serde_json::json;
 use stylist::{yew::styled_component, Style};
