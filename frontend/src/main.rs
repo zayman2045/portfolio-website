@@ -29,7 +29,7 @@ fn main() {
                 .render();
             }
             Err(error) => {
-                // Handle error
+                web_sys::console::error_1(&format!("Failed to fetch config: {:?}", error).into());
             }
         }
     });
