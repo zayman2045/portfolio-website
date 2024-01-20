@@ -36,16 +36,20 @@ pub fn delete_mission(props: &Props) -> Html {
     // Get the mission ID from the properties
     let mission_id = props.mission_id;
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     // Callback for delete form submission
     let onsubmit: Callback<SubmitEvent> = Callback::from(move |event: SubmitEvent| {
         // Prevent the default form submission behavior
         event.prevent_default();
 
         let navigator = navigator.clone();
+        let base_url = base_url.clone();
 
         wasm_bindgen_futures::spawn_local(async move {
             // Send a DELETE request to the backend API to delete the mission from the database
-            let response = Request::delete(&format!("/api/missions/{}", mission_id))
+            let response = Request::delete(&format!("{}/missions/{}", base_url, mission_id))
                 .header("content-type", "application/json")
                 .send()
                 .await
@@ -58,7 +62,9 @@ pub fn delete_mission(props: &Props) -> Html {
                 }
                 _ => {
                     // Failed to delete the mission
-                    navigator.push(&Route::DisplayError { error_message: "Failed to delete the mission".to_string() });
+                    navigator.push(&Route::DisplayError {
+                        error_message: "Failed to delete the mission".to_string(),
+                    });
                 }
             }
         });

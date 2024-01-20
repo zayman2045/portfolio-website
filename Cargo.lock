@@ -69,6 +69,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.79"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca"
+
+[[package]]
 name = "anymap"
 version = "1.0.0-beta.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -198,6 +204,7 @@ name = "backend"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "dotenv",
  "hyper",
  "sea-orm",
  "serde",
@@ -554,6 +561,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "dotenv"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
+
+[[package]]
 name = "dotenvy"
 version = "0.15.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -667,6 +680,8 @@ dependencies = [
 name = "frontend"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "dotenv",
  "gloo-net 0.4.0",
  "reqwasm",
  "serde",

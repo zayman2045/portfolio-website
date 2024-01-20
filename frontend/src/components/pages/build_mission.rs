@@ -59,6 +59,9 @@ pub fn build_mission(props: &Props) -> Html {
     // Clone the mission ID from the properties
     let mission_id = props.mission_id;
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     // Handler for form submission
     let onsubmit =
         build_dispatch.reduce_mut_callback_with(move |build_store, event: SubmitEvent| {
@@ -66,6 +69,7 @@ pub fn build_mission(props: &Props) -> Html {
 
             let build_store = build_store.clone();
             let navigator = navigator.clone();
+            let base_url = base_url.clone();
             let user_dispatch = Dispatch::<UserStore>::new();
 
             // Spawn a new thread
@@ -79,7 +83,7 @@ pub fn build_mission(props: &Props) -> Html {
 
                 if let Some(mission_id) = mission_id {
                     // Send a POST request to the backend API to update the mission
-                    let response = Request::post(&format!("/api/missions/{}", mission_id))
+                    let response = Request::post(&format!("{}/missions/{}", base_url, mission_id))
                         .body(build_request)
                         .header("content-type", "application/json")
                         .send()
@@ -95,12 +99,14 @@ pub fn build_mission(props: &Props) -> Html {
 
                         // Failed to update the mission
                         _ => {
-                            navigator.push(&Route::DisplayError { error_message: "Failed to update the mission".to_string() });
+                            navigator.push(&Route::DisplayError {
+                                error_message: "Failed to update the mission".to_string(),
+                            });
                         }
                     }
                 } else {
                     // Send a POST request to the backend API to create the mission
-                    let response = Request::post("/api/missions")
+                    let response = Request::post(&format!("{}/missions", base_url))
                         .body(build_request)
                         .header("content-type", "application/json")
                         .send()
@@ -116,7 +122,9 @@ pub fn build_mission(props: &Props) -> Html {
 
                         // Failed to create the mission
                         _ => {
-                            navigator.push(&Route::DisplayError { error_message: "Failed to create the mission".to_string() });
+                            navigator.push(&Route::DisplayError {
+                                error_message: "Failed to create the mission".to_string(),
+                            });
                         }
                     }
                 }
@@ -133,8 +141,7 @@ pub fn build_mission(props: &Props) -> Html {
                     } else {
                         <h1>{"Log a New Mission"}</h1>
                     }
-
-                    <form {onsubmit}>
+                        <form {onsubmit}>
                         <label for="title">{"Title:"}</label>
                         <input type="text" id="title" placeholder="Title" required=true onchange={onchange_title}/>
 

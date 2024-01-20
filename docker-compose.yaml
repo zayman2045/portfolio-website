@@ -7,6 +7,8 @@ services:
       - ./frontend:/code/
     ports:
       - "8080:8080"
+    env_file: 
+      - ./frontend/.env
 
   backend:
     build:
@@ -17,8 +19,8 @@ services:
       - "3000:3000"
     depends_on:
       - database
-    environment:
-      DATABASE_URL: "postgresql://postgres:mysecretpassword@database:5432/postgres"
+    env_file: 
+      - ./backend/.env
 
   database:
     image: postgres

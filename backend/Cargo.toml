@@ -13,3 +13,4 @@ sea-orm = {version = "^0.12.0", features = ["sqlx-postgres", "runtime-tokio-nati
 serde = { version = "1.0.188", features = ["derive"] }
 hyper = { version = "0.14.27", features = ["full"] }
 tower = "0.4.13"
+dotenv = "0.15.0"

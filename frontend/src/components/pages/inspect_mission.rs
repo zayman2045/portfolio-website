@@ -8,13 +8,13 @@ use yew_router::components::Link;
 use yewdux::{dispatch::Dispatch, functional::use_store};
 
 use crate::{
-    styles::STYLESHEET,
     components::{
         pages::scroll_to_top,
         subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
     },
     router::Route,
     stores::mission_store::MissionStore,
+    styles::STYLESHEET,
 };
 
 /// The properties of the InspectMission component. Used to request a mission from the server.
@@ -36,12 +36,15 @@ pub fn inspect_mission(props: &Props) -> Html {
     // Use Yewdux to hold mission
     let (mission_store, _mission_dispatch) = use_store::<MissionStore>();
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     use_effect_with_deps(
         move |_| {
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
                 // Send a GET request to the backend API to get the mission
-                let response = Request::get(&format!("/api/missions/{}", mission_id))
+                let response = Request::get(&format!("{}/missions/{}", base_url, mission_id))
                     .header("content-type", "application/json")
                     .send()
                     .await
@@ -81,7 +84,7 @@ pub fn inspect_mission(props: &Props) -> Html {
             <div class={"inspect"}>
                 <NavBar />
                 <div class={"mission-details"}>
-                    <h1>{"Mission Summary"}</h1> 
+                    <h1>{"Mission Summary"}</h1>
                     <h2>{&mission_store.title}</h2>
                     <p>{mission_store.content.as_ref().unwrap_or(&"No content".to_string())}</p>
                     <div class={"mission-btn-container"}>

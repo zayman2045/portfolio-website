@@ -1,5 +1,7 @@
 //! Webpage for signing up for an account.
 
+use std::rc::Rc;
+
 use reqwasm::http::Request;
 use serde_json::json;
 use stylist::{yew::styled_component, Style};
@@ -72,6 +74,9 @@ pub fn signup(props: &Props) -> Html {
     // Use navigator to redirect the user after a successful sign up
     let navigator = use_navigator().unwrap();
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     // Handler for sign up form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
@@ -82,6 +87,7 @@ pub fn signup(props: &Props) -> Html {
         } else {
             let auth_store = auth_store.clone();
             let navigator = navigator.clone();
+            let base_url = base_url.clone();
 
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
@@ -92,7 +98,7 @@ pub fn signup(props: &Props) -> Html {
                 .to_string();
 
                 // Send a POST request to the backend API to create a new user
-                let response = Request::post("/api/users")
+                let response = Request::post(&format!("{}/users", base_url))
                     .body(user)
                     .header("content-type", "application/json")
                     .send()

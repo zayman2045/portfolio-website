@@ -43,6 +43,9 @@ pub fn missions() -> Html {
         user_store.token = None;
     });
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     use_effect_with_deps(
         move |_| {
             // Spawn a new thread
@@ -51,7 +54,7 @@ pub fn missions() -> Html {
                 let user_id = user_dispatch.get().id.unwrap_or(1);
 
                 // Send a GET request to the backend API to get all missions
-                let response = Request::get(&format!("/api/users/{}", user_id))
+                let response = Request::get(&format!("{}/users/{}", base_url, user_id))
                     .header("content-type", "application/json")
                     .send()
                     .await

@@ -3,9 +3,10 @@
 //! Contains the definition of all routes in the application and the logic to switch between them.
 
 use crate::components::pages::{
-    about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite, ello::Ello,
-    funder::Funder, home::Home, login::Login, missions::Missions, signup::Signup,
-    stargaze::Stargaze, build_mission::BuildMission, inspect_mission::InspectMission, delete_mission::DeleteMission, display_error::DisplayError,
+    about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite,
+    build_mission::BuildMission, delete_mission::DeleteMission, display_error::DisplayError,
+    ello::Ello, funder::Funder, home::Home, inspect_mission::InspectMission, login::Login,
+    missions::Missions, signup::Signup, stargaze::Stargaze,
 };
 
 use yew::prelude::*;
@@ -52,7 +53,7 @@ pub enum Route {
     #[at("/missions/:mission_id")]
     InspectMission { mission_id: i32 },
     #[at("/missions/:mission_id/edit")]
-    EditMission { mission_id: i32},
+    EditMission { mission_id: i32 },
     #[at("/missions/:mission_id/delete")]
     DeleteMission { mission_id: i32 },
     #[at("/error/:error_message")]
@@ -93,7 +94,9 @@ pub fn switch(routes: Route) -> Html {
         Route::InspectMission { mission_id } => html! {<InspectMission mission_id={mission_id} />},
         Route::EditMission { mission_id } => html! {<BuildMission mission_id={Some(mission_id)} />},
         Route::DeleteMission { mission_id } => html! {<DeleteMission mission_id={mission_id} />},
-        Route::DisplayError {error_message } => html! {<DisplayError error_message={error_message}/>},
+        Route::DisplayError { error_message } => {
+            html! {<DisplayError error_message={error_message}/>}
+        }
         Route::NotFound => html! {<div>{"404 - Not Found"}</div>},
     }
 }

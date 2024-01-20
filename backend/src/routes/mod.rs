@@ -8,7 +8,7 @@ use axum::{
     Extension, Router,
 };
 
-use hyper::Method; 
+use hyper::{Method, header::CONTENT_TYPE}; 
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{CorsLayer, Any};
 
@@ -16,8 +16,9 @@ use tower_http::cors::{CorsLayer, Any};
 pub async fn create_router(database: DatabaseConnection) -> Router {
     // Enable CORS, allowing GET and POST requests from any origin
     let cors = CorsLayer::new()
-        .allow_methods([Method::GET, Method::POST])
-        .allow_origin(Any);
+        .allow_methods([Method::GET, Method::POST, Method::DELETE])
+        .allow_origin(Any)
+        .allow_headers(vec![CONTENT_TYPE]); 
 
     // Define the routes and attaches layers
     Router::new()

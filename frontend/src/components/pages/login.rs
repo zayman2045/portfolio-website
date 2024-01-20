@@ -61,12 +61,16 @@ pub fn login(props: &Props) -> Html {
     // Use navigator to redirect the user after a successful log in
     let navigator = use_navigator().unwrap();
 
+    // Use base_url to send requests to the backend API
+    let base_url = use_context::<String>().expect("Context not found");
+
     // Callback for log in form submission
     let onsubmit = auth_dispatch.reduce_mut_callback_with(move |auth_store, event: SubmitEvent| {
         event.prevent_default();
 
         let auth_store = auth_store.clone();
         let navigator = navigator.clone();
+        let base_url = base_url.clone();
 
         // Spawn a new thread
         wasm_bindgen_futures::spawn_local(async move {
@@ -77,8 +81,8 @@ pub fn login(props: &Props) -> Html {
             .to_string();
 
             // Send a POST request to the backend API to log in user
-            let response = Request::post("/api/login")
-                .body(user)
+            let response = Request::post(&format!("{}/login", base_url))
+            .body(user)
                 .header("content-type", "application/json")
                 .send()
                 .await
