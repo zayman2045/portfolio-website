@@ -1,4 +1,4 @@
-# Portfolio Website
+# Rust Full Stack Portfolio
 
 This web application serves as my development portfolio. It's written in Rust for both the frontend and backend, demonstrating the language's versatility, safety, and efficiency.
 
