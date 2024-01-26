@@ -10,6 +10,8 @@ pub struct Model {
     #[sea_orm(unique)]
     pub username: String,
     pub password: String,
+    #[sea_orm(column_type = "Text", nullable)]
+    pub token: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

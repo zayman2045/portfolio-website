@@ -32,35 +32,16 @@ pub async fn create_user(
     let new_user = users::ActiveModel {
         username: ActiveValue::Set(user_request.username.clone()),
         password: ActiveValue::Set(hash_password(user_request.password)?),
+        token: ActiveValue::Set(Some("Create Token".to_string())),
         ..Default::default()
-    };
+    // Return status code if user already exists
+    }.save(&database).await.map_err(|_e| StatusCode::CONFLICT)?;
 
-    // Check if the user already exists
-    match Users::find()
-        .filter(users::Column::Username.eq(user_request.username.clone()))
-        .one(&database)
-        .await
-    {
-        Ok(user) => {
-            // Return a conflict status code if the user is found
-            if user.is_some() {
-                return Err(StatusCode::CONFLICT);
-            } else {
-                // Insert the new user into the database
-                match Users::insert(new_user).exec(&database).await {
-                    Ok(insert_result) => {
-                        return Ok(Json(UserResponse {
-                            username: user_request.username,
-                            id: insert_result.last_insert_id,
-                            token: String::from("Hello World!"),
-                        }))
-                    }
-                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
-                };
-            }
-        }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
-    };
+    Ok(Json(UserResponse {
+        username: new_user.username.unwrap(),
+        id: new_user.id.unwrap(),
+        token: new_user.token.unwrap().unwrap(),
+    }))
 }
 
 /// Logs in a user.
@@ -81,23 +62,17 @@ pub async fn login_user(
             return Err(StatusCode::UNAUTHORIZED);
         }
 
-        let new_token = "HelloWorld".to_string();
+        let new_token = "TokenSet".to_string();
         let mut user = database_user.into_active_model();
 
-        // user.token = Set(Some(new_token));
+        user.token = Set(Some(new_token));
 
-        // let saved_user = user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR);
-
-        // Ok(Json(UserResponse {
-        //     username: saved_user.username.unwrap(),
-        //     id: saved_user.id.unwrap(),
-        //     token: saved_user.token.unwrap().unwrap(),
-        // }))
+        let saved_user = user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
 
         Ok(Json(UserResponse {
-            username: user.username.unwrap(),
-            id: user.id.unwrap(),
-            token: String::from("Hello World!"),
+            username: saved_user.username.unwrap(),
+            id: saved_user.id.unwrap(),
+            token: saved_user.token.unwrap().unwrap(),
         }))
 
     } else {
