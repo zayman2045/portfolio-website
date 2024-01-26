@@ -31,7 +31,7 @@ pub async fn create_user(
     // Create a new user model
     let new_user = users::ActiveModel {
         username: ActiveValue::Set(user_request.username.clone()),
-        password: ActiveValue::Set(user_request.password),
+        password: ActiveValue::Set(hash_password(user_request.password)?),
         ..Default::default()
     };
 
@@ -68,29 +68,49 @@ pub async fn login_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
-    // Check if the user exists
-    match Users::find()
+    // Query the database for the username
+    let database_user = Users::find()
         .filter(users::Column::Username.eq(user_request.username.clone()))
         .one(&database)
         .await
-    {
-        Ok(database_user) => {
-            // Return a not found status code if the user is not found
-            if database_user.is_none() {
-                return Err(StatusCode::NOT_FOUND);
-            } else {
-                // Check if the password is correct
-                if database_user.clone().unwrap().password == user_request.password {
-                    return Ok(Json(UserResponse {
-                        username: database_user.clone().unwrap().username,
-                        id: database_user.clone().unwrap().id,
-                        token: String::from("Hello World!"),
-                    }));
-                } else {
-                    return Err(StatusCode::UNAUTHORIZED);
-                }
-            }
+        .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    // Username found in database
+    if let Some(database_user) = database_user {
+        if !verify_password(user_request.password, &database_user.password)? {
+            return Err(StatusCode::UNAUTHORIZED);
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
-    };
+
+        let new_token = "HelloWorld".to_string();
+        let mut user = database_user.into_active_model();
+
+        // user.token = Set(Some(new_token));
+
+        // let saved_user = user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR);
+
+        // Ok(Json(UserResponse {
+        //     username: saved_user.username.unwrap(),
+        //     id: saved_user.id.unwrap(),
+        //     token: saved_user.token.unwrap().unwrap(),
+        // }))
+
+        Ok(Json(UserResponse {
+            username: user.username.unwrap(),
+            id: user.id.unwrap(),
+            token: String::from("Hello World!"),
+        }))
+
+    } else {
+        Err(StatusCode::NOT_FOUND)
+    }
+}
+
+/// Hashes the password before storage in the database.
+fn hash_password(password: String) -> Result<String, StatusCode> {
+    bcrypt::hash(password, 10).map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)
+}
+
+// Verifies the password in the request matches that of the database.
+fn verify_password(password: String, hash: &str) -> Result<bool, StatusCode> {
+    bcrypt::verify(password, hash).map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)
 }
