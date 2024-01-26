@@ -10,6 +10,7 @@ struct Config {
     api_base_url: String,
 }
 
+/// Fetches the api base url from config.json.
 async fn fetch_config() -> Result<Config, reqwasm::Error> {
     let response = Request::get("/config.json").send().await?;
     let config = response.json().await?;
@@ -18,7 +19,7 @@ async fn fetch_config() -> Result<Config, reqwasm::Error> {
 
 
 
-// Renders the App component.
+/// Renders the App component.
 fn main() {
     spawn_local(async {
         match fetch_config().await {
