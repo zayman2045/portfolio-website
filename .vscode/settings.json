@@ -3,6 +3,7 @@
         "bindgen",
         "codegen",
         "composability",
+        "dotenv",
         "Ello",
         "Funder",
         "mysecretpassword",
