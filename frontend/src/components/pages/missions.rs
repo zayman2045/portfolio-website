@@ -92,10 +92,7 @@ pub fn missions() -> Html {
                 <NavBar />
                 if let Some(username) = &user_store.username {
                     <header>
-                        <h1>{format!("Mission Log: {}", username)}</h1>
-                        <div class="logout-button">
-                            <button {onclick}>{"Log Out"}</button>
-                        </div>
+                        <h1 class={"user-welcome"}>{format!("Mission Log: {}", username)}</h1>
                     </header>
                 }  else {
                     <h1> {"Mission Log"} </h1>
@@ -104,13 +101,18 @@ pub fn missions() -> Html {
                     if let Some(_) = &user_store.username {
                         <div class={"logged-in"}>
                             <div class="new-mission-container">
+                                <button {onclick}>{"Log Out"}</button>
                                 <Link<Route> to={Route::NewMission}>
                                     {"Create New Mission"}
                                 </Link<Route>>
                             </div>
                             // Check if there are any missions
                             if let Some(missions) = &mission_list_store.missions {
-                                <h2>{"Your Missions:"}</h2>
+                                {if missions.len() != 0 {
+                                    html!(<h2>{"Your Missions:"}</h2>)
+                                } else {
+                                    html!(<></>)
+                                }}
                                 {for missions.iter().map(|mission| {
                                     html! {
                                         <div class="mission-container">

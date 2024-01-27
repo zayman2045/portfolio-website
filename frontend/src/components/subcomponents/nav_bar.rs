@@ -23,7 +23,7 @@ pub fn nav_bar() -> Html {
                 </div>
                 <div class="navbar-right">
                     <Link<Route> to={Route::AboutMe}>
-                        {"Meet The Developer"}
+                        {"Meet The Dev"}
                     </Link<Route>>
                     <Link<Route> to={Route::AboutSite}>
                         {"Site Overview"}

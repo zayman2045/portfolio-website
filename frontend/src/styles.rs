@@ -212,16 +212,6 @@ footer p a:hover {
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .home .projects ul {
-    flex-direction: column;
-  }
-
-  .home .flex-container {
-    flex-direction: column;
-  }
-}
-
 .home .projects ul li {
   flex: 1 1 30%;
   text-align: center;
@@ -246,6 +236,21 @@ footer p a:hover {
 .home .projects img:hover {
   border-color: #08f7be;
   transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .home .projects ul {
+    flex-direction: column;
+  }
+
+  .home .flex-container {
+    flex-direction: column;
+  }
+
+  .home .projects img {
+    height: 200px;
+    width: auto;
+  }
 }
 
 /* Login, Signup and Build */
@@ -329,6 +334,17 @@ footer p a:hover {
   transform: scale(1.1);
 }
 
+@media (max-width: 900px) {
+  .login-signup-content {
+    width: 50vw;
+    margin: 20px auto;
+    padding: 20px;
+  }
+
+  .build-content {
+    width: 80%;
+  }
+}
 /* About Me */
 
 .about-me .content-container {
@@ -352,6 +368,28 @@ footer p a:hover {
   height: auto;
   width: 40vw;
   font-size: 18px;
+}
+
+@media (max-width: 900px) {
+  .about-me .content-container {
+    display: block;
+    text-align: center;
+    margin: 10px 10px;
+  }
+  
+  .about-me img {
+    height: auto;
+    width: 85%;
+    border: 2px solid #a056f3;
+    border-radius: 50px;
+  }
+  
+  .about-me .content-container p {
+    height: auto;
+    width: 100%;
+    font-size: 18px;
+    text-align: left;
+  }
 }
 
 /* About Site */
@@ -385,35 +423,71 @@ footer p a:hover {
   width: 50%;
 }
 
+@media (max-width: 600px) {
+  .about-site .crate-container .content-container {
+    width: 100%;
+  }
+
+  .about-site .crate-container {
+    display: block;
+    margin: 0px;
+    text-align: center; /* Center-align inline or inline-block elements inside */
+  }
+
+  .about-site .crate-container a {
+    display: inline-block; /* Make 'a' tags inline-block to center them */
+    margin: 0 auto; /* Additional centering for block-level elements */
+  }
+}
+
 /* About Projects */
 
 .about-projects .content-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   margin: 30px auto;
   flex-wrap: wrap;
   width: 80vw;
 }
 
-.about-projects .content-container img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.about-projects .content-container a:hover {
-  border-color: #08f7be;
-  transform: scale(1.1);
-}
-
 .about-projects .content-container a {
   width: 30%;
   border-radius: 10px;
-  border: 2px solid #0e0e2a;
+  border: 2px solid #a056f3;
   transition: border-color 0.3s, transform 1.5s;
-  margin: 10px 0px;
+  display: block;
+  overflow: hidden;
+}
+
+.about-projects .content-container a:hover {
+  transform: scale(1.05);
+  border-color: #08f7be;
+}
+
+.about-projects .content-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+@media (max-width: 850px) {
+  .about-projects .content-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .about-projects .content-container a {
+    width: 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  .about-projects .content-container a {
+    width: 65%;
+  }
 }
 
 /* Stargaze, Funder, and Ello */
@@ -452,7 +526,11 @@ footer p a:hover {
   margin: 20px auto;
 }
 
-.new-mission-container a {
+.missions .user-welcome {
+  margin: 20px 0 0 0;
+}
+
+.new-mission-container a, .new-mission-container button {
   border: 1px solid #a056f3;
   border-radius: 5px;
   width: 60%;
@@ -465,7 +543,12 @@ footer p a:hover {
   transition: border-color 0.3s, transform 1.5s, background-color 0.3s, color 0.3s;
 }
 
-.new-mission-container a:hover {
+.new-mission-container button {
+  font-size: 14px;
+  width: 62%;
+}
+
+.new-mission-container a:hover, .new-mission-container button:hover {
   border-color: #08f7be;
   background-color: #3c3c3c;
   color: #08f7be; 
@@ -475,7 +558,7 @@ footer p a:hover {
 .mission-container a {
   border: 1px solid #a056f3;
   border-radius: 5px;
-  width: 60%;
+  width: 80%;
   margin: 20px auto;
   display: block;
   background-color: black;
@@ -504,17 +587,9 @@ footer p a:hover {
     flex: 0 1 auto;              
 }
 
-.missions .logout-button {
-    position: absolute;     
-    right: 10px;
-    top: 45%; 
-    transform: translateY(-50%);
-}
-
 .missions button {
    color: #08f7be;
     background-color: black;
-    margin-left: 20px;
 }
 
 .mission-container h3, .mission-container p {
@@ -560,6 +635,16 @@ footer p a:hover {
   transform: scale(1.1);
 }
 
+@media (max-width: 950px) {
+  .missions .logged-out {
+    width: 80%;
+  }
+
+  .mission-container a {
+    width: 90%;
+  }
+}
+
 /* Inspect */
 
 .inspect .mission-details {
@@ -595,7 +680,7 @@ footer p a:hover {
     justify-content: space-evenly;
     align-items: center;
     gap: 5px;
-    margin: 300px auto 5px auto;
+    margin: 150px auto 5px auto;
     flex-wrap: wrap;
     }
   
@@ -615,6 +700,12 @@ footer p a:hover {
       background-color: #3c3c3c;
       color: #08f7be;
       transform: scale(1.1);
+    }
+
+    @media (max-width: 900px) {
+      .inspect .mission-details {
+        width: 80vw;
+      }
     }
 
     /* Delete */

@@ -23,15 +23,6 @@ pub fn about_projects() -> Html {
             <div class={"about-projects"}>
                 <NavBar />
                 <div class={"content-container"}>
-                    // <Link<Route> to={Route::Stargaze}>
-                    //     <img src={"img/stargaze-portrait.jpeg"} />
-                    // </Link<Route>>
-                    // <Link<Route> to={Route::Funder}>
-                    //     <img src={"img/funder-portrait.jpeg"} />
-                    // </Link<Route>>
-                    // <Link<Route> to={Route::Ello}>
-                    //     <img src={"img/ello-portrait.jpeg"} />
-                    // </Link<Route>>
                     <a href={"https://github.com/zayman2045/stargaze"}>
                         <img src={"img/stargaze-portrait.jpeg"} />
                     </a>
