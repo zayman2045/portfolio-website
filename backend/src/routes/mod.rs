@@ -1,16 +1,19 @@
 //! Handles the routing of the web service.
 
-pub mod users;
 pub mod missions;
+pub mod users;
 
 use axum::{
-    routing::{post, get, delete},
+    routing::{delete, get, post},
     Extension, Router,
 };
 
-use hyper::{Method, header::CONTENT_TYPE}; 
+use hyper::{
+    header::{AUTHORIZATION, CONTENT_TYPE},
+    Method,
+};
 use sea_orm::DatabaseConnection;
-use tower_http::cors::{CorsLayer, Any};
+use tower_http::cors::{Any, CorsLayer};
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
@@ -18,7 +21,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_origin(Any)
-        .allow_headers(vec![CONTENT_TYPE]); 
+        .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
     // Define the routes and attaches layers
     Router::new()

@@ -86,6 +86,7 @@ pub fn build_mission(props: &Props) -> Html {
                     let response = Request::post(&format!("{}/missions/{}", base_url, mission_id))
                         .body(build_request)
                         .header("content-type", "application/json")
+                        .header("authorization", &format!("Bearer {}", user_dispatch.get().token.clone().unwrap()))
                         .send()
                         .await
                         .unwrap();
@@ -95,12 +96,19 @@ pub fn build_mission(props: &Props) -> Html {
                         200 => {
                             // Redirect the user to their mission page
                             navigator.push(&Route::Missions);
-                        }
+                        },
+
+                        // Unauthorized
+                        401 => {
+                            navigator.push(&Route::DisplayError {
+                                error_message: "Unauthorized".to_string(),
+                            });
+                        },
 
                         // Failed to update the mission
                         _ => {
                             navigator.push(&Route::DisplayError {
-                                error_message: "Failed to update the mission".to_string(),
+                                error_message: "Internal Server Error".to_string(),
                             });
                         }
                     }
@@ -109,6 +117,7 @@ pub fn build_mission(props: &Props) -> Html {
                     let response = Request::post(&format!("{}/missions", base_url))
                         .body(build_request)
                         .header("content-type", "application/json")
+                        .header("authorization", &format!("Bearer {}", user_dispatch.get().token.clone().unwrap()))
                         .send()
                         .await
                         .unwrap();
@@ -118,7 +127,14 @@ pub fn build_mission(props: &Props) -> Html {
                         200 => {
                             // Redirect the user to their mission page
                             navigator.push(&Route::Missions);
-                        }
+                        },
+
+                        // Unauthorized
+                        401 => {
+                            navigator.push(&Route::DisplayError {
+                                error_message: "Unauthorized".to_string(),
+                            });
+                        },
 
                         // Failed to create the mission
                         _ => {

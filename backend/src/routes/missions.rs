@@ -1,12 +1,15 @@
 //! Handles mission specific routes.
 
 use axum::extract::Path;
+use axum::headers::authorization::Bearer;
+use axum::headers::Authorization;
 use axum::http::StatusCode;
+use axum::TypedHeader;
 use axum::{extract::Extension, Json};
 use sea_orm::{entity::*, DatabaseConnection, QueryFilter};
 use serde::{Deserialize, Serialize};
 
-use crate::entities::missions;
+use crate::entities::{missions, users};
 use crate::entities::prelude::*;
 
 /// The model for a mission.
@@ -44,11 +47,21 @@ pub struct MissionListResponse {
 /// Creates a new mission in the database.
 pub async fn create_mission(
     Extension(database): Extension<DatabaseConnection>,
-    Json(request_mission): Json<MissionBuildRequest>,
+    authorization: TypedHeader<Authorization<Bearer>>,
+    Json(request_mission): Json<MissionBuildRequest>
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
+
+    // Find the user with from the supplied token
+    let token = authorization.token();
+    let user = if let Some(user) = Users::find().filter(users::Column::Token.eq(Some(token))).one(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)? {
+        user
+    } else {
+        return Err(StatusCode::UNAUTHORIZED)
+    };
+
     // Create a new mission model
     let new_mission = missions::ActiveModel {
-        user_id: ActiveValue::Set(request_mission.user_id),
+        user_id: Set(user.id),
         title: ActiveValue::Set(request_mission.title.clone()),
         content: ActiveValue::Set(request_mission.content.clone()),
         ..Default::default()

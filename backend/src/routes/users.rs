@@ -33,9 +33,11 @@ pub async fn create_user(
         username: ActiveValue::Set(user_request.username.clone()),
         password: ActiveValue::Set(hash_password(user_request.password)?),
         token: ActiveValue::Set(Some("Create Token".to_string())),
-        ..Default::default()
-    // Return status code if user already exists
-    }.save(&database).await.map_err(|_e| StatusCode::CONFLICT)?;
+        ..Default::default() // Return status code if user already exists
+    }
+    .save(&database)
+    .await
+    .map_err(|_e| StatusCode::CONFLICT)?;
 
     Ok(Json(UserResponse {
         username: new_user.username.unwrap(),
@@ -62,19 +64,21 @@ pub async fn login_user(
             return Err(StatusCode::UNAUTHORIZED);
         }
 
-        let new_token = "TokenSet".to_string();
+        let new_token = "Create Token".to_string();
         let mut user = database_user.into_active_model();
 
         user.token = Set(Some(new_token));
 
-        let saved_user = user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let saved_user = user
+            .save(&database)
+            .await
+            .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
 
         Ok(Json(UserResponse {
             username: saved_user.username.unwrap(),
             id: saved_user.id.unwrap(),
             token: saved_user.token.unwrap().unwrap(),
         }))
-
     } else {
         Err(StatusCode::NOT_FOUND)
     }
