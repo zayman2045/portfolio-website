@@ -16,12 +16,20 @@ The frontend, backend, and database are coordinated and deployed using Docker & 
 
 ### To run this project locally:
 
-Make sure you have Docker and Docker Compose installed. If not, you can download and install Docker from [here](https://docs.docker.com/get-docker/) and Docker Compose from [here](https://docs.docker.com/compose/install/).
+1. Make sure you have Docker and Docker Compose installed. If not, you can download and install Docker from [here](https://docs.docker.com/get-docker/) and Docker Compose from [here](https://docs.docker.com/compose/install/).
 
-Once Docker and Docker Compose are installed, you can build and run the application using the following command from the project root directory:
+2. Create a `.env` file at the root of the backend directory. Add the following line to this file:
 
-```zsh
-docker-compose up --build
-``` 
+    ```plaintext
+    DATABASE_URL=postgresql://postgres:mysecretpassword@database:5432/postgres
+    ```
+
+    This sets the `DATABASE_URL` environment variable, which is used to connect to the database.
+
+3. Once Docker, Docker Compose, and the `.env` file are set up, you can build and run the application using the following command from the project root directory:
+
+    ```zsh
+    docker-compose up --build
+    ``` 
 
 The application will be available at http://localhost:8080.
