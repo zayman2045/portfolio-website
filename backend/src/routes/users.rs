@@ -1,4 +1,4 @@
-//! Handles user specific routes.
+//! User specific routes.
 
 use axum::http::StatusCode;
 use axum::{Extension, Json};
@@ -6,7 +6,7 @@ use sea_orm::*;
 use serde::{Deserialize, Serialize};
 
 use crate::entities::prelude::*;
-use crate::entities::users;
+use crate::entities::users::{self, Model};
 
 /// The request body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
@@ -28,7 +28,7 @@ pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
-    // Create a new user model
+    // Create a new user model / row in the database
     let new_user = users::ActiveModel {
         username: ActiveValue::Set(user_request.username.clone()),
         password: ActiveValue::Set(hash_password(user_request.password)?),
@@ -46,7 +46,7 @@ pub async fn create_user(
     }))
 }
 
-/// Logs in a user.
+/// Logs the user in.
 pub async fn login_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user_request): Json<UserRequest>,
@@ -64,11 +64,12 @@ pub async fn login_user(
             return Err(StatusCode::UNAUTHORIZED);
         }
 
+        // Update the token
         let new_token = "Create Token".to_string();
         let mut user = database_user.into_active_model();
-
         user.token = Set(Some(new_token));
 
+        // Save the user to the database
         let saved_user = user
             .save(&database)
             .await
@@ -82,6 +83,17 @@ pub async fn login_user(
     } else {
         Err(StatusCode::NOT_FOUND)
     }
+}
+
+/// Logs the user out.
+pub async fn logout_user(
+    Extension(database): Extension<DatabaseConnection>,
+    Extension(user): Extension<Model>,
+) -> Result<(), StatusCode> {
+    let mut user = user.into_active_model();
+    user.token = Set(None);
+    user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(())
 }
 
 /// Hashes the password before storage in the database.
