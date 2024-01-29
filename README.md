@@ -8,7 +8,7 @@ The frontend is a client-side rendered single page application built using Yew, 
 
 Yewdux is used for state management across the application. It allows for the persistence of state and can be scoped to local storage, session storage, or to a single window’s current render. In this application, Yewdux stores are used for collecting and submitting form data, displaying JSON response data, and maintaining user sessions across pages.
 
-The backend uses Axum, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. It works in conjunction with the SeaORM crate to programmatically generate SQL queries for a connected Postgres database. The SeaORM's object relational mapper uses "Entity" and "Model" structs to represent tables and rows respectively, providing a type-safe interface for data manipulation.
+The backend uses Axum, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. It works in conjunction with the SeaORM crate to programmatically generate SQL queries for a connected Postgres database. The SeaORM's object relational mapper generates "Entity" and "Model" structs to represent tables and rows respectively, providing a type-safe interface for data manipulation.
 
 The frontend, backend, and database are coordinated and deployed using Docker & Docker Compose.
 
