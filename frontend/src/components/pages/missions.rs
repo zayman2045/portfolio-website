@@ -14,6 +14,7 @@ use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
 use crate::stores::mission_store::{Mission, MissionListStore};
 
+use crate::stores::user_store::UserStore;
 use crate::styles::STYLESHEET;
 
 /// The response from the backend API containing a list of missions.
@@ -36,15 +37,44 @@ pub fn missions() -> Html {
     // Use Yewdux to get user information
     let (user_store, user_dispatch) = use_store::<crate::stores::user_store::UserStore>();
 
-    // Callback for logout button
-    let onclick: Callback<MouseEvent> = user_dispatch.reduce_mut_callback(|user_store| {
-        user_store.id = None;
-        user_store.username = None;
-        user_store.token = None;
-    });
-
     // Use base_url to send requests to the backend API
     let base_url = use_context::<String>().expect("Context not found");
+    let base_url_clone = base_url.clone();
+
+
+    // Callback for logout button
+    let onclick: Callback<MouseEvent> = user_dispatch.reduce_mut_callback(move |user_store| {
+        let base_url = base_url_clone.clone();
+        let user_store = user_store.clone();
+
+        // Spawn a new thread
+        wasm_bindgen_futures::spawn_local(async move {
+            // Send a POST request to the backend API to logout the user
+            let response = Request::post(&format!("{}/users/logout", base_url))
+                .header("content-type", "application/json")
+                .header("authorization", &format!("Bearer {}", &user_store.token.clone().unwrap()))
+                .send()
+                .await
+                .unwrap();
+
+            match response.status() {
+                200 => {
+                    // Clear the user_store
+                    let user_dispatch = Dispatch::<UserStore>::new();
+
+                    user_dispatch.reduce_mut(|user_store| {
+                        user_store.token = None;
+                        user_store.id = None;
+                        user_store.username = None;
+                    });
+                }
+                _ => {
+                    // Log a message to the console
+                    web_sys::console::log_1(&"Error logging out".into());
+                }
+            }
+        });
+    });
 
     use_effect_with_deps(
         move |_| {
