@@ -17,7 +17,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
-    // Enable CORS, allowing GET and POST requests from any origin
+    // Enable CORS, allowing GET, POST and DELETE requests
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_origin(Any)
