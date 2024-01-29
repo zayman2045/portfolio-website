@@ -1,15 +1,13 @@
-//! Handles mission specific routes.
+//! Mission specific routes.
 
 use axum::extract::Path;
-use axum::headers::authorization::Bearer;
-use axum::headers::Authorization;
 use axum::http::StatusCode;
-use axum::TypedHeader;
 use axum::{extract::Extension, Json};
 use sea_orm::{entity::*, DatabaseConnection, QueryFilter};
 use serde::{Deserialize, Serialize};
 
-use crate::entities::{missions, users};
+use crate::entities::users::Model;
+use crate::entities::missions;
 use crate::entities::prelude::*;
 
 /// The model for a mission.
@@ -47,17 +45,9 @@ pub struct MissionListResponse {
 /// Creates a new mission in the database.
 pub async fn create_mission(
     Extension(database): Extension<DatabaseConnection>,
-    authorization: TypedHeader<Authorization<Bearer>>,
+    Extension(user): Extension<Model>,
     Json(request_mission): Json<MissionBuildRequest>
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
-
-    // Find the user with from the supplied token
-    let token = authorization.token();
-    let user = if let Some(user) = Users::find().filter(users::Column::Token.eq(Some(token))).one(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)? {
-        user
-    } else {
-        return Err(StatusCode::UNAUTHORIZED)
-    };
 
     // Create a new mission model
     let new_mission = missions::ActiveModel {
