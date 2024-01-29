@@ -1,9 +1,11 @@
 //! Handles the routing of the web service.
 
+pub mod guards;
 pub mod missions;
 pub mod users;
 
 use axum::{
+    middleware,
     routing::{delete, get, post},
     Extension, Router,
 };
@@ -25,6 +27,8 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
 
     // Define the routes and attaches layers
     Router::new()
+        .route("/users/logout", post(users::logout_user))
+        .route_layer(middleware::from_fn(guards::token_guard))
         .route("/users", post(users::create_user))
         .route("/login", post(users::login_user))
         .route("/missions", post(missions::create_mission))
