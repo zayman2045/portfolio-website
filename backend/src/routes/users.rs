@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::entities::prelude::*;
 use crate::entities::users::{self, Model};
-use crate::utils::jwt;
+use crate::utils::jwt::new_jwt;
 
 /// The request body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
@@ -30,7 +30,7 @@ pub async fn create_user(
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
     // Generate a new JWT token
-    let jwt = jwt::new_jwt()?;
+    let jwt = new_jwt()?;
 
     // Create a new user model/row in the database
     let new_user = users::ActiveModel {
@@ -69,7 +69,7 @@ pub async fn login_user(
         }
 
         // Generate and set a new JWT token 
-        let jwt = jwt::new_jwt()?;
+        let jwt = new_jwt()?;
         let mut user = database_user.into_active_model();
         user.token = Set(Some(jwt));
 

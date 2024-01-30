@@ -1,6 +1,6 @@
 //! Route guarding middleware.
 
-use crate::entities::{prelude::*, users};
+use crate::{entities::{prelude::*, users}, utils::jwt::validate_jwt};
 use axum::{
     headers::{authorization::Bearer, Authorization, HeaderMapExt},
     http::Request,
@@ -23,6 +23,9 @@ pub async fn token_guard<T>(
         .token()
         .to_owned();
 
+    // Validate the token
+    validate_jwt(&token)?;
+
     // Get the database connection
     let database = request
         .extensions()
@@ -31,7 +34,7 @@ pub async fn token_guard<T>(
 
     // Look the user up in the database using the token
     let Some(user) = Users::find()
-        .filter(users::Column::Token.eq(Some(token)))
+        .filter(users::Column::Token.eq(Some(token.clone())))
         .one(database)
         .await
         .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?
@@ -39,6 +42,7 @@ pub async fn token_guard<T>(
         return Err(StatusCode::UNAUTHORIZED);
     };
 
+    // Insert the user ito the extensions
     request.extensions_mut().insert(user);
 
     Ok(next.run(request).await)
