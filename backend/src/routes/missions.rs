@@ -179,10 +179,24 @@ pub async fn update_mission(
 /// Deletes a mission by its ID.
 pub async fn delete_mission(
     Extension(database): Extension<DatabaseConnection>,
+    Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
 ) -> Result<(), StatusCode> {
-    match Missions::delete_by_id(mission_id).exec(&database).await {
-        Ok(_) => return Ok(()),
+    // Get the mission by its ID
+    match Missions::find_by_id(mission_id).one(&database).await {
+        Ok(mission) => match mission {
+            Some(mission) => {
+                // Check if the mission belongs to the user
+                if mission.user_id != user.id {
+                    return Err(StatusCode::UNAUTHORIZED);
+                }
+                match Missions::delete_by_id(mission_id).exec(&database).await {
+                    Ok(_) => return Ok(()),
+                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                }
+            }
+            None => return Err(StatusCode::NOT_FOUND),
+        },
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }

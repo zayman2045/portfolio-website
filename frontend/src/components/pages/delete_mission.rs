@@ -5,13 +5,13 @@ use stylist::{yew::styled_component, Style};
 
 use yew::prelude::*;
 use yew_router::{components::Link, hooks::use_navigator};
+use yewdux::dispatch::Dispatch;
 
 use crate::{
     components::{
         pages::scroll_to_top,
         subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
-    },
-    router::Route,
+    }, router::Route, stores::user_store::UserStore
 };
 
 use crate::styles::STYLESHEET;
@@ -48,9 +48,14 @@ pub fn delete_mission(props: &Props) -> Html {
         let base_url = base_url.clone();
 
         wasm_bindgen_futures::spawn_local(async move {
+            // Get the user token from local storage
+            let user_dispatch = Dispatch::<UserStore>::new();
+            let token = user_dispatch.get().token.clone().expect("Logged in user has no token");
+
             // Send a DELETE request to the backend API to delete the mission from the database
             let response = Request::delete(&format!("{}/missions/{}", base_url, mission_id))
                 .header("content-type", "application/json")
+                .header("authorization", &format!("Bearer {}", token))
                 .send()
                 .await
                 .unwrap();
