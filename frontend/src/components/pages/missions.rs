@@ -83,6 +83,19 @@ pub fn missions() -> Html {
                         error_message: "Unauthorized.".to_string(),
                     });
                 },
+                
+                // Forbidden (Token expired)
+                403 => {
+                    let user_dispatch = Dispatch::<UserStore>::new();
+
+                    user_dispatch.reduce_mut(|user_store| {
+                        user_store.token = None;
+                        user_store.id = None;
+                        user_store.username = None;
+                    });
+
+                    navigator.push(&Route::Missions);
+                },
 
                 _ => {
                     navigator.push(&Route::DisplayError {
@@ -132,6 +145,19 @@ pub fn missions() -> Html {
                         navigator.push(&Route::DisplayError {
                             error_message: "Unauthorized.".to_string(),
                         });
+                    },
+
+                    // Forbidden (Token expired)
+                    403 => {
+                        let user_dispatch = Dispatch::<UserStore>::new();
+
+                        user_dispatch.reduce_mut(|user_store| {
+                            user_store.token = None;
+                            user_store.id = None;
+                            user_store.username = None;
+                        });
+
+                        navigator.push(&Route::Missions);
                     },
 
                     // Error retrieving missions

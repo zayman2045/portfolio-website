@@ -64,7 +64,28 @@ pub fn delete_mission(props: &Props) -> Html {
                 200 => {
                     // Redirect to the missions page
                     navigator.push(&Route::Missions);
-                }
+                },
+
+                // Unauthorized
+                401 => {
+                    navigator.push(&Route::DisplayError {
+                        error_message: "Unauthorized".to_string(),
+                    });
+                },
+
+                // Forbidden (Token expired)
+                403 => {
+                    let user_dispatch = Dispatch::<UserStore>::new();
+
+                    user_dispatch.reduce_mut(|user_store| {
+                        user_store.token = None;
+                        user_store.id = None;
+                        user_store.username = None;
+                    });
+
+                    navigator.push(&Route::Missions);
+                },
+
                 _ => {
                     // Failed to delete the mission
                     navigator.push(&Route::DisplayError {

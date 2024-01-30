@@ -81,7 +81,11 @@ pub fn build_mission(props: &Props) -> Html {
                 })
                 .to_string();
 
-                let token = user_dispatch.get().token.clone().expect("Logged in user has no token");
+                let token = user_dispatch
+                    .get()
+                    .token
+                    .clone()
+                    .expect("Logged in user has no token");
 
                 if let Some(mission_id) = mission_id {
                     // Send a POST request to the backend API to update the mission
@@ -97,13 +101,26 @@ pub fn build_mission(props: &Props) -> Html {
                         // Successfully created the mission. Redirect the user to their mission page
                         200 => {
                             navigator.push(&Route::Missions);
-                        },
+                        }
 
                         // Unauthorized
                         401 => {
                             navigator.push(&Route::DisplayError {
                                 error_message: "Unauthorized".to_string(),
                             });
+                        }
+
+                        // Forbidden (Token expired)
+                        403 => {
+                            let user_dispatch = Dispatch::<UserStore>::new();
+
+                            user_dispatch.reduce_mut(|user_store| {
+                                user_store.token = None;
+                                user_store.id = None;
+                                user_store.username = None;
+                            });
+
+                            navigator.push(&Route::Missions);
                         },
 
                         // Failed to update the mission
@@ -127,13 +144,26 @@ pub fn build_mission(props: &Props) -> Html {
                         // Successfully created the mission. Redirect the user to their mission page
                         200 => {
                             navigator.push(&Route::Missions);
-                        },
+                        }
 
                         // Unauthorized
                         401 => {
                             navigator.push(&Route::DisplayError {
                                 error_message: "Unauthorized".to_string(),
                             });
+                        },
+
+                        // Forbidden (Token expired)
+                        403 => {
+                            let user_dispatch = Dispatch::<UserStore>::new();
+
+                            user_dispatch.reduce_mut(|user_store| {
+                                user_store.token = None;
+                                user_store.id = None;
+                                user_store.username = None;
+                            });
+
+                            navigator.push(&Route::Missions);
                         },
 
                         // Failed to create the mission

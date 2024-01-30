@@ -87,6 +87,19 @@ pub fn inspect_mission(props: &Props) -> Html {
                         });
                     },
 
+                    // Forbidden (Token expired)
+                    403 => {
+                        let user_dispatch = Dispatch::<UserStore>::new();
+
+                        user_dispatch.reduce_mut(|user_store| {
+                            user_store.token = None;
+                            user_store.id = None;
+                            user_store.username = None;
+                        });
+
+                        navigator.push(&Route::Missions);
+                    },
+
                     // Error retrieving mission
                     _ => {
                         navigator.push(&Route::DisplayError {
