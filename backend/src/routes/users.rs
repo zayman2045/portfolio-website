@@ -96,12 +96,12 @@ pub async fn logout_user(
     Ok(())
 }
 
-/// Hashes the password before storage in the database.
+/// Hashes the password.
 fn hash_password(password: String) -> Result<String, StatusCode> {
     bcrypt::hash(password, 10).map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)
 }
 
-// Verifies the password in the request matches that of the database.
+// Verifies the password using the hash.
 fn verify_password(password: String, hash: &str) -> Result<bool, StatusCode> {
     bcrypt::verify(password, hash).map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)
 }
