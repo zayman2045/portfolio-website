@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::entities::prelude::*;
 use crate::entities::users::{self, Model};
+use crate::utils::jwt;
 
 /// The request body for creating a new user or logging in.
 #[derive(Deserialize, Serialize)]
@@ -28,11 +29,14 @@ pub async fn create_user(
     Extension(database): Extension<DatabaseConnection>,
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
-    // Create a new user model / row in the database
+    // Generate a new JWT token
+    let jwt = jwt::new_jwt()?;
+
+    // Create a new user model/row in the database
     let new_user = users::ActiveModel {
         username: ActiveValue::Set(user_request.username.clone()),
         password: ActiveValue::Set(hash_password(user_request.password)?),
-        token: ActiveValue::Set(Some("Create Token".to_string())),
+        token: ActiveValue::Set(Some(jwt)),
         ..Default::default() // Return status code if user already exists
     }
     .save(&database)
@@ -64,10 +68,10 @@ pub async fn login_user(
             return Err(StatusCode::UNAUTHORIZED);
         }
 
-        // Update the token
-        let new_token = "Create Token".to_string();
+        // Generate and set a new JWT token 
+        let jwt = jwt::new_jwt()?;
         let mut user = database_user.into_active_model();
-        user.token = Set(Some(new_token));
+        user.token = Set(Some(jwt));
 
         // Save the user to the database
         let saved_user = user
@@ -92,7 +96,9 @@ pub async fn logout_user(
 ) -> Result<(), StatusCode> {
     let mut user = user.into_active_model();
     user.token = Set(None);
-    user.save(&database).await.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+    user.save(&database)
+        .await
+        .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(())
 }
 

@@ -19,6 +19,7 @@ services:
       - database
     environment: 
       DATABASE_URL: postgresql://postgres:mysecretpassword@database:5432/postgres
+      JWT_SECRET: mysecret
 
   database:
     image: postgres

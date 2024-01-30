@@ -4,6 +4,7 @@
 
 pub mod entities;
 pub mod routes;
+pub mod utils;
 
 use sea_orm::*;
 
