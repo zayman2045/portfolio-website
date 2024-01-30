@@ -74,6 +74,7 @@ pub async fn create_mission(
 /// Lists all missions for a user.
 pub async fn list_missions(
     Extension(database): Extension<DatabaseConnection>,
+    Extension(user): Extension<Model>,
     Path(user_id): Path<u32>,
 ) -> Result<Json<MissionListResponse>, StatusCode> {
     // Get all missions for the user

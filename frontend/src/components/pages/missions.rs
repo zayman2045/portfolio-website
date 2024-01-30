@@ -41,18 +41,20 @@ pub fn missions() -> Html {
     let base_url = use_context::<String>().expect("Context not found");
     let base_url_clone = base_url.clone();
 
-
     // Callback for logout button
     let onclick: Callback<MouseEvent> = user_dispatch.reduce_mut_callback(move |user_store| {
         let base_url = base_url_clone.clone();
-        let user_store = user_store.clone();
+        let token = user_store
+            .token
+            .clone()
+            .expect("Logged in user has no token");
 
         // Spawn a new thread
         wasm_bindgen_futures::spawn_local(async move {
             // Send a POST request to the backend API to logout the user
             let response = Request::post(&format!("{}/users/logout", base_url))
                 .header("content-type", "application/json")
-                .header("authorization", &format!("Bearer {}", &user_store.token.clone().unwrap()))
+                .header("authorization", &format!("Bearer {}", token))
                 .send()
                 .await
                 .unwrap();
@@ -76,16 +78,21 @@ pub fn missions() -> Html {
         });
     });
 
+    // Request the user's missions on load
+    let user_store_clone = user_store.clone();
     use_effect_with_deps(
         move |_| {
+            if user_store_clone.token.is_some() {
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
-                // Get the user_id from the user_store
-                let user_id = user_dispatch.get().id.unwrap_or(1);
+                // Get the user_id and token from the user_store
+                let user_id = user_dispatch.get().id.expect("Logged in user has no id");
+                let token = user_dispatch.get().token.clone().expect("Logged in user has no token");
 
                 // Send a GET request to the backend API to get all missions
                 let response = Request::get(&format!("{}/users/{}", base_url, user_id))
                     .header("content-type", "application/json")
+                    .header("authorization", &format!("Bearer {}", token))
                     .send()
                     .await
                     .unwrap();
@@ -107,11 +114,11 @@ pub fn missions() -> Html {
                     _ => {
                         // Log a message to the console
                         web_sys::console::log_1(
-                            &format!("Error retrieving missions: {:?}", response).into(),
+                            &format!("Error retrieving missions.").into(),
                         );
                     }
                 }
-            });
+            });}
         },
         (),
     );

@@ -28,11 +28,11 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     // Define the routes and attaches layers
     Router::new()
         .route("/users/logout", post(users::logout_user))
+        .route("/missions", post(missions::create_mission))
+        .route("/users/:user_id", get(missions::list_missions))
         .route_layer(middleware::from_fn(guards::token_guard))
         .route("/users", post(users::create_user))
         .route("/login", post(users::login_user))
-        .route("/missions", post(missions::create_mission))
-        .route("/users/:user_id", get(missions::list_missions))
         .route("/missions/:mission_id", get(missions::get_mission))
         .route("/missions/:mission_id", post(missions::update_mission))
         .route("/missions/:mission_id", delete(missions::delete_mission))
