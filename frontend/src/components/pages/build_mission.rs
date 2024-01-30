@@ -81,12 +81,14 @@ pub fn build_mission(props: &Props) -> Html {
                 })
                 .to_string();
 
+                let token = user_dispatch.get().token.clone().expect("Logged in user has no token");
+
                 if let Some(mission_id) = mission_id {
                     // Send a POST request to the backend API to update the mission
                     let response = Request::post(&format!("{}/missions/{}", base_url, mission_id))
                         .body(build_request)
                         .header("content-type", "application/json")
-                        .header("authorization", &format!("Bearer {}", user_dispatch.get().token.clone().unwrap()))
+                        .header("authorization", &format!("Bearer {}", token))
                         .send()
                         .await
                         .unwrap();
@@ -116,7 +118,7 @@ pub fn build_mission(props: &Props) -> Html {
                     let response = Request::post(&format!("{}/missions", base_url))
                         .body(build_request)
                         .header("content-type", "application/json")
-                        .header("authorization", &format!("Bearer {}", user_dispatch.get().token.clone().unwrap()))
+                        .header("authorization", &format!("Bearer {}", token))
                         .send()
                         .await
                         .unwrap();
