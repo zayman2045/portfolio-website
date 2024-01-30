@@ -92,9 +92,8 @@ pub fn build_mission(props: &Props) -> Html {
                         .unwrap();
 
                     match response.status() {
-                        // Successfully updated the mission
+                        // Successfully created the mission. Redirect the user to their mission page
                         200 => {
-                            // Redirect the user to their mission page
                             navigator.push(&Route::Missions);
                         },
 
@@ -123,9 +122,8 @@ pub fn build_mission(props: &Props) -> Html {
                         .unwrap();
 
                     match response.status() {
-                        // Successfully created the mission
+                        // Successfully created the mission. Redirect the user to their mission page
                         200 => {
-                            // Redirect the user to their mission page
                             navigator.push(&Route::Missions);
                         },
 
