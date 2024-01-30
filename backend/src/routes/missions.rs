@@ -140,6 +140,7 @@ pub async fn get_mission(
 /// Updates a mission by its ID.
 pub async fn update_mission(
     Extension(database): Extension<DatabaseConnection>,
+    Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
@@ -147,6 +148,10 @@ pub async fn update_mission(
     match Missions::find_by_id(mission_id).one(&database).await {
         Ok(mission) => match mission {
             Some(mission) => {
+                // Check if the mission belongs to the user
+                if mission.user_id != user.id {
+                    return Err(StatusCode::UNAUTHORIZED);
+                }
                 let mut mission: missions::ActiveModel = mission.into();
                 mission.title = ActiveValue::Set(request_mission.title);
                 mission.content = ActiveValue::Set(request_mission.content);
