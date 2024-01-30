@@ -6,9 +6,9 @@ use axum::{extract::Extension, Json};
 use sea_orm::{entity::*, DatabaseConnection, QueryFilter};
 use serde::{Deserialize, Serialize};
 
-use crate::entities::users::Model;
 use crate::entities::missions;
 use crate::entities::prelude::*;
+use crate::entities::users::Model;
 
 /// The model for a mission.
 #[derive(Deserialize, Serialize)]
@@ -46,9 +46,8 @@ pub struct MissionListResponse {
 pub async fn create_mission(
     Extension(database): Extension<DatabaseConnection>,
     Extension(user): Extension<Model>,
-    Json(request_mission): Json<MissionBuildRequest>
+    Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
-
     // Create a new mission model
     let new_mission = missions::ActiveModel {
         user_id: Set(user.id),
@@ -77,9 +76,14 @@ pub async fn list_missions(
     Extension(user): Extension<Model>,
     Path(user_id): Path<u32>,
 ) -> Result<Json<MissionListResponse>, StatusCode> {
+    // Check if the path user ID matches the user ID in the token
+    if user.id != user_id as i32 {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+
     // Get all missions for the user
     match Missions::find()
-        .filter(missions::Column::UserId.eq(user_id))
+        .filter(missions::Column::UserId.eq(user.id))
         .all(&database)
         .await
     {
@@ -104,6 +108,7 @@ pub async fn list_missions(
 /// Gets a mission by its ID.
 pub async fn get_mission(
     Extension(database): Extension<DatabaseConnection>,
+    Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
 ) -> Result<Json<Mission>, StatusCode> {
     // Get the mission by its ID
@@ -111,6 +116,12 @@ pub async fn get_mission(
         Ok(mission) => {
             match mission {
                 Some(mission) => {
+
+                    // Check if the mission belongs to the user
+                    if mission.user_id != user.id {
+                        return Err(StatusCode::UNAUTHORIZED);
+                    }
+
                     // Return the mission
                     return Ok(Json(Mission {
                         id: mission.id,

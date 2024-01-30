@@ -4,7 +4,7 @@ use reqwasm::http::Request;
 use stylist::{yew::styled_component, Style};
 
 use yew::prelude::*;
-use yew_router::components::Link;
+use yew_router::{components::Link, hooks::use_navigator};
 use yewdux::{dispatch::Dispatch, functional::use_store};
 
 use crate::{
@@ -13,7 +13,7 @@ use crate::{
         subcomponents::{contact_footer::ContactFooter, nav_bar::NavBar},
     },
     router::Route,
-    stores::mission_store::MissionStore,
+    stores::{mission_store::MissionStore, user_store::UserStore},
     styles::STYLESHEET,
 };
 
@@ -35,17 +35,31 @@ pub fn inspect_mission(props: &Props) -> Html {
 
     // Use Yewdux to hold mission
     let (mission_store, _mission_dispatch) = use_store::<MissionStore>();
+    let (user_store, _user_dispatch) = use_store::<UserStore>();
+
+    // Use navigator to redirect the user.
+    let navigator = use_navigator().unwrap();
 
     // Use base_url to send requests to the backend API
     let base_url = use_context::<String>().expect("Context not found");
 
+    // Request the mission from the server
     use_effect_with_deps(
         move |_| {
+            let navigator = navigator.clone();
+
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
+                // Get the token from the user store
+                let token = user_store
+                    .token
+                    .clone()
+                    .expect("Logged in user has no token");
+
                 // Send a GET request to the backend API to get the mission
                 let response = Request::get(&format!("{}/missions/{}", base_url, mission_id))
                     .header("content-type", "application/json")
+                    .header("authorization", &format!("Bearer {}", token))
                     .send()
                     .await
                     .unwrap();
@@ -64,14 +78,20 @@ pub fn inspect_mission(props: &Props) -> Html {
                             mission_store.title = mission.title;
                             mission_store.content = mission.content;
                         });
-                    }
+                    },
+
+                    // Unauthorized
+                    401 => {
+                        navigator.push(&Route::DisplayError {
+                            error_message: "Unauthorized".to_string(),
+                        });
+                    },
 
                     // Error retrieving mission
                     _ => {
-                        // Log a message to the console
-                        web_sys::console::log_1(
-                            &format!("Error retrieving missions: {:?}", response).into(),
-                        );
+                        navigator.push(&Route::DisplayError {
+                            error_message: "Error retrieving mission.".to_string(),
+                        });
                     }
                 }
             });
