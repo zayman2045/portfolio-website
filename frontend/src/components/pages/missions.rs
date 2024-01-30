@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
 use yew_router::components::Link;
+use yew_router::hooks::use_navigator;
 use yewdux::dispatch::Dispatch;
 use yewdux::functional::use_store;
 
@@ -41,8 +42,13 @@ pub fn missions() -> Html {
     let base_url = use_context::<String>().expect("Context not found");
     let base_url_clone = base_url.clone();
 
+    // Use navigator to redirect the user.
+    let navigator = use_navigator().unwrap(); 
+    let navigator_clone = navigator.clone();
+
     // Callback for logout button
     let onclick: Callback<MouseEvent> = user_dispatch.reduce_mut_callback(move |user_store| {
+        let navigator = navigator_clone.clone();
         let base_url = base_url_clone.clone();
         let token = user_store
             .token
@@ -69,10 +75,19 @@ pub fn missions() -> Html {
                         user_store.id = None;
                         user_store.username = None;
                     });
-                }
+                },
+
+                // Unauthorized
+                401 => {
+                    navigator.push(&Route::DisplayError {
+                        error_message: "Unauthorized.".to_string(),
+                    });
+                },
+
                 _ => {
-                    // Log a message to the console
-                    web_sys::console::log_1(&"Error logging out".into());
+                    navigator.push(&Route::DisplayError {
+                        error_message: "Error logging out.".to_string(),
+                    });
                 }
             }
         });
@@ -80,9 +95,11 @@ pub fn missions() -> Html {
 
     // Request the user's missions on load
     let user_store_clone = user_store.clone();
+    let navigator = navigator.clone();
     use_effect_with_deps(
         move |_| {
             if user_store_clone.token.is_some() {
+
             // Spawn a new thread
             wasm_bindgen_futures::spawn_local(async move {
                 // Get the user_id and token from the user_store
@@ -108,14 +125,20 @@ pub fn missions() -> Html {
                         mission_list_dispatch.reduce_mut(|mission_list_store| {
                             mission_list_store.missions = missions.missions;
                         });
-                    }
+                    },
+
+                    // Unauthorized
+                    401 => {
+                        navigator.push(&Route::DisplayError {
+                            error_message: "Unauthorized.".to_string(),
+                        });
+                    },
 
                     // Error retrieving missions
                     _ => {
-                        // Log a message to the console
-                        web_sys::console::log_1(
-                            &format!("Error retrieving missions.").into(),
-                        );
+                        navigator.push(&Route::DisplayError {
+                            error_message: "Error retrieving mission.".to_string(),
+                        });
                     }
                 }
             });}
