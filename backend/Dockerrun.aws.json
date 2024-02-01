@@ -1,0 +1,14 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "public.ecr.aws/m8r7m6j8/portfolio-backend-1:latest",
+      "Update": "true"
+    },
+    "Ports": [
+      {
+        "ContainerPort": "3000"
+      }
+    ],
+    "Logging": "/var/log/nginx"
+  }
+  
