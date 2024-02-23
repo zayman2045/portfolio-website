@@ -5,14 +5,14 @@ use hyper::StatusCode;
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 
-// The claims for the JWT token.
+/// The claims for the JWT token.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
     exp: usize,
     iat: usize,
 }
 
-// Generate a JWT token.
+/// Generate a JWT token.
 pub fn new_jwt() -> Result<String, StatusCode> {
     // Set the expiration time
     let now = Utc::now();
@@ -28,13 +28,13 @@ pub fn new_jwt() -> Result<String, StatusCode> {
     token.map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)
 }
 
-// Validate a JWT token.
+/// Validate a JWT token.
 pub fn validate_jwt(token: &str) -> Result<(), StatusCode> {
     let secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set in environment");
     let key = DecodingKey::from_secret(secret.as_bytes());
     let validation = Validation::new(Algorithm::HS256);
 
-    // Decode the token and return true if it's valid
+    // Decode the token
     decode::<Claims>(token, &key, &validation)
         .map(|_| ())
         .map_err(|_| StatusCode::FORBIDDEN)
