@@ -32,7 +32,7 @@ In production, the compiled frontend WebAssembly and associated static files are
 
 Experience the live version of my project by following the link below. This will take you directly to the deployed application, allowing you to interact with its features in real-time.
 
-[Link to the live application](http://xog-frontend-v1.us-east-2.elasticbeanstalk.com/)
+[Link to the live application](http://xaviergriffith.com/)
 
 ### To run this project locally:
 
