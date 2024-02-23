@@ -14,7 +14,9 @@ The `yewdux` crate is used for state management across the application. It allow
 
 ### Backend
 
-The backend uses `axum`, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. It integrates a custom middleware utilizing JWTs (JSON Web Tokens) with the HS256 algorithm to guard routes. Tokens are generated and validated using the `jsonwebtoken` crate, with a 24-hour expiration policy that automatically logs the user out upon expiration. Passwords are securely hashed using the `bcrypt` crate before being stored in the database.
+The backend uses `axum`, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. Header and body data from requests are type-checked for compliance and deserialized into structs using extractors. Route handlers return `Result<Response, StatusCode>` types; in successful instances, valid HTTP responses are generated, while errors from database manipulation are mapped to appropriate Axum status codes
+
+It integrates a custom middleware utilizing JWTs (JSON Web Tokens) with the HS256 algorithm to guard routes. Tokens are generated and validated using the `jsonwebtoken` crate, with a 24-hour expiration policy that automatically logs the user out upon expiration. Passwords are securely hashed using the `bcrypt` crate before being stored in the database.
 
 Axum works in conjunction with the `seaorm` crate to programmatically generate SQL queries for a connected Postgres database. SeaORM's object-relational mapper generates "Entity" and "Model" structs to represent tables and rows respectively, providing a type-safe interface for data manipulation.
 
