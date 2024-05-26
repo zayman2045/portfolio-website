@@ -27,7 +27,7 @@ pub fn about_projects() -> Html {
                         <img src={"img/stargaze-portrait.jpeg"} />
                     </a>
                     <a href={"https://github.com/zayman2045/funder"}>
-                        <img src={"img/funder-portrait.jpeg"} />
+                        <img src={"img/novamesh-portrait.jpeg"} />
                     </a>
                     <a href={"https://github.com/zayman2045/ello"}>
                         <img src={"img/ello-portrait.jpeg"} />

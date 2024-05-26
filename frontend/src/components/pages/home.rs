@@ -53,7 +53,7 @@ pub fn home() -> Html {
                             //     <img src={"img/funder-square1.jpeg"} alt={"Funder Logo"} id={"funder-square"} />
                             // </Link<Route>>
                             <a href={"https://github.com/zayman2045/funder"}>
-                                <img src={"img/funder-square1.jpeg"} />
+                                <img src={"img/novamesh-square1.jpeg"} />
                             </a>
                         </li>
                         <li>
