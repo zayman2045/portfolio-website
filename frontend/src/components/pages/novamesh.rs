@@ -1,4 +1,4 @@
-//! Webpage for the Funder project.
+//! Webpage for the Novamesh project.
 
 use stylist::{yew::styled_component, Style};
 use yew::prelude::*;
@@ -9,9 +9,9 @@ use crate::components::subcomponents::nav_bar::NavBar;
 
 use crate::styles::STYLESHEET;
 
-/// The page of the web application that describes the Funder project.
-#[styled_component(Funder)]
-pub fn funder() -> Html {
+/// The page of the web application that describes the Novamesh project.
+#[styled_component(Novamesh)]
+pub fn novamesh() -> Html {
     let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
     // Scroll to top of page on load
@@ -19,11 +19,11 @@ pub fn funder() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <div class={"funder"}>
+            <div class={"novamesh"}>
                 <NavBar />
                 <header>
-                    <h1> {"Funder"} </h1>
-                    <p>{"Funder is a Solana on-chain program."}</p>
+                    <h1> {"Novamesh"} </h1>
+                    <p>{"Novamesh is a Solana on-chain program."}</p>
                 </header>
                 <ContactFooter />
             </div>

@@ -490,9 +490,9 @@ footer p a:hover {
   }
 }
 
-/* Stargaze, Funder, and Ello */
+/* Stargaze, Novamesh, and Ello */
 .stargaze header,
-.funder header,
+.novamesh header,
 .ello header {
   text-align: center;
 }

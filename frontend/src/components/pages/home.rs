@@ -49,10 +49,10 @@ pub fn home() -> Html {
                             </a>
                         </li>
                         <li>
-                            // <Link<Route> to={Route::Funder}>
-                            //     <img src={"img/funder-square1.jpeg"} alt={"Funder Logo"} id={"funder-square"} />
+                            // <Link<Route> to={Route::Novamesh}>
+                            //     <img src={"img/novamesh-square1.jpeg"} alt={"Novamesh Logo"} id={"novamesh-square"} />
                             // </Link<Route>>
-                            <a href={"https://github.com/zayman2045/funder"}>
+                            <a href={"https://github.com/zayman2045/novamesh"}>
                                 <img src={"img/novamesh-square1.jpeg"} />
                             </a>
                         </li>

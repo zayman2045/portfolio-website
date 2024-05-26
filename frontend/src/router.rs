@@ -5,8 +5,8 @@
 use crate::components::pages::{
     about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite,
     build_mission::BuildMission, delete_mission::DeleteMission, display_error::DisplayError,
-    ello::Ello, funder::Funder, home::Home, inspect_mission::InspectMission, login::Login,
-    missions::Missions, signup::Signup, stargaze::Stargaze,
+    ello::Ello, home::Home, inspect_mission::InspectMission, login::Login, missions::Missions,
+    novamesh::Novamesh, signup::Signup, stargaze::Stargaze,
 };
 
 use yew::prelude::*;
@@ -28,8 +28,8 @@ pub enum Route {
     AboutSite,
     #[at("/stargaze")]
     Stargaze,
-    #[at("/funder")]
-    Funder,
+    #[at("/novamesh")]
+    Novamesh,
     #[at("/ello")]
     Ello,
     #[at("/signup")]
@@ -74,7 +74,7 @@ pub fn switch(routes: Route) -> Html {
         Route::AboutSite => html! {<AboutSite />},
         Route::AboutProjects => html! {<AboutProjects />},
         Route::Stargaze => html! { <Stargaze /> },
-        Route::Funder => html! { <Funder /> },
+        Route::Novamesh => html! { <Novamesh /> },
         Route::Ello => html! { <Ello /> },
         Route::Signup => html! {<Signup />},
         Route::SignupUserExists => {
