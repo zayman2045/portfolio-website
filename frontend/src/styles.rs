@@ -158,7 +158,8 @@ footer p a:hover {
   display: block;
   margin: 0;
   width: 100vw;
-  height: auto;
+  height: 100vh;
+  object-fit: cover; 
 }
 
 .home .flex-container {
@@ -221,7 +222,7 @@ footer p a:hover {
 
 .home .projects img {
   height: 300px;
-  width: auto;
+  width: 300px;
   border: 2px solid #a056f3;
   border-radius: 50px;
   transition: border-color 0.3s, transform 1.5s;
@@ -444,16 +445,16 @@ footer p a:hover {
 
 .about-projects .content-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 0;
   margin: 30px auto;
   flex-wrap: wrap;
-  width: 80vw;
+  width: 90vw;
+  gap: 20px;
 }
 
 .about-projects .content-container a {
-  width: 30%;
   border-radius: 10px;
   border: 2px solid #a056f3;
   transition: border-color 0.3s, transform 1.5s;
@@ -467,34 +468,23 @@ footer p a:hover {
 }
 
 .about-projects .content-container img {
-  width: 100%;
-  height: auto;
+  width: 300px;
+  height: 533px;
   display: block;
   vertical-align: middle;
+}
+
+@media (max-width: 1100px) {
+  .about-projects .content-container img {
+    width: 230px;
+    height: 408px;
+  }
 }
 
 @media (max-width: 850px) {
   .about-projects .content-container {
     flex-direction: column;
-    gap: 20px;
   }
-
-  .about-projects .content-container a {
-    width: 50%;
-  }
-}
-
-@media (max-width: 500px) {
-  .about-projects .content-container a {
-    width: 65%;
-  }
-}
-
-/* Stargaze, Novamesh, and Ello */
-.stargaze header,
-.novamesh header,
-.ello header {
-  text-align: center;
 }
 
 /* Missions */

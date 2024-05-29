@@ -23,9 +23,9 @@ pub fn about_site() -> Html {
             <div class={"about-site"}>
                 <NavBar />
                 <div class={"crate-container"}>
-                <a href={"https://yew.rs/"}>
-                    <img src={"img/yew-logo.jpeg"} alt={"Yew Logo"} />
-                </a>
+                    <a href={"https://yew.rs/"}>
+                        <img src={"img/yew-logo.jpeg"} alt={"Yew Logo"} />
+                    </a>
                     <div class={"content-container"}>
                         <h2>{"Yew"} </h2>
                         <p>{"The front end of this website is built using Yew, a modern Rust framework for creating multi-threaded web applications by compiling Rust code into the WebAssembly binary instruction format which can be loaded and executed in the browser. Yew is inspired by modern JavaScript frameworks such as React and Vue, which use a component-based architecture that allows for the reuse of UI elements, and a lightweight Virtual DOM to improve performance. The framework handles the routing through client-side navigation through the yew-router crate, creating a Single Page Application (SPA) that only renders the differences between routes rather than the entire webpages. It is also responsible for making HTTP requests to the back-end API, maintaining application state using the Yewdux crate, and handling DOM events."}</p>

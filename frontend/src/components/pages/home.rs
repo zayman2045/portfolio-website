@@ -41,25 +41,16 @@ pub fn home() -> Html {
                     <h2>{"Explore My Projects"}</h2>
                     <ul>
                         <li>
-                            // <Link<Route> to={Route::Stargaze}>
-                            //     <img src={"img/stargaze-square1.jpeg"} alt={"Stargaze Logo"} id={"stargaze-square"}/>
-                            // </Link<Route>>
                             <a href={"https://github.com/zayman2045/stargaze"}>
                                 <img src={"img/stargaze-square1.jpeg"} />
                             </a>
                         </li>
                         <li>
-                            // <Link<Route> to={Route::Novamesh}>
-                            //     <img src={"img/novamesh-square1.jpeg"} alt={"Novamesh Logo"} id={"novamesh-square"} />
-                            // </Link<Route>>
                             <a href={"https://github.com/zayman2045/novamesh"}>
                                 <img src={"img/novamesh-square1.jpeg"} />
                             </a>
                         </li>
                         <li>
-                            // <Link<Route> to={Route::Ello}>
-                            //     <img src={"img/ello-square1.jpeg"} alt={"Ello Logo"} id={"ello-square"} />
-                            // </Link<Route>>
                             <a href={"https://github.com/zayman2045/ello"}>
                                 <img src={"img/ello-square1.jpeg"} />
                             </a>
