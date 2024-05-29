@@ -3,12 +3,9 @@
 pub mod about_me;
 pub mod about_projects;
 pub mod about_site;
-pub mod ello;
-pub mod novamesh;
 pub mod home;
 pub mod login;
 pub mod signup;
-pub mod stargaze;
 pub mod missions;
 pub mod build_mission;
 pub mod inspect_mission;
