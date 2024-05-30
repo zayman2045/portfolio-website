@@ -153,6 +153,22 @@ footer p a:hover {
   border-color: #08f7be;
 }
 
+@media (max-width: 1150px) {
+  .navbar-right a {
+    margin: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .navbar h1 {
+    font-size: 22px;
+  }
+  
+  .navbar h2 {
+    font-size: 14px;
+  }
+}
+
 /* Home Page */
 .home .background {
   display: block;
@@ -160,6 +176,10 @@ footer p a:hover {
   width: 100vw;
   height: 100vh;
   object-fit: cover; 
+
+  @media (max-width: 600px) {
+    height: 75vh;
+  }
 }
 
 .home .flex-container {
@@ -359,8 +379,8 @@ footer p a:hover {
 }
 
 .about-me img {
-  height: auto;
-  width: 35vw;
+  width: 430px;
+  height: 517px;
   border: 2px solid #a056f3;
   border-radius: 50px;
 }
@@ -371,25 +391,28 @@ footer p a:hover {
   font-size: 18px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .about-me .content-container {
-    display: block;
     text-align: center;
     margin: 10px 10px;
   }
   
   .about-me img {
-    height: auto;
-    width: 85%;
-    border: 2px solid #a056f3;
-    border-radius: 50px;
+    width: 430px;
+    height: 517px;
   }
   
   .about-me .content-container p {
     height: auto;
     width: 100%;
-    font-size: 18px;
     text-align: left;
+  }
+}
+
+@media (max-width: 500px) {
+  .about-me img {
+    width: 300px;
+    height: 360px;
   }
 }
 
