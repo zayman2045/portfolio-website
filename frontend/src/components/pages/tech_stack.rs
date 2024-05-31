@@ -11,7 +11,7 @@ use crate::components::{
 use crate::styles::STYLESHEET;
 
 /// The page of the web application that describes the site itself.
-#[styled_component(AboutSite)]
+#[styled_component(TechStack)]
 pub fn about_site() -> Html {
     let stylesheet = Style::new(STYLESHEET).expect("Failed to create style");
 
@@ -20,7 +20,7 @@ pub fn about_site() -> Html {
 
     html!(
         <div class={stylesheet}>
-            <div class={"about-site"}>
+            <div class={"tech-stack"}>
                 <NavBar />
                 <div class={"crate-container"}>
                     <a href={"https://yew.rs/"}>

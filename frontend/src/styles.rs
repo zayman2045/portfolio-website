@@ -417,7 +417,7 @@ footer p a:hover {
 }
 
 /* About Site */
-.about-site .crate-container img {
+.tech-stack .crate-container img {
   height: 150px;
   width: 150px;
   border: 2px solid #a056f3;
@@ -425,16 +425,16 @@ footer p a:hover {
   transition: border-color 0.3s, transform 1.5s;
 }
 
-.about-site .crate-container img:hover {
+.tech-stack .crate-container img:hover {
   border-color: #08f7be;
   transform: scale(1.1);
 }
 
-.about-site .crate-container a {
+.tech-stack .crate-container a {
   border-radius: 50px;
 }
 
-.about-site .crate-container {
+.tech-stack .crate-container {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -443,22 +443,22 @@ footer p a:hover {
   margin: 20px 50px;
 }
 
-.about-site .crate-container .content-container {
+.tech-stack .crate-container .content-container {
   width: 50%;
 }
 
 @media (max-width: 600px) {
-  .about-site .crate-container .content-container {
+  .tech-stack .crate-container .content-container {
     width: 100%;
   }
 
-  .about-site .crate-container {
+  .tech-stack .crate-container {
     display: block;
     margin: 0px;
     text-align: center; /* Center-align inline or inline-block elements inside */
   }
 
-  .about-site .crate-container a {
+  .tech-stack .crate-container a {
     display: inline-block; /* Make 'a' tags inline-block to center them */
     margin: 0 auto; /* Additional centering for block-level elements */
   }

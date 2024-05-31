@@ -23,16 +23,16 @@ pub fn nav_bar() -> Html {
                 </div>
                 <div class="navbar-right">
                     <Link<Route> to={Route::AboutMe}>
-                        {"Meet The Dev"}
+                        {"About Me"}
                     </Link<Route>>
-                    <Link<Route> to={Route::AboutSite}>
-                        {"Site Overview"}
+                    <Link<Route> to={Route::TechStack}>
+                        {"Tech Stack"}
                     </Link<Route>>
                     <Link<Route> to={Route::AboutProjects}>
-                        {"My Projects"}
+                        {"Projects"}
                     </Link<Route>>
                     <Link<Route> to={Route::Missions}>
-                        {"Your Missions"}
+                        {"Missions"}
                     </Link<Route>>
                 </div>
             </div>

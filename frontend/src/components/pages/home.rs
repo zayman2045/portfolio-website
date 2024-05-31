@@ -10,7 +10,6 @@ use crate::components::subcomponents::nav_bar::NavBar;
 use crate::router::Route;
 use crate::styles::STYLESHEET;
 
-
 /// The home page of the web application.
 #[styled_component(Home)]
 pub fn home() -> Html {
@@ -30,7 +29,7 @@ pub fn home() -> Html {
                             <p>{"A short biography highlighting my technical background and interests."}</p>
                         </section>
                     </Link<Route>>
-                    <Link<Route> to={Route::AboutSite}>
+                    <Link<Route> to={Route::TechStack}>
                         <section>
                             <h2>{"About This Site"}</h2>
                             <p>{"A brief overview of the tools and technologies used to build this website."}</p>

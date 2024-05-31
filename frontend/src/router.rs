@@ -3,7 +3,7 @@
 //! Contains the definition of all routes in the application and the logic to switch between them.
 
 use crate::components::pages::{
-    about_me::AboutMe, about_projects::AboutProjects, about_site::AboutSite,
+    about_me::AboutMe, about_projects::AboutProjects, tech_stack::TechStack,
     build_mission::BuildMission, delete_mission::DeleteMission, display_error::DisplayError,
     home::Home, inspect_mission::InspectMission, login::Login, missions::Missions, signup::Signup,
 };
@@ -23,8 +23,8 @@ pub enum Route {
     AboutMe,
     #[at("/about-projects")]
     AboutProjects,
-    #[at("/about-site")]
-    AboutSite,
+    #[at("/tech-stack")]
+    TechStack,
     #[at("/signup")]
     Signup,
     #[at("/signup/user-exists")]
@@ -64,7 +64,7 @@ pub fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <Home /> },
         Route::AboutMe => html! {<AboutMe />},
-        Route::AboutSite => html! {<AboutSite />},
+        Route::TechStack => html! {<TechStack />},
         Route::AboutProjects => html! {<AboutProjects />},
         Route::Signup => html! {<Signup />},
         Route::SignupUserExists => {

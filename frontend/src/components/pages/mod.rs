@@ -2,7 +2,7 @@
 
 pub mod about_me;
 pub mod about_projects;
-pub mod about_site;
+pub mod tech_stack;
 pub mod home;
 pub mod login;
 pub mod signup;
