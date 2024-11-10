@@ -3,6 +3,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      target: dev
     volumes:
       - ./frontend:/code/
     ports:
@@ -11,6 +12,7 @@ services:
   backend:
     build:
       context: ./backend
+      target: dev
     volumes:
       - ./backend:/code/
     ports:
