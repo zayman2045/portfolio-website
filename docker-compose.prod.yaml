@@ -1,0 +1,38 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      target: prod
+    volumes:
+      - ./frontend:/code/
+    ports:
+      - "8080:8080"
+
+  backend:
+    build:
+      context: ./backend
+      target: prod
+    volumes:
+      - ./backend:/code/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    environment: 
+      DATABASE_URL: postgresql://postgres:mysecretpassword@database:5432/postgres
+      JWT_SECRET: mysecret
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    hostname: database
+
+volumes:
+  db-data:
