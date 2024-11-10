@@ -4,6 +4,7 @@ RUN cargo install cargo-watch
 WORKDIR /code
 COPY . /code
 EXPOSE 3000
+ENV API_BASE_URL=http://localhost:8080
 CMD cargo-watch -x run
 
 # Production Build Stage
@@ -12,6 +13,7 @@ WORKDIR /usr/src/backend
 RUN cargo init
 COPY ./src ./src
 COPY ./Cargo.toml ./Cargo.toml
+ENV API_BASE_URL=http://xog-frontend-v2.us-east-2.elasticbeanstalk.com
 RUN cargo build --release
 
 # Production Runtime Stage
