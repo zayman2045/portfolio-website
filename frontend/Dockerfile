@@ -1,11 +1,10 @@
 # # Development Stage (Only Uncomment in Development)
 FROM rust:1.74
-RUN rustup target add wasm32-unknown-unknown
-RUN cargo install trunk
+RUN rustup target add wasm32-unknown-unknown && cargo install trunk
 WORKDIR /code
 COPY . /code
 EXPOSE 8080
-CMD trunk serve --address 0.0.0.0
+CMD trunk serve --address 127.0.0.1
 
 # Production Build Stage (Only Uncomment in Production)
 # FROM rust:1.74 as builder
