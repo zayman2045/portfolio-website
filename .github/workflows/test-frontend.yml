@@ -18,4 +18,5 @@ jobs:
               uses: actions-rust-lang/setup-rust-toolchain@v1
 
             - name: Build and test
+              working-directory: ./frontend  
               run: cargo test
