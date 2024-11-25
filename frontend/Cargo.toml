@@ -17,3 +17,4 @@ serde = { version = "1.0.188", features = ["derive"] }
 serde-wasm-bindgen = "0.6.0"
 dotenv = "0.15.0"
 anyhow = "1.0.79"
+wasm-bindgen-test = "0.3.45"
