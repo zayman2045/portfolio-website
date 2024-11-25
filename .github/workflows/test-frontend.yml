@@ -18,6 +18,9 @@ jobs:
             - name: Set up Rust
               uses: actions-rust-lang/setup-rust-toolchain@v1
 
+            - name: Install wasm-pack
+              run: cargo install wasm-pack
+
             - name: Build and test
               working-directory: ./frontend  
               # run: cargo test
