@@ -15,13 +15,19 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+
             - name: Set up Rust
               uses: actions-rust-lang/setup-rust-toolchain@v1
+              with:
+                target: wasm32-unknown-unknown
 
             - name: Install wasm-pack
-              run: cargo install wasm-pack
+              uses: jetli/wasm-pack-action@v0.4.0
 
             - name: Build and test
-              working-directory: ./frontend  
-              # run: cargo test
+              working-directory: ./frontend
               run: wasm-pack test --node
