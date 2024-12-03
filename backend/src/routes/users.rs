@@ -1,5 +1,7 @@
 //! User specific routes.
 
+use std::sync::Arc;
+
 use axum::http::StatusCode;
 use axum::{Extension, Json};
 use sea_orm::*;
@@ -26,7 +28,7 @@ pub struct UserResponse {
 
 /// Creates a new user in the database.
 pub async fn create_user(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
     // Generate a new JWT token
@@ -39,7 +41,7 @@ pub async fn create_user(
         token: ActiveValue::Set(Some(jwt)),
         ..Default::default() // Return status code if user already exists
     }
-    .save(&database)
+    .save(&*database)
     .await
     .map_err(|_e| StatusCode::CONFLICT)?;
 
@@ -52,13 +54,13 @@ pub async fn create_user(
 
 /// Logs the user in.
 pub async fn login_user(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Json(user_request): Json<UserRequest>,
 ) -> Result<Json<UserResponse>, StatusCode> {
     // Query the database for the username
     let database_user = Users::find()
         .filter(users::Column::Username.eq(user_request.username.clone()))
-        .one(&database)
+        .one(&*database)
         .await
         .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
 
@@ -75,7 +77,7 @@ pub async fn login_user(
 
         // Save the user to the database
         let saved_user = user
-            .save(&database)
+            .save(&*database)
             .await
             .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
 
@@ -91,12 +93,12 @@ pub async fn login_user(
 
 /// Logs the user out.
 pub async fn logout_user(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
 ) -> Result<(), StatusCode> {
     let mut user = user.into_active_model();
     user.token = Set(None);
-    user.save(&database)
+    user.save(&*database)
         .await
         .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
     Ok(())
