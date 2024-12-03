@@ -20,5 +20,8 @@ jobs:
             - name: Build and test
               working-directory: ./backend
               run: cargo test
+              env: 
+                DATABASE_URL: postgresql://postgres:mysecretpassword@localhost:5432/postgres
+                JWT_SECRET: mysecret
 
 

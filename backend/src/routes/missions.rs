@@ -1,5 +1,7 @@
 //! Mission specific routes.
 
+use std::sync::Arc;
+
 use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::{extract::Extension, Json};
@@ -44,7 +46,7 @@ pub struct MissionListResponse {
 
 /// Creates a new mission in the database.
 pub async fn create_mission(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
@@ -57,7 +59,7 @@ pub async fn create_mission(
     };
 
     // Insert the new mission into the database
-    match Missions::insert(new_mission).exec(&database).await {
+    match Missions::insert(new_mission).exec(&*database).await {
         Ok(insert_result) => {
             return Ok(Json(MissionBuildResponse {
                 id: insert_result.last_insert_id,
@@ -72,7 +74,7 @@ pub async fn create_mission(
 
 /// Lists all missions for a user.
 pub async fn list_missions(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
     Path(user_id): Path<u32>,
 ) -> Result<Json<MissionListResponse>, StatusCode> {
@@ -84,7 +86,7 @@ pub async fn list_missions(
     // Get all missions for the user
     match Missions::find()
         .filter(missions::Column::UserId.eq(user.id))
-        .all(&database)
+        .all(&*database)
         .await
     {
         Ok(missions) => {
@@ -107,12 +109,12 @@ pub async fn list_missions(
 
 /// Gets a mission by its ID.
 pub async fn get_mission(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
 ) -> Result<Json<Mission>, StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => {
             match mission {
                 Some(mission) => {
@@ -139,13 +141,13 @@ pub async fn get_mission(
 
 /// Updates a mission by its ID.
 pub async fn update_mission(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => match mission {
             Some(mission) => {
                 // Check if the mission belongs to the user
@@ -155,7 +157,7 @@ pub async fn update_mission(
                 let mut mission: missions::ActiveModel = mission.into();
                 mission.title = ActiveValue::Set(request_mission.title);
                 mission.content = ActiveValue::Set(request_mission.content);
-                match mission.save(&database).await {
+                match mission.save(&*database).await {
                     Ok(update_result) => match update_result.try_into_model() {
                         Ok(mission) => {
                             return Ok(Json(MissionBuildResponse {
@@ -178,19 +180,19 @@ pub async fn update_mission(
 
 /// Deletes a mission by its ID.
 pub async fn delete_mission(
-    Extension(database): Extension<DatabaseConnection>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
     Path(mission_id): Path<i32>,
 ) -> Result<(), StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => match mission {
             Some(mission) => {
                 // Check if the mission belongs to the user
                 if mission.user_id != user.id {
                     return Err(StatusCode::UNAUTHORIZED);
                 }
-                match Missions::delete_by_id(mission_id).exec(&database).await {
+                match Missions::delete_by_id(mission_id).exec(&*database).await {
                     Ok(_) => return Ok(()),
                     Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
                 }
