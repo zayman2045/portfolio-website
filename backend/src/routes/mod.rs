@@ -17,9 +17,14 @@ use hyper::{
 };
 use sea_orm::DatabaseConnection;
 use tower_http::cors::CorsLayer;
+use std::sync::Arc;
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
+
+    // Wrap the database connection in an Arc to share it between threads
+    let database = Arc::new(database);
+
     // Import the API base URL from the environment
     let api_base_url = std::env::var("API_BASE_URL")
         .unwrap_or("http://localhost:8080".to_string())
