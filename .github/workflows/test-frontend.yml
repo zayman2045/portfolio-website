@@ -28,6 +28,13 @@ jobs:
             - name: Install wasm-pack
               uses: jetli/wasm-pack-action@v0.4.0
 
+            - name: Setup Chrome and ChromeDriver
+              uses: browser-actions/setup-chrome@v1
+              with:
+                chrome-version: latest
+                install-chromedriver: true
+                install-dependencies: true
+
             - name: Build and test
               working-directory: ./frontend
-              run: wasm-pack test --node
+              run: wasm-pack test --chrome --headless
