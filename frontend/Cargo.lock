@@ -197,6 +197,7 @@ dependencies = [
  "anyhow",
  "dotenv",
  "gloo-net 0.4.0",
+ "gloo-utils 0.2.0",
  "reqwasm",
  "serde",
  "serde-wasm-bindgen 0.6.3",
