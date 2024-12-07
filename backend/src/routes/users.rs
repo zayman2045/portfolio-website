@@ -39,7 +39,7 @@ pub async fn create_user(
         username: ActiveValue::Set(user_request.username.clone()),
         password: ActiveValue::Set(hash_password(user_request.password)?),
         token: ActiveValue::Set(Some(jwt)),
-        ..Default::default() // Return status code if user already exists
+        ..Default::default()
     }
     .save(&*database)
     .await
