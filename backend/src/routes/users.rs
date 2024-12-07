@@ -62,7 +62,9 @@ pub async fn login_user(
         .filter(users::Column::Username.eq(user_request.username.clone()))
         .one(&*database)
         .await
-        .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|_e| {
+            println!("Error querying database: {:?}", _e);
+            StatusCode::INTERNAL_SERVER_ERROR})?;
 
     // Username found in database
     if let Some(database_user) = database_user {
@@ -70,7 +72,7 @@ pub async fn login_user(
             return Err(StatusCode::UNAUTHORIZED);
         }
 
-        // Generate and set a new JWT token 
+        // Generate and set a new JWT token
         let jwt = new_jwt()?;
         let mut user = database_user.into_active_model();
         user.token = Set(Some(jwt));
@@ -79,7 +81,9 @@ pub async fn login_user(
         let saved_user = user
             .save(&*database)
             .await
-            .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?;
+            .map_err(|_e| {
+                println!("Error saving user: {:?}", _e);
+                StatusCode::INTERNAL_SERVER_ERROR})?;
 
         Ok(Json(UserResponse {
             username: saved_user.username.unwrap(),
