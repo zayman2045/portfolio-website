@@ -68,6 +68,7 @@ pub async fn login_user(
 
     // Username found in database
     if let Some(database_user) = database_user {
+        // Verify the password in the request with the hashed password in the database
         if !verify_password(user_request.password, &database_user.password)? {
             return Err(StatusCode::UNAUTHORIZED);
         }
@@ -100,6 +101,7 @@ pub async fn logout_user(
     Extension(database): Extension<Arc<DatabaseConnection>>,
     Extension(user): Extension<Model>,
 ) -> Result<(), StatusCode> {
+    // Set the token to None
     let mut user = user.into_active_model();
     user.token = Set(None);
     user.save(&*database)
@@ -117,7 +119,7 @@ fn hash_password(password: String) -> Result<String, StatusCode> {
         StatusCode::INTERNAL_SERVER_ERROR})
 }
 
-// Verifies the password using the hash.
+/// Verifies the password using the hash.
 fn verify_password(password: String, hash: &str) -> Result<bool, StatusCode> {
     bcrypt::verify(password, hash).map_err(|_e| {
         eprintln!("Error verifying password: {:?}", _e);
