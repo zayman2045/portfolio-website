@@ -19,7 +19,9 @@ pub async fn token_guard<T>(
     let token = request
         .headers()
         .typed_get::<Authorization<Bearer>>()
-        .ok_or(StatusCode::BAD_REQUEST)?
+        .ok_or({
+            eprintln!("Failed to get token from request");
+            StatusCode::BAD_REQUEST})?
         .token()
         .to_owned();
 
@@ -30,19 +32,23 @@ pub async fn token_guard<T>(
     let database = request
         .extensions()
         .get::<DatabaseConnection>()
-        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+        .ok_or({
+            eprintln!("Failed to get database connection from request");
+            StatusCode::INTERNAL_SERVER_ERROR})?;
 
     // Look the user up in the database using the token
     let Some(user) = Users::find()
         .filter(users::Column::Token.eq(Some(token.clone())))
         .one(database)
         .await
-        .map_err(|_e| StatusCode::INTERNAL_SERVER_ERROR)?
+        .map_err(|_e| {
+            eprintln!("Failed to find user in database");
+            StatusCode::INTERNAL_SERVER_ERROR})?
     else {
         return Err(StatusCode::UNAUTHORIZED);
     };
 
-    // Insert the user ito the extensions
+    // Insert the user into the extensions
     request.extensions_mut().insert(user);
 
     Ok(next.run(request).await)
