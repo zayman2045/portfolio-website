@@ -31,15 +31,13 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .parse::<HeaderValue>()
         .expect("Parse");
 
-    println!("API BASE URL: {:?}", api_base_url);
-
     // Enable CORS, allowing GET, POST and DELETE requests
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_origin(api_base_url)
         .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
-    // Define the routes, assign handlers,  and attaches layers
+    // Define the routes, assign handlers, and attaches layers
     Router::new()
         .route("/users/logout", post(users::logout_user))
         .route("/missions", post(missions::create_mission))
