@@ -1,13 +1,33 @@
 //! Tests for the backend routes
 #[cfg(test)]
 mod tests {
-    use axum::{routing::post, Extension, Router};
+    use axum::{
+        routing::{delete, get, post},
+        Extension, Router,
+    };
     use axum_test::TestServer;
     use backend::entities::users::{self};
-    use backend::routes::users::*;
-    use sea_orm::{DatabaseBackend, MockDatabase};
+    use backend::routes::{missions::*, users::*};
+    use sea_orm::{DatabaseBackend, DatabaseConnection, MockDatabase};
     use serde_json::{json, Value};
     use std::sync::Arc;
+
+    pub fn create_test_router(database: DatabaseConnection) -> Router {
+        // Wrap the database connection in an Arc to share it between threads
+        let database = Arc::new(database);
+
+        // Define the routes, assign handlers, and attaches layers
+        Router::new()
+            .route("/users/logout", post(logout_user))
+            .route("/missions", post(create_mission))
+            .route("/users/:user_id", get(list_missions))
+            .route("/missions/:mission_id", get(get_mission))
+            .route("/missions/:mission_id", post(update_mission))
+            .route("/missions/:mission_id", delete(delete_mission))
+            .route("/users", post(create_user))
+            .route("/login", post(login_user))
+            .layer(Extension(database))
+    }
 
     /// Test the create_user handler
     #[tokio::test]
@@ -23,12 +43,8 @@ mod tests {
             }]])
             .into_connection();
 
-        let db = Arc::new(db);
-
-        // Create router with database extension
-        let app = Router::new()
-            .route("/users", post(create_user))
-            .layer(Extension(db));
+        // Create test router
+        let app = create_test_router(db);
 
         // Create test server
         let server = TestServer::new(app).unwrap();
@@ -72,12 +88,8 @@ mod tests {
             }]])
             .into_connection();
 
-        let db = Arc::new(db);
-
-        // Create router with database extension
-        let app = Router::new()
-            .route("/login", post(login_user))
-            .layer(Extension(db));
+        // Create test router
+        let app = create_test_router(db);
 
         // Create test server
         let server = TestServer::new(app).unwrap();
@@ -120,24 +132,19 @@ mod tests {
             }]])
             .into_connection();
 
-        let db = Arc::new(db);
-
-        // Create router with database extension
-        let app = Router::new()
-            .route("/logout", post(logout_user))
-            .layer(Extension(db))
-            .layer(Extension(users::Model {
-                id: 1,
-                username: "test_user".to_string(),
-                password: "hashed_password".to_string(),
-                token: Some("test_token".to_string()),
-            }));
+        // Create router with database extension and user model extension
+        let app = create_test_router(db).layer(Extension(users::Model {
+            id: 1,
+            username: "test_user".to_string(),
+            password: "hashed_password".to_string(),
+            token: Some("test_token".to_string()),
+        }));
 
         // Create test server
         let server = TestServer::new(app).unwrap();
 
         // Send request to the server
-        let response = server.post("/logout").await;
+        let response = server.post("/users/logout").await;
 
         // Validate the response
         response.assert_status_ok();
