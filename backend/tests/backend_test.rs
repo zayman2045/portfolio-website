@@ -98,4 +98,48 @@ mod tests {
         assert_eq!(json_response.token, "new_token");
         assert_eq!(json_response.id, 1);
     }
+
+    /// Test the logout_user handler
+    #[tokio::test]
+    async fn test_logout_user() {
+        // Setup mock database
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            // Mock the expected query result for querying the database for the user
+            .append_query_results([[users::Model {
+                id: 1,
+                username: "test_user".to_string(),
+                password: "hashed_password".to_string(),
+                token: Some("test_token".to_string()),
+            }]])
+            // Mock the expected query result for updating the user's token to None
+            .append_query_results([[users::Model {
+                id: 1,
+                username: "test_user".to_string(),
+                password: "hashed_password".to_string(),
+                token: None,
+            }]])
+            .into_connection();
+
+        let db = Arc::new(db);
+
+        // Create router with database extension
+        let app = Router::new()
+            .route("/logout", post(logout_user))
+            .layer(Extension(db))
+            .layer(Extension(users::Model {
+                id: 1,
+                username: "test_user".to_string(),
+                password: "hashed_password".to_string(),
+                token: Some("test_token".to_string()),
+            }));
+
+        // Create test server
+        let server = TestServer::new(app).unwrap();
+
+        // Send request to the server
+        let response = server.post("/logout").await;
+
+        // Validate the response
+        response.assert_status_ok();
+    }
 }
