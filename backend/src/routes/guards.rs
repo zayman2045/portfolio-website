@@ -10,7 +10,7 @@ use axum::{
 use hyper::StatusCode;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
-/// Checks if the user is logged in.
+/// Checks if the user is logged in and inserts the user into the request extensions.
 pub async fn token_guard<T>(
     mut request: Request<T>,
     next: Next<T>,
