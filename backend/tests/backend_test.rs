@@ -1,3 +1,4 @@
+//! Tests for the backend routes
 #[cfg(test)]
 mod tests {
     use axum::{routing::post, Extension, Router};
@@ -8,7 +9,7 @@ mod tests {
     use serde_json::{json, Value};
     use std::sync::Arc;
 
-    // Test the create_user handler
+    /// Test the create_user handler
     #[tokio::test]
     async fn test_create_user() {
         // Setup mock database
@@ -49,7 +50,7 @@ mod tests {
         assert_eq!(json_response.id, 1);
     }
 
-    // Test the login_user handler
+    /// Test the login_user handler
     #[tokio::test]
     async fn test_login_user() {
         // Setup mock database
