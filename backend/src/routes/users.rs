@@ -62,8 +62,8 @@ pub async fn login_user(
         .filter(users::Column::Username.eq(user_request.username.clone()))
         .one(&*database)
         .await
-        .map_err(|_e| {
-            eprintln!("Error querying database: {:?}", _e);
+        .map_err(|e| {
+            eprintln!("Error querying database: {e}\n",);
             StatusCode::INTERNAL_SERVER_ERROR})?;
 
     // Username found in database
@@ -82,8 +82,8 @@ pub async fn login_user(
         let saved_user = user
             .save(&*database)
             .await
-            .map_err(|_e| {
-                eprintln!("Error saving user (eprintln): {:?}", _e);
+            .map_err(|e| {
+                eprintln!("Error saving user: {e}\n");
                 StatusCode::INTERNAL_SERVER_ERROR})?;
 
         Ok(Json(UserResponse {
@@ -106,22 +106,22 @@ pub async fn logout_user(
     user.token = Set(None);
     user.save(&*database)
         .await
-        .map_err(|_e| {
-            eprintln!("Error saving user: {:?}", _e);
+        .map_err(|e| {
+            eprintln!("Error saving user: {e}\n");
             StatusCode::INTERNAL_SERVER_ERROR})?;
     Ok(())
 }
 
 /// Hashes the password.
 fn hash_password(password: String) -> Result<String, StatusCode> {
-    bcrypt::hash(password, 10).map_err(|_e| {
-        eprintln!("Error hashing password: {:?}", _e);
+    bcrypt::hash(password, 10).map_err(|e| {
+        eprintln!("Error hashing password: {e}\n");
         StatusCode::INTERNAL_SERVER_ERROR})
 }
 
 /// Verifies the password using the hash.
 fn verify_password(password: String, hash: &str) -> Result<bool, StatusCode> {
-    bcrypt::verify(password, hash).map_err(|_e| {
-        eprintln!("Error verifying password: {:?}", _e);
+    bcrypt::verify(password, hash).map_err(|e| {
+        eprintln!("Error verifying password: {e}\n");
         StatusCode::INTERNAL_SERVER_ERROR})
 }
