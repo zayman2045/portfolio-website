@@ -165,7 +165,7 @@ mod tests {
 
         // Create test server
         let server = create_test_server(db);
-        
+
         // Create test request
         let mission_request: Value = json!({
             "user_id": 1,
@@ -183,5 +183,47 @@ mod tests {
         assert_eq!(json_response.user_id, 1);
         assert_eq!(json_response.title, "test_title");
         assert_eq!(json_response.content, "test_content");
+    }
+
+    /// Test the list_missions handler.
+    #[tokio::test]
+    pub async fn test_list_missions() {
+        // Setup mock database
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            // Mock the expected query result for querying the database for the user's missions
+            .append_query_results([[
+                missions::Model {
+                    id: 1,
+                    user_id: 1,
+                    title: "test_title_1".to_string(),
+                    content: Some("test_content_1".to_string()),
+                },
+                missions::Model {
+                    id: 2,
+                    user_id: 1,
+                    title: "test_title_2".to_string(),
+                    content: Some("test_content_2".to_string()),
+                },
+            ]])
+            .into_connection();
+
+        // Create test server
+        let server = create_test_server(db);
+
+        // Send request to the server
+        let response = server.get("/users/1").await;
+
+        // Validate the response
+        response.assert_status_ok();
+        let json_response = response.json::<MissionListResponse>();
+        assert_eq!(json_response.missions.len(), 2);
+        assert_eq!(json_response.missions[0].id, 1);
+        assert_eq!(json_response.missions[0].user_id, 1);
+        assert_eq!(json_response.missions[0].title, "test_title_1");
+        assert_eq!(json_response.missions[0].content, "test_content_1");
+        assert_eq!(json_response.missions[1].id, 2);
+        assert_eq!(json_response.missions[1].user_id, 1);
+        assert_eq!(json_response.missions[1].title, "test_title_2");
+        assert_eq!(json_response.missions[1].content, "test_content_2");
     }
 }
