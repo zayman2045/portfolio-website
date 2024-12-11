@@ -6,19 +6,22 @@ mod tests {
         Extension, Router,
     };
     use axum_test::TestServer;
-    use backend::entities::users::{self};
+    use backend::entities::{
+        missions,
+        users::{self},
+    };
     use backend::routes::{missions::*, users::*};
     use sea_orm::{DatabaseBackend, DatabaseConnection, MockDatabase};
     use serde_json::{json, Value};
     use std::sync::Arc;
 
-    /// Create a test router with a mock database connection
-    pub fn create_test_router(database: DatabaseConnection) -> Router {
+    /// Create a test server from a custom router and a mock database connection.
+    pub fn create_test_server(database: DatabaseConnection) -> TestServer {
         // Wrap the database connection in an Arc to share it between threads
         let database = Arc::new(database);
 
-        // Define the routes, assign handlers, and attaches layers.
-        Router::new()
+        // Create the router by defining routes, assigning handlers, and attaching layers.
+        let router = Router::new()
             .route("/users/logout", post(logout_user))
             .route("/missions", post(create_mission))
             .route("/users/:user_id", get(list_missions))
@@ -28,6 +31,15 @@ mod tests {
             .route("/users", post(create_user))
             .route("/login", post(login_user))
             .layer(Extension(database))
+            .layer(Extension(users::Model {
+                id: 1,
+                username: "test_user".to_string(),
+                password: "hashed_password".to_string(),
+                token: Some("test_token".to_string()),
+            }));
+
+        // Create and return the test server
+        TestServer::new(router).expect("Failed to create test server")
     }
 
     /// Test the create_user handler.
@@ -44,11 +56,8 @@ mod tests {
             }]])
             .into_connection();
 
-        // Create test router
-        let app = create_test_router(db);
-
         // Create test server
-        let server = TestServer::new(app).unwrap();
+        let server = create_test_server(db);
 
         // Create test request
         let user_request: Value = json!({
@@ -89,11 +98,8 @@ mod tests {
             }]])
             .into_connection();
 
-        // Create test router
-        let app = create_test_router(db);
-
         // Create test server
-        let server = TestServer::new(app).unwrap();
+        let server = create_test_server(db);
 
         // Create test request
         let user_request: Value = json!({
@@ -133,21 +139,49 @@ mod tests {
             }]])
             .into_connection();
 
-        // Create router with database extension and user model extension
-        let app = create_test_router(db).layer(Extension(users::Model {
-            id: 1,
-            username: "test_user".to_string(),
-            password: "hashed_password".to_string(),
-            token: Some("test_token".to_string()),
-        }));
-
         // Create test server
-        let server = TestServer::new(app).unwrap();
+        let server = create_test_server(db);
 
         // Send request to the server
         let response = server.post("/users/logout").await;
 
         // Validate the response
         response.assert_status_ok();
+    }
+
+    /// Test the create_mission handler.
+    #[tokio::test]
+    pub async fn test_create_mission() {
+        // Setup mock database
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            // Mock the expected query result for inserting a new mission
+            .append_query_results([[missions::Model {
+                id: 1,
+                user_id: 1,
+                title: "test_title".to_string(),
+                content: Some("test_content".to_string()),
+            }]])
+            .into_connection();
+
+        // Create test server
+        let server = create_test_server(db);
+        
+        // Create test request
+        let mission_request: Value = json!({
+            "user_id": 1,
+            "title": "test_title",
+            "content": "test_content"
+        });
+
+        // Send request to the server
+        let response = server.post("/missions").json(&mission_request).await;
+
+        // Validate the response
+        response.assert_status_ok();
+        let json_response = response.json::<MissionBuildResponse>();
+        assert_eq!(json_response.id, 1);
+        assert_eq!(json_response.user_id, 1);
+        assert_eq!(json_response.title, "test_title");
+        assert_eq!(json_response.content, "test_content");
     }
 }
