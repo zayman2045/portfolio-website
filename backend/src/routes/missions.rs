@@ -68,8 +68,8 @@ pub async fn create_mission(
                 content: request_mission.content.unwrap_or(String::from("")),
             }))
         }
-        Err(_) => {
-            eprintln!("Failed to insert mission into database");
+        Err(e) => {
+            eprintln!("Error inserting mission into database: {e}\n");
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     };
@@ -107,8 +107,8 @@ pub async fn list_missions(
                     .collect(),
             }));
         }
-        Err(_) => {
-            eprintln!("Failed to get missions from database");
+        Err(e) => {
+            eprintln!("Error getting missions from database: {e}\n");
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     };
@@ -141,8 +141,8 @@ pub async fn get_mission(
                 None => return Err(StatusCode::NOT_FOUND),
             }
         }
-        Err(_) => {
-            eprintln!("Failed to get mission from database");
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     };
@@ -180,20 +180,23 @@ pub async fn update_mission(
                                 content: mission.content.unwrap_or(String::from("")),
                             }));
                         }
-                        Err(_) => {
-                            eprintln!("Failed to convert mission to model");
-                            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
+                        Err(e) => {
+                            eprintln!("Error converting mission to model: {e}\n");
+                            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                        }
                     },
-                    Err(_) => {
-                        eprintln!("Failed to update mission in database");
-                        return Err(StatusCode::INTERNAL_SERVER_ERROR)},
+                    Err(e) => {
+                        eprintln!("Error updating mission in database: {e}\n");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => {
-            eprintln!("Failed to get mission from database");
-            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
@@ -215,15 +218,17 @@ pub async fn delete_mission(
                 // Delete the mission
                 match Missions::delete_by_id(mission_id).exec(&*database).await {
                     Ok(_) => return Ok(()),
-                    Err(_) => {
-                        eprintln!("Failed to delete mission from database");
-                        return Err(StatusCode::INTERNAL_SERVER_ERROR)},
+                    Err(e) => {
+                        eprintln!("Error deleting mission from database: {e}\n");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => {
-            eprintln!("Failed to get mission from database");
-            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 }
