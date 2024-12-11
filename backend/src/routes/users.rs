@@ -8,7 +8,7 @@ use sea_orm::*;
 use serde::{Deserialize, Serialize};
 
 use crate::entities::prelude::*;
-use crate::entities::users::{self, Model};
+use crate::entities::users::{self, Model as User};
 use crate::utils::jwt::new_jwt;
 
 /// The request body for creating a new user or logging in.
@@ -99,7 +99,7 @@ pub async fn login_user(
 /// Logs the user out.
 pub async fn logout_user(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
 ) -> Result<(), StatusCode> {
     // Set the token to None
     let mut user = user.into_active_model();
