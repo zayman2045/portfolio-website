@@ -255,4 +255,47 @@ mod tests {
         assert_eq!(json_response.title, "test_title");
         assert_eq!(json_response.content, "test_content");
     }
+
+    /// Test the update_mission handler.
+    #[tokio::test]
+    pub async fn test_update_mission() {
+        // Setup mock database
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            // Mock the expected query result for getting the original mission
+            .append_query_results([[missions::Model {
+                id: 1,
+                user_id: 1,
+                title: "original_title".to_string(),
+                content: Some("original_content".to_string()),
+            }]])
+            // Mock the expected query result for updating the mission
+            .append_query_results([[missions::Model {
+                id: 1,
+                user_id: 1,
+                title: "updated_title".to_string(),
+                content: Some("updated_content".to_string()),
+            }]])
+            .into_connection();
+
+        // Create test server
+        let server = create_test_server(db);
+
+        // Create test request
+        let mission_request: Value = json!({
+            "user_id": 1,
+            "title": "updated_title",
+            "content": "updated_content"
+        });
+
+        // Send request to the server
+        let response = server.post("/missions/1").json(&mission_request).await;
+
+        // Validate the response
+        response.assert_status_ok();
+        let json_response = response.json::<Mission>();
+        assert_eq!(json_response.id, 1);
+        assert_eq!(json_response.user_id, 1);
+        assert_eq!(json_response.title, "updated_title");
+        assert_eq!(json_response.content, "updated_content");
+    }
 }
