@@ -58,7 +58,7 @@ pub async fn create_mission(
         ..Default::default()
     };
 
-    // Insert the new mission into the database
+    // Insert the new mission into the database and return the response
     match Missions::insert(new_mission).exec(&*database).await {
         Ok(insert_result) => {
             return Ok(Json(MissionBuildResponse {
@@ -68,7 +68,10 @@ pub async fn create_mission(
                 content: request_mission.content.unwrap_or(String::from("")),
             }))
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => {
+            eprintln!("Failed to insert mission into database");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
@@ -92,6 +95,7 @@ pub async fn list_missions(
         Ok(missions) => {
             // Return the missions
             return Ok(Json(MissionListResponse {
+                // Map the missions into the response model
                 missions: missions
                     .into_iter()
                     .map(|mission| Mission {
@@ -103,7 +107,10 @@ pub async fn list_missions(
                     .collect(),
             }));
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => {
+            eprintln!("Failed to get missions from database");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
@@ -118,7 +125,6 @@ pub async fn get_mission(
         Ok(mission) => {
             match mission {
                 Some(mission) => {
-
                     // Check if the mission belongs to the user
                     if mission.user_id != user.id {
                         return Err(StatusCode::UNAUTHORIZED);
@@ -135,7 +141,10 @@ pub async fn get_mission(
                 None => return Err(StatusCode::NOT_FOUND),
             }
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => {
+            eprintln!("Failed to get mission from database");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
@@ -154,9 +163,13 @@ pub async fn update_mission(
                 if mission.user_id != user.id {
                     return Err(StatusCode::UNAUTHORIZED);
                 }
+
+                // Update the mission
                 let mut mission: missions::ActiveModel = mission.into();
                 mission.title = ActiveValue::Set(request_mission.title);
                 mission.content = ActiveValue::Set(request_mission.content);
+
+                // Save the updated mission to the database
                 match mission.save(&*database).await {
                     Ok(update_result) => match update_result.try_into_model() {
                         Ok(mission) => {
@@ -167,14 +180,20 @@ pub async fn update_mission(
                                 content: mission.content.unwrap_or(String::from("")),
                             }));
                         }
-                        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                        Err(_) => {
+                            eprintln!("Failed to convert mission to model");
+                            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
                     },
-                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                    Err(_) => {
+                        eprintln!("Failed to update mission in database");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR)},
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => {
+            eprintln!("Failed to get mission from database");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
     }
 }
 
@@ -192,13 +211,19 @@ pub async fn delete_mission(
                 if mission.user_id != user.id {
                     return Err(StatusCode::UNAUTHORIZED);
                 }
+
+                // Delete the mission
                 match Missions::delete_by_id(mission_id).exec(&*database).await {
                     Ok(_) => return Ok(()),
-                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                    Err(_) => {
+                        eprintln!("Failed to delete mission from database");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR)},
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => {
+            eprintln!("Failed to get mission from database");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR)},
     }
 }
