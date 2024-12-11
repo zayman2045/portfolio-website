@@ -12,11 +12,12 @@ mod tests {
     use serde_json::{json, Value};
     use std::sync::Arc;
 
+    /// Create a test router with a mock database connection
     pub fn create_test_router(database: DatabaseConnection) -> Router {
         // Wrap the database connection in an Arc to share it between threads
         let database = Arc::new(database);
 
-        // Define the routes, assign handlers, and attaches layers
+        // Define the routes, assign handlers, and attaches layers.
         Router::new()
             .route("/users/logout", post(logout_user))
             .route("/missions", post(create_mission))
@@ -29,7 +30,7 @@ mod tests {
             .layer(Extension(database))
     }
 
-    /// Test the create_user handler
+    /// Test the create_user handler.
     #[tokio::test]
     async fn test_create_user() {
         // Setup mock database
@@ -66,7 +67,7 @@ mod tests {
         assert_eq!(json_response.id, 1);
     }
 
-    /// Test the login_user handler
+    /// Test the login_user handler.
     #[tokio::test]
     async fn test_login_user() {
         // Setup mock database
@@ -111,7 +112,7 @@ mod tests {
         assert_eq!(json_response.id, 1);
     }
 
-    /// Test the logout_user handler
+    /// Test the logout_user handler.
     #[tokio::test]
     async fn test_logout_user() {
         // Setup mock database
