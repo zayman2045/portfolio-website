@@ -11,7 +11,7 @@ mod tests {
         users::{self},
     };
     use backend::routes::{missions::*, users::*};
-    use sea_orm::{DatabaseBackend, DatabaseConnection, MockDatabase};
+    use sea_orm::{DatabaseBackend, DatabaseConnection, MockDatabase, MockExecResult};
     use serde_json::{json, Value};
     use std::sync::Arc;
 
@@ -297,5 +297,33 @@ mod tests {
         assert_eq!(json_response.user_id, 1);
         assert_eq!(json_response.title, "updated_title");
         assert_eq!(json_response.content, "updated_content");
+    }
+
+    /// Test the delete_mission handler.
+    #[tokio::test]
+    pub async fn test_delete_mission() {
+        // Setup mock database
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            // Mock the expected query result for deleting the mission
+            .append_query_results([[missions::Model {
+                id: 1,
+                user_id: 1,
+                title: "test_title".to_string(),
+                content: Some("test_content".to_string()),
+            }]])
+            .append_exec_results([MockExecResult {
+                last_insert_id: 1,
+                rows_affected: 1,
+            }])
+            .into_connection();
+
+        // Create test server
+        let server = create_test_server(db);
+
+        // Send request to the server
+        let response = server.delete("/missions/1").await;
+
+        // Validate the response
+        response.assert_status_ok();
     }
 }
