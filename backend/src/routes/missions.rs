@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::entities::missions;
 use crate::entities::prelude::*;
-use crate::entities::users::Model;
+use crate::entities::users::Model as User;
 
 /// The model for a mission.
 #[derive(Deserialize, Serialize)]
@@ -47,7 +47,7 @@ pub struct MissionListResponse {
 /// Creates a new mission in the database.
 pub async fn create_mission(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
     // Create a new mission model
@@ -75,7 +75,7 @@ pub async fn create_mission(
 /// Lists all missions for a user.
 pub async fn list_missions(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
     Path(user_id): Path<u32>,
 ) -> Result<Json<MissionListResponse>, StatusCode> {
     // Check if the path user ID matches the user ID in the token
@@ -110,7 +110,7 @@ pub async fn list_missions(
 /// Gets a mission by its ID.
 pub async fn get_mission(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
 ) -> Result<Json<Mission>, StatusCode> {
     // Get the mission by its ID
@@ -142,7 +142,7 @@ pub async fn get_mission(
 /// Updates a mission by its ID.
 pub async fn update_mission(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
@@ -181,7 +181,7 @@ pub async fn update_mission(
 /// Deletes a mission by its ID.
 pub async fn delete_mission(
     Extension(database): Extension<Arc<DatabaseConnection>>,
-    Extension(user): Extension<Model>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
 ) -> Result<(), StatusCode> {
     // Get the mission by its ID
