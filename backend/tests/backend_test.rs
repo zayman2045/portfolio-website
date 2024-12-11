@@ -161,6 +161,12 @@ mod tests {
                 title: "test_title".to_string(),
                 content: Some("test_content".to_string()),
             }]])
+            .append_exec_results([
+                MockExecResult {
+                    last_insert_id: 1,
+                    rows_affected: 1,
+                },
+            ])
             .into_connection();
 
         // Create test server
