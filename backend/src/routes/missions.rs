@@ -1,5 +1,7 @@
 //! Mission specific routes.
 
+use std::sync::Arc;
+
 use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::{extract::Extension, Json};
@@ -8,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::entities::missions;
 use crate::entities::prelude::*;
-use crate::entities::users::Model;
+use crate::entities::users::Model as User;
 
 /// The model for a mission.
 #[derive(Deserialize, Serialize)]
@@ -44,8 +46,8 @@ pub struct MissionListResponse {
 
 /// Creates a new mission in the database.
 pub async fn create_mission(
-    Extension(database): Extension<DatabaseConnection>,
-    Extension(user): Extension<Model>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
+    Extension(user): Extension<User>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
     // Create a new mission model
@@ -56,8 +58,8 @@ pub async fn create_mission(
         ..Default::default()
     };
 
-    // Insert the new mission into the database
-    match Missions::insert(new_mission).exec(&database).await {
+    // Insert the new mission into the database and return the response
+    match Missions::insert(new_mission).exec(&*database).await {
         Ok(insert_result) => {
             return Ok(Json(MissionBuildResponse {
                 id: insert_result.last_insert_id,
@@ -66,14 +68,17 @@ pub async fn create_mission(
                 content: request_mission.content.unwrap_or(String::from("")),
             }))
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            eprintln!("Error inserting mission into database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
 /// Lists all missions for a user.
 pub async fn list_missions(
-    Extension(database): Extension<DatabaseConnection>,
-    Extension(user): Extension<Model>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
+    Extension(user): Extension<User>,
     Path(user_id): Path<u32>,
 ) -> Result<Json<MissionListResponse>, StatusCode> {
     // Check if the path user ID matches the user ID in the token
@@ -84,12 +89,13 @@ pub async fn list_missions(
     // Get all missions for the user
     match Missions::find()
         .filter(missions::Column::UserId.eq(user.id))
-        .all(&database)
+        .all(&*database)
         .await
     {
         Ok(missions) => {
             // Return the missions
             return Ok(Json(MissionListResponse {
+                // Map the missions into the response model
                 missions: missions
                     .into_iter()
                     .map(|mission| Mission {
@@ -101,22 +107,24 @@ pub async fn list_missions(
                     .collect(),
             }));
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            eprintln!("Error getting missions from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
 /// Gets a mission by its ID.
 pub async fn get_mission(
-    Extension(database): Extension<DatabaseConnection>,
-    Extension(user): Extension<Model>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
 ) -> Result<Json<Mission>, StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => {
             match mission {
                 Some(mission) => {
-
                     // Check if the mission belongs to the user
                     if mission.user_id != user.id {
                         return Err(StatusCode::UNAUTHORIZED);
@@ -133,29 +141,36 @@ pub async fn get_mission(
                 None => return Err(StatusCode::NOT_FOUND),
             }
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 }
 
 /// Updates a mission by its ID.
 pub async fn update_mission(
-    Extension(database): Extension<DatabaseConnection>,
-    Extension(user): Extension<Model>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
     Json(request_mission): Json<MissionBuildRequest>,
 ) -> Result<Json<MissionBuildResponse>, StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => match mission {
             Some(mission) => {
                 // Check if the mission belongs to the user
                 if mission.user_id != user.id {
                     return Err(StatusCode::UNAUTHORIZED);
                 }
+
+                // Update the mission
                 let mut mission: missions::ActiveModel = mission.into();
                 mission.title = ActiveValue::Set(request_mission.title);
                 mission.content = ActiveValue::Set(request_mission.content);
-                match mission.save(&database).await {
+
+                // Save the updated mission to the database
+                match mission.save(&*database).await {
                     Ok(update_result) => match update_result.try_into_model() {
                         Ok(mission) => {
                             return Ok(Json(MissionBuildResponse {
@@ -165,38 +180,55 @@ pub async fn update_mission(
                                 content: mission.content.unwrap_or(String::from("")),
                             }));
                         }
-                        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                        Err(e) => {
+                            eprintln!("Error converting mission to model: {e}\n");
+                            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                        }
                     },
-                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                    Err(e) => {
+                        eprintln!("Error updating mission in database: {e}\n");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
 /// Deletes a mission by its ID.
 pub async fn delete_mission(
-    Extension(database): Extension<DatabaseConnection>,
-    Extension(user): Extension<Model>,
+    Extension(database): Extension<Arc<DatabaseConnection>>,
+    Extension(user): Extension<User>,
     Path(mission_id): Path<i32>,
 ) -> Result<(), StatusCode> {
     // Get the mission by its ID
-    match Missions::find_by_id(mission_id).one(&database).await {
+    match Missions::find_by_id(mission_id).one(&*database).await {
         Ok(mission) => match mission {
             Some(mission) => {
                 // Check if the mission belongs to the user
                 if mission.user_id != user.id {
                     return Err(StatusCode::UNAUTHORIZED);
                 }
-                match Missions::delete_by_id(mission_id).exec(&database).await {
+
+                // Delete the mission
+                match Missions::delete_by_id(mission_id).exec(&*database).await {
                     Ok(_) => return Ok(()),
-                    Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+                    Err(e) => {
+                        eprintln!("Error deleting mission from database: {e}\n");
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
             None => return Err(StatusCode::NOT_FOUND),
         },
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            eprintln!("Error getting mission from database: {e}\n");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 }

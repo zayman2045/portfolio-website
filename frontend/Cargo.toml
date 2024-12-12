@@ -8,7 +8,7 @@ gloo-net = "0.4.0"
 reqwasm = "0.5.0"
 stylist = { version = "0.11", features = ["yew_integration", "parser"] }
 wasm-bindgen-futures = "0.4.37"
-web-sys = { version = "0.3.64", features = ["console"] }
+web-sys = { version = "0.3.64", features = ["console", "Document", "Element", "HtmlElement", "Node", "Window"] }
 yew = { version = "0.20.0", features = ["csr"] }
 yew-router = "0.17.0"
 yewdux = "0.9"
@@ -17,3 +17,6 @@ serde = { version = "1.0.188", features = ["derive"] }
 serde-wasm-bindgen = "0.6.0"
 dotenv = "0.15.0"
 anyhow = "1.0.79"
+wasm-bindgen-test = "0.3.45"
+gloo-utils = "0.2.0"
+gloo = "0.11.0"

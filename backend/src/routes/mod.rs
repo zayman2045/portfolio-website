@@ -17,16 +17,19 @@ use hyper::{
 };
 use sea_orm::DatabaseConnection;
 use tower_http::cors::CorsLayer;
+use std::sync::Arc;
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
+
+    // Wrap the database connection in an Arc to share it between threads
+    let database = Arc::new(database);
+
     // Import the API base URL from the environment
     let api_base_url = std::env::var("API_BASE_URL")
         .unwrap_or("http://localhost:8080".to_string())
         .parse::<HeaderValue>()
         .expect("Parse");
-
-    println!("API BASE URL: {:?}", api_base_url);
 
     // Enable CORS, allowing GET, POST and DELETE requests
     let cors = CorsLayer::new()
@@ -34,7 +37,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .allow_origin(api_base_url)
         .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
-    // Define the routes, assign handlers,  and attaches layers
+    // Define the routes, assign handlers, and attaches layers
     Router::new()
         .route("/users/logout", post(users::logout_user))
         .route("/missions", post(missions::create_mission))

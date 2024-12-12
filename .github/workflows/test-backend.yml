@@ -5,6 +5,7 @@ on:
     push:
         branches:
             - main
+            - testing
 
 jobs:
     test:
@@ -20,5 +21,6 @@ jobs:
             - name: Build and test
               working-directory: ./backend
               run: cargo test
-
-
+              env: 
+                DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                JWT_SECRET: ${{ secrets.JWT_SECRET }}
