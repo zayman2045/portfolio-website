@@ -1,6 +1,9 @@
 //! Route guarding middleware.
 
-use crate::{entities::{prelude::*, users}, utils::jwt::validate_jwt};
+use crate::{
+    entities::{prelude::*, users},
+    utils::jwt::validate_jwt,
+};
 use axum::{
     headers::{authorization::Bearer, Authorization, HeaderMapExt},
     http::Request,
@@ -21,7 +24,8 @@ pub async fn token_guard<T>(
         .typed_get::<Authorization<Bearer>>()
         .ok_or({
             eprintln!("Failed to get token from request");
-            StatusCode::BAD_REQUEST})?
+            StatusCode::BAD_REQUEST
+        })?
         .token()
         .to_owned();
 
@@ -29,12 +33,10 @@ pub async fn token_guard<T>(
     validate_jwt(&token)?;
 
     // Get the database connection
-    let database = request
-        .extensions()
-        .get::<DatabaseConnection>()
-        .ok_or({
-            eprintln!("Failed to get database connection from request");
-            StatusCode::INTERNAL_SERVER_ERROR})?;
+    let database = request.extensions().get::<DatabaseConnection>().ok_or({
+        eprintln!("Failed to get database connection from request");
+        StatusCode::INTERNAL_SERVER_ERROR
+    })?;
 
     // Look the user up in the database using the token
     let Some(user) = Users::find()
@@ -43,7 +45,8 @@ pub async fn token_guard<T>(
         .await
         .map_err(|_e| {
             eprintln!("Failed to find user in database");
-            StatusCode::INTERNAL_SERVER_ERROR})?
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?
     else {
         return Err(StatusCode::UNAUTHORIZED);
     };
