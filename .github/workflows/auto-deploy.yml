@@ -1,0 +1,42 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - auto-deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Amazon ECR Public
+        run: |
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/m8r7m6j8
+
+      - name: Set environment variables
+        run: |
+          echo "AWS_REGION=us-east-1" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY_FRONTEND=portfolio-frontend-1" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY_BACKEND=portfolio-backend-1" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=public.ecr.aws/m8r7m6j8/portfolio-frontend-1:latest" >> $GITHUB_ENV
+          echo "BACKEND_IMAGE=public.ecr.aws/m8r7m6j8/portfolio-backend-1:latest" >> $GITHUB_ENV
+
+      - name: Build and push frontend Docker image
+        run: |
+          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 -f frontend/Dockerfile .
+          docker tag portfolio-frontend-1:latest $FRONTEND_IMAGE
+          docker push $FRONTEND_IMAGE
+
+      - name: Build and push backend Docker image
+        run: |
+          docker buildx build --platform linux/amd64 -t portfolio-backend-1 -f backend/Dockerfile .
+          docker tag portfolio-backend-1:latest $BACKEND_IMAGE
+          docker push $BACKEND_IMAGE
