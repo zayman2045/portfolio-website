@@ -23,7 +23,6 @@ pub async fn token_guard<T>(
     // Get the token from the request header
     let token = match request.headers().typed_get::<Authorization<Bearer>>() {
         Some(auth) => {
-            println!("Token found: {:?}", auth.token());
             auth.token().to_owned()
         }
         None => {
@@ -38,7 +37,6 @@ pub async fn token_guard<T>(
     // Get the database connection
     let database = match request.extensions().get::<Arc<DatabaseConnection>>() {
         Some(db) => {
-            println!("Database connection found.");
             db
         }
         None => {
@@ -47,9 +45,6 @@ pub async fn token_guard<T>(
         }
     };
 
-    let x = &**database;
-    println!("Database: {:?}", x);
-
     // Look the user up in the database using the token
     let user = match Users::find()
         .filter(users::Column::Token.eq(Some(token.clone())))
@@ -57,7 +52,6 @@ pub async fn token_guard<T>(
         .await
     {
         Ok(Some(user)) => {
-            println!("User found: {:?}", user);
             user
         }
         Ok(None) => {
@@ -69,8 +63,6 @@ pub async fn token_guard<T>(
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     };
-
-    println!("User found: {:?}", user);
 
     // Insert the user into the extensions
     request.extensions_mut().insert(user);
