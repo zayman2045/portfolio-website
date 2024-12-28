@@ -28,7 +28,6 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     // Import the API base URL from the environment
     let env_api_base_url = match std::env::var("API_BASE_URL") {
         Ok(val) => {
-            println!("API_BASE_URL found in environment: {}", val);
             val.parse::<HeaderValue>().expect("Parse")
         },
         Err(_) => {
