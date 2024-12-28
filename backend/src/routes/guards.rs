@@ -15,51 +15,59 @@ use axum::{
 use hyper::StatusCode;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
-/// Checks if the user is logged in and inserts the user into the request extensions.
+/// Intercepts requests to validate the JWT token. If the token is valid, the user is looked up in the database and inserted into the request extensions.
 pub async fn token_guard<T>(
     mut request: Request<T>,
     next: Next<T>,
 ) -> Result<Response, StatusCode> {
-    let x = request.extensions().get::<Arc<DatabaseConnection>>();
-    println!("Database Connection: {:?}", x);
-
-    let y = request.headers().typed_get::<Authorization<Bearer>>();
-    println!("Authorization Header: {:?}", y);
-
     // Get the token from the request header
-    let token = request
-        .headers()
-        .typed_get::<Authorization<Bearer>>()
-        .ok_or({
+    let token = match request.headers().typed_get::<Authorization<Bearer>>() {
+        Some(auth) => {
+            println!("Token found: {:?}", auth.token());
+            auth.token().to_owned()
+        }
+        None => {
             eprintln!("Failed to get token from request.");
-            StatusCode::BAD_REQUEST
-        })?
-        .token()
-        .to_owned();
+            return Err(StatusCode::BAD_REQUEST);
+        }
+    };
 
     // Validate the token
     validate_jwt(&token)?;
 
     // Get the database connection
-    let database = request.extensions().get::<Arc<DatabaseConnection>>().ok_or({
-        eprintln!("Failed to get database connection from request.");
-        StatusCode::INTERNAL_SERVER_ERROR
-    })?;
+    let database = match request.extensions().get::<Arc<DatabaseConnection>>() {
+        Some(db) => {
+            println!("Database connection found.");
+            db
+        }
+        None => {
+            eprintln!("Failed to get database connection from request.");
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
+    };
 
-    let x  = &**database;
+    let x = &**database;
     println!("Database: {:?}", x);
 
     // Look the user up in the database using the token
-    let Some(user) = Users::find()
+    let user = match Users::find()
         .filter(users::Column::Token.eq(Some(token.clone())))
         .one(&**database)
         .await
-        .map_err(|_e| {
-            eprintln!("Failed to find user in database");
-            StatusCode::INTERNAL_SERVER_ERROR
-        })?
-    else {
-        return Err(StatusCode::UNAUTHORIZED);
+    {
+        Ok(Some(user)) => {
+            println!("User found: {:?}", user);
+            user
+        }
+        Ok(None) => {
+            eprintln!("User not found.");
+            return Err(StatusCode::UNAUTHORIZED);
+        }
+        Err(e) => {
+            eprintln!("Failed to find user in database: {:?}", e);
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 
     println!("User found: {:?}", user);
