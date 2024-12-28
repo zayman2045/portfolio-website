@@ -26,15 +26,25 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     let database = Arc::new(database);
 
     // Import the API base URL from the environment
-    let api_base_url = std::env::var("API_BASE_URL")
-        .unwrap_or("http://localhost:8080".to_string())
+    let env_api_base_url = std::env::var("API_BASE_URL")
+        .unwrap_or({
+            eprintln!("API_BASE_URL not set, defaulting to http://localhost:8080");
+            "http://localhost:8080".to_string()})
         .parse::<HeaderValue>()
         .expect("Parse");
+
+    // Define the allowed origins
+    let origins = [
+        env_api_base_url,
+        "http://xaviergriffith.com".parse().expect("Failed to parse HeaderValue"),
+        "http://www.xaviergriffith.com".parse().expect("Failed to parse HeaderValue"),
+        "http://xog-frontend-v2.us-east-2.elasticbeanstalk.com".parse().expect("Failed to parse HeaderValue"),
+        ];
 
     // Enable CORS, allowing GET, POST and DELETE requests
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
-        .allow_origin(api_base_url)
+        .allow_origin(origins)
         .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
     // Define the routes, assign handlers, and attaches layers
