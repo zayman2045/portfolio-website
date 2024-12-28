@@ -26,12 +26,16 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     let database = Arc::new(database);
 
     // Import the API base URL from the environment
-    let env_api_base_url = std::env::var("API_BASE_URL")
-        .unwrap_or({
+    let env_api_base_url = match std::env::var("API_BASE_URL") {
+        Ok(val) => {
+            println!("API_BASE_URL found in environment: {}", val);
+            val.parse::<HeaderValue>().expect("Parse")
+        },
+        Err(_) => {
             eprintln!("API_BASE_URL not set, defaulting to http://localhost:8080");
-            "http://localhost:8080".to_string()})
-        .parse::<HeaderValue>()
-        .expect("Parse");
+            "http://localhost:8080".parse::<HeaderValue>().expect("Parse")
+        }
+    };
 
     // Define the allowed origins
     let origins = [
