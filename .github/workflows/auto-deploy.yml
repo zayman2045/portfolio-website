@@ -36,7 +36,7 @@ jobs:
 
       - name: Build and push frontend Docker image
         run: |
-          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 -f Dockerfile frontend
+          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend
           docker tag portfolio-frontend-1:latest $FRONTEND_IMAGE
           docker push $FRONTEND_IMAGE
 
