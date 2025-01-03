@@ -19,5 +19,5 @@ RUN trunk build --release
 FROM nginx:alpine as prod
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /usr/src/app/dist .
-COPY frontend/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["nginx", "-g", "daemon off;"]
