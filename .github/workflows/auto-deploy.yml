@@ -34,9 +34,15 @@ jobs:
           role-to-assume: arn:aws:iam::637423446384:role/github-actions-role
           aws-region: us-east-1
 
-      - name: Build and push frontend Docker image
+      - name: Build frontend Docker image
         run: |
           docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend
+
+      - name: List Docker images
+        run: docker images
+
+      - name: Tag and push frontend Docker image
+        run: |
           docker tag portfolio-frontend-1:latest $FRONTEND_IMAGE
           docker push $FRONTEND_IMAGE
 
