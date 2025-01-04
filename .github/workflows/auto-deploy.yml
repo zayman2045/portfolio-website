@@ -34,6 +34,12 @@ jobs:
           role-to-assume: arn:aws:iam::637423446384:role/github-actions-role
           aws-region: us-east-1
 
+      - name: Login to Amazon ECR Public
+        id: login-ecr-public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+
       - name: Build frontend Docker image
         run: |
           docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend --load
