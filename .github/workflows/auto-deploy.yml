@@ -34,7 +34,6 @@ jobs:
           role-to-assume: arn:aws:iam::637423446384:role/github-actions-role
           aws-region: us-east-1
 
-        #  WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
       - name: Build frontend Docker image
         run: |
           docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend
