@@ -36,7 +36,7 @@ jobs:
 
       - name: Build frontend Docker image
         run: |
-          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend
+          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend --load
 
       - name: List Docker images
         run: docker images
@@ -48,6 +48,6 @@ jobs:
 
       - name: Build and push backend Docker image
         run: |
-          docker buildx build --platform linux/amd64 -t portfolio-backend-1 -f backend/Dockerfile .
+          docker buildx build --platform linux/amd64 -t portfolio-backend-1 backend --load
           docker tag portfolio-backend-1:latest $BACKEND_IMAGE
           docker push $BACKEND_IMAGE
