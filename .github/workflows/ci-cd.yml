@@ -61,6 +61,11 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [test-frontend, test-backend]
 
+    env:
+      FRONTEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-frontend-1:latest
+      BACKEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-backend-1:latest
+      VERSION_LABEL: frontend-$(date +%s)
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -81,13 +86,45 @@ jobs:
           registry-type: public
 
       - name: Build, tag, and push frontend Docker image
-        env:
-          FRONTEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-frontend-1:latest
         run: |
           docker buildx build --platform linux/amd64 -t $FRONTEND_IMAGE --push frontend
 
       - name: Build, tag, and push backend Docker image
-        env:
-          BACKEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-backend-1:latest
         run: |
           docker buildx build --platform linux/amd64 -t $BACKEND_IMAGE --push backend
+
+      - name: Upload Frontend Dockerrun.aws.json.zip to S3
+        run: |
+          aws s3 cp frontend/Dockerrun.aws.json.zip s3://elasticbeanstalk-us-east-2-637423446384/PortfolioWebsite-Frontend-env/Dockerrun.aws.json.zip
+
+      - name: Create application version for frontend
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name "Portfolio Website" \
+            --version-label $VERSION_LABEL \
+            --source-bundle S3Bucket="elasticbeanstalk-us-east-2-637423446384",S3Key="PortfolioWebsite-Frontend-env/Dockerrun.aws.json.zip"
+
+      - name: Update environment for frontend
+        run: |
+          aws elasticbeanstalk update-environment \
+            --application-name "Portfolio Website" \
+            --environment-name "PortfolioWebsite-Frontend-env" \
+            --version-label $VERSION_LABEL
+
+      - name: Upload Backend Dockerrun.aws.json.zip to S3
+        run: |
+          aws s3 cp backend/Dockerrun.aws.json.zip s3://elasticbeanstalk-us-east-2-637423446384/PortfolioWebsite-Backend-env/Dockerrun.aws.json.zip
+
+      - name: Create application version for backend
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name "Portfolio Website" \
+            --version-label $VERSION_LABEL \
+            --source-bundle S3Bucket="elasticbeanstalk-us-east-2-637423446384",S3Key="PortfolioWebsite-Backend-env/Dockerrun.aws.json.zip"
+
+      - name: Update environment for backend
+        run: |
+          aws elasticbeanstalk update-environment \
+            --application-name "Portfolio Website" \
+            --environment-name "PortfolioWebsite-Backend-env" \
+            --version-label $VERSION_LABEL
