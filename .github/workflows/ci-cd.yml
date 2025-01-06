@@ -64,7 +64,6 @@ jobs:
     env:
       FRONTEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-frontend-1:latest
       BACKEND_IMAGE: public.ecr.aws/m8r7m6j8/portfolio-backend-1:latest
-      VERSION_LABEL: frontend-$(date +%s)
 
     steps:
       - name: Checkout code
@@ -97,7 +96,13 @@ jobs:
         run: |
           aws s3 cp frontend/Dockerrun.aws.json.zip s3://elasticbeanstalk-us-east-2-637423446384/PortfolioWebsite-Frontend-env/Dockerrun.aws.json.zip
 
+      - name: Generate version label
+        run: |
+          echo "VERSION_LABEL=$(date +%s)" >> $GITHUB_ENV
+
       - name: Create application version for frontend
+        env: 
+          VERSION_LABEL: frontend-${{ env.VERSION_LABEL }}
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name "Portfolio Website" \
@@ -116,6 +121,8 @@ jobs:
           aws s3 cp backend/Dockerrun.aws.json.zip s3://elasticbeanstalk-us-east-2-637423446384/PortfolioWebsite-Backend-env/Dockerrun.aws.json.zip
 
       - name: Create application version for backend
+        env: 
+          VERSION_LABEL: backend-${{ env.VERSION_LABEL }}
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name "Portfolio Website" \
