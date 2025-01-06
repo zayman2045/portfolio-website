@@ -96,25 +96,28 @@ jobs:
         run: |
           aws s3 cp frontend/Dockerrun.aws.json.zip s3://elasticbeanstalk-us-east-2-637423446384/PortfolioWebsite-Frontend-env/Dockerrun.aws.json.zip
 
-      - name: Generate version label
+      - name: Generate version labels
         run: |
-          echo "VERSION_LABEL=$(date +%s)" >> $GITHUB_ENV
+          echo "FRONTEND_VERSION_LABEL=frontend-$(date +%s)" >> $GITHUB_ENV &&
+          echo "BACKEND_VERSION_LABEL=backend-$(date +%s)" >> $GITHUB_ENV
 
       - name: Create application version for frontend
         env: 
-          VERSION_LABEL: frontend-${{ env.VERSION_LABEL }}
+            FRONTEND_VERSION_LABEL: ${{ env.FRONTEND_VERSION_LABEL }}
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name "Portfolio Website" \
-            --version-label $VERSION_LABEL \
+            --version-label $FRONTEND_VERSION_LABEL \
             --source-bundle S3Bucket="elasticbeanstalk-us-east-2-637423446384",S3Key="PortfolioWebsite-Frontend-env/Dockerrun.aws.json.zip"
 
       - name: Update environment for frontend
+        env: 
+            FRONTEND_VERSION_LABEL: ${{ env.FRONTEND_VERSION_LABEL }}
         run: |
           aws elasticbeanstalk update-environment \
             --application-name "Portfolio Website" \
             --environment-name "PortfolioWebsite-Frontend-env" \
-            --version-label $VERSION_LABEL
+            --version-label $FRONTEND_VERSION_LABEL
 
       - name: Upload Backend Dockerrun.aws.json.zip to S3
         run: |
@@ -122,16 +125,18 @@ jobs:
 
       - name: Create application version for backend
         env: 
-          VERSION_LABEL: backend-${{ env.VERSION_LABEL }}
+            BACKEND_VERSION_LABEL: ${{ env.BACKEND_VERSION_LABEL }}
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name "Portfolio Website" \
-            --version-label $VERSION_LABEL \
+            --version-label $BACKEND_VERSION_LABEL \
             --source-bundle S3Bucket="elasticbeanstalk-us-east-2-637423446384",S3Key="PortfolioWebsite-Backend-env/Dockerrun.aws.json.zip"
 
       - name: Update environment for backend
+        env: 
+            BACKEND_VERSION_LABEL: ${{ env.BACKEND_VERSION_LABEL }}
         run: |
           aws elasticbeanstalk update-environment \
             --application-name "Portfolio Website" \
             --environment-name "PortfolioWebsite-Backend-env" \
-            --version-label $VERSION_LABEL
+            --version-label $BACKEND_VERSION_LABEL
