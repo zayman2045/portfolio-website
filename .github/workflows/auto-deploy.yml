@@ -40,20 +40,10 @@ jobs:
         with:
           registry-type: public
 
-      - name: Build frontend Docker image
+      - name: Build, tag, and push frontend Docker image
         run: |
-          docker buildx build --platform linux/amd64 -t portfolio-frontend-1 frontend --load
+          docker buildx build --platform linux/amd64 -t $FRONTEND_IMAGE --push frontend
 
-      - name: List Docker images
-        run: docker images
-
-      - name: Tag and push frontend Docker image
+      - name: Build, tag, and push backend Docker image
         run: |
-          docker tag portfolio-frontend-1:latest $FRONTEND_IMAGE
-          docker push $FRONTEND_IMAGE
-
-      - name: Build and push backend Docker image
-        run: |
-          docker buildx build --platform linux/amd64 -t portfolio-backend-1 backend --load
-          docker tag portfolio-backend-1:latest $BACKEND_IMAGE
-          docker push $BACKEND_IMAGE
+          docker buildx build --platform linux/amd64 -t $BACKEND_IMAGE --push backend
