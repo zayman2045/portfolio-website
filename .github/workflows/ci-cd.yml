@@ -104,6 +104,7 @@ jobs:
       - name: Create application version for frontend
         env: 
             FRONTEND_VERSION_LABEL: ${{ env.FRONTEND_VERSION_LABEL }}
+            AWS_REGION: us-east-2
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name "Portfolio Website" \
