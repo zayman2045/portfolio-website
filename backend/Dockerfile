@@ -13,7 +13,7 @@ WORKDIR /usr/src/backend
 RUN cargo init
 COPY ./src ./src
 COPY ./Cargo.toml ./Cargo.toml
-ENV API_BASE_URL=http://xog-frontend-v2.us-east-2.elasticbeanstalk.com
+ENV API_BASE_URL=http://www.xaviergriffith.com
 RUN cargo build --release
 
 # Production Runtime Stage
