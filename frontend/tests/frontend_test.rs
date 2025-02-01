@@ -1,3 +1,5 @@
+#[allow(unexpected_cfgs)]
+
 #[cfg(test)]
 pub mod tests {
     use js_sys::Promise;
