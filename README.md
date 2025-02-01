@@ -45,5 +45,3 @@ Experience the live version of my project by following the link below. This will
     ``` 
 
 The application will be available at http://localhost:8080.
-
-### Thank You!
