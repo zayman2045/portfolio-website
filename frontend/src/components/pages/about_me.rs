@@ -24,7 +24,7 @@ pub fn about_me() -> Html {
                 <NavBar />
                 <div class={"content-container"}>
                     <section>
-                        <p>{"My name is Xavier Griffith and I am a software developer with a profound enthusiasm for the world of technology, innovation, and pushing the boundaries of imagination."}</p>
+                        <p>{"My name is Xavier Griffith, and I am a software developer with a profound enthusiasm for the world of technology, innovation, and pushing the boundaries of imagination."}</p>
 
                         <p>{"Originally from Baltimore, Maryland, I'm a Biomedical Engineering graduate from The Johns Hopkins University, currently living in Miami, Florida. My academic journey equipped me with a diverse problem-solving toolkit, including experience programming in C, Java, Python, JavaScript, HTML, CSS, and Matlab. However, it was only after graduating that I developed a deep interest for Rust and Solidity."}</p>
 
