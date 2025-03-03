@@ -64,6 +64,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
         .route_layer(middleware::from_fn(guards::token_guard))
         .route("/users", post(users::create_user))
         .route("/login", post(users::login_user))
+        .route("/health", get(|| async { "Healthy" }))
         .layer(Extension(database))
         .layer(cors)
 }
