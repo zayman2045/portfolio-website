@@ -13,7 +13,7 @@ WORKDIR /usr/src/backend
 RUN cargo init
 COPY ./src ./src
 COPY ./Cargo.toml ./Cargo.toml
-ENV API_BASE_URL=http://www.xaviergriffith.com
+ENV API_BASE_URL=https://www.xaviergriffith.com
 RUN cargo build --release
 
 # Production Runtime Stage
