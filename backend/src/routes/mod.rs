@@ -17,7 +17,7 @@ use hyper::{
 };
 use sea_orm::DatabaseConnection;
 use std::sync::Arc;
-use tower_http::cors::CorsLayer;
+use tower_http::cors::{Any, CorsLayer};
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
@@ -50,6 +50,7 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_origin(origins)
+        .allow_origin(Any)
         .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
     // Define the routes, assign handlers, and attaches layers
