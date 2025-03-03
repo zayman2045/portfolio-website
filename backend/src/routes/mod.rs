@@ -16,33 +16,35 @@ use hyper::{
     Method,
 };
 use sea_orm::DatabaseConnection;
-use tower_http::cors::CorsLayer;
 use std::sync::Arc;
+use tower_http::cors::CorsLayer;
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
-
     // Wrap the database connection in an Arc to share it between threads
     let database = Arc::new(database);
 
     // Import the API base URL from the environment
     let env_api_base_url = match std::env::var("API_BASE_URL") {
-        Ok(val) => {
-            val.parse::<HeaderValue>().expect("Parse")
-        },
+        Ok(val) => val.parse::<HeaderValue>().expect("Parse"),
         Err(_) => {
             eprintln!("API_BASE_URL not set, defaulting to http://localhost:8080");
-            "http://localhost:8080".parse::<HeaderValue>().expect("Parse")
+            "http://localhost:8080"
+                .parse::<HeaderValue>()
+                .expect("Parse")
         }
     };
 
     // Define the allowed origins
     let origins = [
         env_api_base_url,
-        "http://xaviergriffith.com".parse().expect("Failed to parse HeaderValue"),
-        "http://www.xaviergriffith.com".parse().expect("Failed to parse HeaderValue"),
-        "http://xog-frontend-v2.us-east-2.elasticbeanstalk.com".parse().expect("Failed to parse HeaderValue"),
-        ];
+        "https://xaviergriffith.com"
+            .parse()
+            .expect("Failed to parse HeaderValue"),
+        "https://www.xaviergriffith.com"
+            .parse()
+            .expect("Failed to parse HeaderValue"),
+    ];
 
     // Enable CORS, allowing GET, POST and DELETE requests
     let cors = CorsLayer::new()
