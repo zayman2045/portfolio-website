@@ -9,7 +9,7 @@ CMD trunk serve --address 0.0.0.0
 
 # Production Build Stage
 FROM rust:1.82 as builder
-ENV API_BASE_URL=http://api.xaviergriffith.com
+ENV API_BASE_URL=https://api.xaviergriffith.com
 WORKDIR /usr/src/app
 RUN rustup target add wasm32-unknown-unknown && cargo install trunk
 COPY . .
