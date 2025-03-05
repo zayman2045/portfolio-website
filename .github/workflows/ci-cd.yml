@@ -29,7 +29,7 @@ jobs:
       - name: Setup Chrome and ChromeDriver
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: stable
+          chrome-version: 133
           install-chromedriver: true
           install-dependencies: true
 
