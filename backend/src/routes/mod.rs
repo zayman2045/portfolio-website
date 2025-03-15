@@ -17,7 +17,7 @@ use hyper::{
 };
 use sea_orm::DatabaseConnection;
 use std::sync::Arc;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::CorsLayer;
 
 /// Builds the router.
 pub async fn create_router(database: DatabaseConnection) -> Router {
