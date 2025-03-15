@@ -50,7 +50,6 @@ pub async fn create_router(database: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_origin(origins)
-        .allow_origin(Any) // TODO: Remove this in production
         .allow_headers(vec![CONTENT_TYPE, AUTHORIZATION]);
 
     // Define the routes, assign handlers, and attaches layers
