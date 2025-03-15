@@ -7,7 +7,7 @@
     "Ports": [
       {
         "ContainerPort": "3000",
-        "HostPort": "3000"
+        "HostPort": "80"
       }
     ],
     "Logging": "/var/log/nginx"
