@@ -14,17 +14,46 @@ The `yewdux` crate is used for state management across the application. It allow
 
 ### Backend
 
-The backend uses `axum`, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. Header and body data from requests are type-checked for compliance and deserialized into structs using extractors. Route handlers return `Result<Response, StatusCode>` types; in successful instances, valid HTTP responses are generated, while errors from database manipulation are mapped to appropriate Axum status codes
+The backend uses `axum`, a Rust web framework designed for highly concurrent and asynchronous web services and API layers. Header and body data from requests are type-checked for compliance and deserialized into structs using extractors. Route handlers return `Result<Response, StatusCode>` types; in successful instances, valid HTTP responses are generated, while errors from database manipulation are mapped to appropriate Axum status codes.
 
 It integrates a custom middleware utilizing JWTs (JSON Web Tokens) with the HS256 algorithm to guard routes. Tokens are generated and validated using the `jsonwebtoken` crate, with a 24-hour expiration policy that automatically logs the user out upon expiration. Passwords are securely hashed using the `bcrypt` crate before being stored in the database.
 
-Axum works in conjunction with the `seaorm` crate to programmatically generate SQL queries for a connected Postgres database. SeaORM's object-relational mapper generates "Entity" and "Model" structs to represent tables and rows respectively, providing a type-safe interface for data manipulation.
+Axum works in conjunction with the `seaorm` crate to programmatically generate SQL queries for a connected Postgres database. SeaORM's object-relational mapper generates `Entity` and `Model` structs to represent tables and rows respectively, providing a type-safe interface for data manipulation.
 
 ### Deployment
 
 During the development phase, the `trunk serve` and `cargo-watch` commands are used to serve the application. This setup facilitates hot reloading and configures a local proxy system when necessary for an efficient development workflow. The frontend, backend, and database are coordinated and deployed using Docker & Docker Compose.
 
-In production, the compiled frontend WebAssembly and associated static files are served with Nginx, ensuring high performance and reliability. Both the frontend and backend leverage a two-stage Docker image build process, resulting in significantly smaller final image sizes. The entire application stack is then deployed on AWS with the Postgres database being managed through RDS, and front and backend running as highly available and scalable EC2 instances managed by Elastic Beanstalk. This cloud-based deployment strategy ensures seamless distribution and management of the services.
+The project uses a multi-stage Docker build process to minimize image size and allow switching between development and production environments efficiently.
+
+In production:
+
+- The compiled frontend WebAssembly and associated static files are served with Nginx, ensuring high performance and reliability.
+- Both the frontend and backend leverage a two-stage Docker image build process, resulting in significantly smaller final image sizes.
+- The entire application stack is deployed on AWS with the Postgres database being managed through RDS, and front and backend running as highly available and scalable EC2 instances managed by Elastic Beanstalk.
+- An AWS Elastic Load Balancer is configured to handle HTTPS routing and redirection, including SSL termination.
+
+### Continuous Integration & Deployment (CI/CD)
+
+The project employs a GitHub Actions CI/CD workflow that automates testing and deployment on pushes and pull requests to the `main` branch:
+
+- Frontend unit testing is conducted using the `wasm_bindgen_test` crate:
+
+  - Utilizes `wasm-pack`, Chromium, and ChromeDriver to run tests in a headless browser.
+  - Manages type handling between Rust and JavaScript, including:
+    - Converting between promises and futures.
+    - Converting between `JsValue` and a custom `TestError` type.
+
+- Backend unit testing is conducted using the `axum_test` crate:
+
+  - Sets up a test server using a modified app router and a SeaORM mock database.
+  - Tests are configured with the `#[tokio::test]` attribute.
+
+- Deployment automation:
+
+  - Builds Docker images and pushes them to AWS Elastic Container Registry (ECR).
+  - Uses a custom IAM role with assigned permissions to securely handle deployments.
+  - Ensures that deployment only occurs if both frontend and backend tests pass, maintaining reliability.
 
 ## Explore the Project
 
@@ -40,8 +69,9 @@ Experience the live version of my project by following the link below. This will
 
 2. You can build and run the application using the following command from the project root directory:
 
-    ```zsh
-    docker-compose up --build
-    ``` 
+   ```zsh
+   docker-compose up --build
+   ```
 
-The application will be available at http://localhost:8080.
+The application will be available at [http://localhost:8080](http://localhost:8080).
+
